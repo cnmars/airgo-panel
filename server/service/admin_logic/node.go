@@ -162,8 +162,8 @@ func (n *Node) UpdateNodeTraffic(trafficLog *model.NodeTrafficLog, AGUserTraffic
 			global.DB.Create(&trafficLog)
 		}
 	} else {
-		nodeTraffic.U = trafficLog.U + trafficLog.U
-		nodeTraffic.D = trafficLog.D + trafficLog.D
+		nodeTraffic.U += trafficLog.U
+		nodeTraffic.D += trafficLog.D
 		global.DB.Save(&nodeTraffic)
 	}
 }
@@ -217,6 +217,8 @@ func (n *Node) GetNodeListWithTraffic(params *model.QueryParams) (*model.CommonD
 		}
 		nodeList[i1].TrafficLogs = []model.NodeTrafficLog{} //清空traffic
 	}
+	//fmt.Println("nodeList:")
+	//Show(nodeList)
 	return &model.CommonDataResp{total, nodeList}, err
 }
 
