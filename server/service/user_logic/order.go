@@ -147,7 +147,7 @@ func (o *Order) PreCheckOrder(orderReq *model.Order) error {
 			return errors.New(constant.ERROR_CUSTOMER_SERVICE_NO_RENEWAL)
 		}
 		// 检查关联的商品
-		goods, err := shopService.FirstGoods(&model.Goods{ID: orderReq.GoodsID})
+		goods, err := shopService.FirstGoods(&model.Goods{ID: cs.GoodsID})
 		if err != nil {
 			return err
 		}
