@@ -341,6 +341,7 @@ services:
 
 # 6 更新面板
 更新时，请检查 `前端版本` 和 `后端核心版本`，它们处在不同位置并且版本号保持一致，如图：
+![](https://github.com/ppoonk/AirGo/raw/main/assets/image/8.png)
 
 ## 6-1 更新后端
 
