@@ -162,7 +162,7 @@ export const useApiStore = defineStore("apiStore", {
             sendTicketMessage:{path: userApiPre + "/ticket/sendTicketMessage", method: "post"} as ApiItem,
             firstTicket:{path: userApiPre + "/ticket/firstTicket", method: "post"} as ApiItem,
             //traffic
-            getSubTrafficList:{path: userApiPre + "/traffic/getSubTrafficList", method: "get"} as ApiItem,
+            getSubTrafficList:{path: userApiPre + "/traffic/getSubTrafficList", method: "post"} as ApiItem,
         },
     }),
     actions: {

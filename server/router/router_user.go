@@ -66,6 +66,6 @@ func InitUserRouter(RouterGroup *gin.RouterGroup) {
 	//traffic
 	trafficRouter := customerRouter.Group("/traffic")
 	{
-		trafficRouter.GET("/getSubTrafficList", user_api.GetSubTrafficList)
+		trafficRouter.POST("/getSubTrafficList", user_api.GetSubTrafficList)
 	}
 }

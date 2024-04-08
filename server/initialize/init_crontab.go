@@ -14,6 +14,7 @@ import (
 
 var (
 	customerService *admin_logic.CustomerService
+	systemService   *admin_logic.System
 	nodeService     *admin_logic.Node
 	userService     *admin_logic.User
 )

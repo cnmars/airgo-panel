@@ -5,8 +5,8 @@ import (
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
 	"github.com/ppoonk/AirGo/service/common_logic"
+	"github.com/ppoonk/AirGo/utils/time_plugin"
 	"strings"
-	"time"
 )
 
 type Traffic struct {
@@ -14,13 +14,11 @@ type Traffic struct {
 
 var trafficService *Traffic
 
-func (t *Traffic) GetSubTrafficList() (*[]model.UserTrafficLog, error) {
-	// 默认查询10天
-	now := time.Now()
-	startDay := now.AddDate(0, 0, now.Day()-12)
-	startZero := time.Date(startDay.Year(), startDay.Month(), startDay.Day(), 0, 0, 0, 0, now.Location())
+func (t *Traffic) GetSubTrafficList(params *model.CustomerService) (*[]model.UserTrafficLog, error) {
+	// 默认查询当月
+	start, end := time_plugin.GetFirstToTodayForMonth()
 	var trafficList []model.UserTrafficLog
-	err := global.DB.Model(&model.UserTrafficLog{}).Where("created_at > ? AND created_at < ?", startZero, now).Find(&trafficList).Error
+	err := global.DB.Debug().Model(&model.UserTrafficLog{}).Where("sub_user_id = ? AND created_at > ? AND created_at < ?", params.ID, start, end).Find(&trafficList).Error
 	return &trafficList, err
 
 }

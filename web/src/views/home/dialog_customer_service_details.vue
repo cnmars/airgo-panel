@@ -53,10 +53,13 @@ const state = reactive({
     bgColor: '',
     color: '#303133',
   },
+  customerServiceID:0,
 });
-const openDialog = () => {
+const openDialog = (customerServiceID:number) => {
+  console.log("customerServiceID:",customerServiceID)
+  state.customerServiceID = customerServiceID
   state.isShowDialog = true;
-  getSubTrafficList().then(()=>{
+  trafficStore.getSubTrafficList({id:state.customerServiceID } as UserTrafficLog).then(()=>{
     initLineChart(trafficStoreData.trafficLineChart.value.xAxis,trafficStoreData.trafficLineChart.value.u,trafficStoreData.trafficLineChart.value.d);
   })
 };
@@ -68,9 +71,7 @@ const closeDialog = () => {
 defineExpose({
   openDialog,
 });
-const getSubTrafficList=()=>{
- return  trafficStore.getSubTrafficList()
-}
+
 // 折线图
 const initLineChart = (xAxis:string[],u:number[],d:number[]) => {
   if (!state.global.dispose.some((b: any) => b === state.global.homeChartOne)) state.global.homeChartOne.dispose();

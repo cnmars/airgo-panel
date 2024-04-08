@@ -40,7 +40,7 @@ func InitializeAll(startConfigPath string) {
 	router.Server.Start() //启动路由监听
 }
 
-// 主要用于开发时，初始化数据库 role_and_menu 、 menu 以及 casbin_rule
+// 主要用于开发时，初始化数据库 role_and_menu 、 menu 以及 casbin_rule;修改数据库一些变化的数据
 func InitializeUpdate(startConfigPath string) {
 	InitLogrus()               //logrus
 	InitViper(startConfigPath) //初始化Viper
@@ -48,6 +48,10 @@ func InitializeUpdate(startConfigPath string) {
 	router.Server.InitRouter() //注册路由
 	StartGorm()                //gorm连接数据库
 	err := initialize_logic.DefaultForRoleMenuCasbin()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	err = systemService.ChangeDataForUpdate()
 	if err != nil {
 		fmt.Println(err.Error())
 	}

@@ -101,7 +101,7 @@ func AGGetUserlist(ctx *gin.Context) {
 	for _, v := range goods {
 		goodsArr = append(goodsArr, v.ID)
 	}
-	var users []model.AGUserInfo
+	var users []model.AGUserInfo //返回给节点服务器的数据，其中的 customer_server id 对应 Xrayr 或 v2bx 中的 uid; 处理上报流量时也要注意对应关系
 	err = global.DB.
 		Model(&model.CustomerService{}).
 		Where("goods_id in (?) and sub_status = ?", goodsArr, true).
@@ -141,7 +141,7 @@ func AGReportUserTraffic(ctx *gin.Context) {
 	if global.Server.Subscribe.TEK != ctx.Query("key") {
 		return
 	}
-	var AGUserTraffic model.AGUserTraffic
+	var AGUserTraffic model.AGUserTraffic //Xrayr 或 v2bx 中的 uid 对应 customer_server id
 	err := ctx.ShouldBind(&AGUserTraffic)
 	if err != nil {
 		global.Logrus.Error("error", err.Error())
@@ -160,7 +160,7 @@ func AGReportUserTraffic(ctx *gin.Context) {
 		node.TrafficRate = 1
 	}
 	// 处理流量统计
-	var userIds []int64
+	var customerServerIDs []int64
 	var customerServiceArr []model.CustomerService
 	var trafficLog = model.NodeTrafficLog{
 		NodeID: node.ID,
@@ -168,28 +168,28 @@ func AGReportUserTraffic(ctx *gin.Context) {
 	userTrafficLogMap := make(map[int64]model.UserTrafficLog)
 	for _, v := range AGUserTraffic.UserTraffic {
 		//每个用户流量
-		userIds = append(userIds, v.UID)
-		//需要更新的用户订阅信息
+		customerServerIDs = append(customerServerIDs, v.UID)
+		//需要更新的用户订阅信息（*倍率）
 		customerServiceArr = append(customerServiceArr, model.CustomerService{
 			ID:       v.UID,
 			UsedUp:   int64(float64(v.Upload) * node.TrafficRate),
 			UsedDown: int64(float64(v.Download) * node.TrafficRate),
 		})
-		//需要插入的用户流量统计
+		//需要插入的用户流量统计（*倍率）
 		userTrafficLogMap[v.UID] = model.UserTrafficLog{
 			SubUserID: v.UID,
 			UserName:  v.Email,
 			U:         int64(float64(v.Upload) * node.TrafficRate),
 			D:         int64(float64(v.Download) * node.TrafficRate),
 		}
-		//该节点总流量
+		//该节点总流量（无需倍率）
 		trafficLog.D = trafficLog.U + v.Upload
 		trafficLog.U = trafficLog.D + v.Download
 
 	}
 	// 处理探针
 	global.GoroutinePool.Submit(func() {
-		nodeService.UpdateNodeStatus(userIds, &trafficLog)
+		nodeService.UpdateNodeStatus(customerServerIDs, &trafficLog)
 	})
 	//插入节点流量统计
 	global.GoroutinePool.Submit(func() {
@@ -197,11 +197,11 @@ func AGReportUserTraffic(ctx *gin.Context) {
 	})
 	//插入用户流量统计
 	global.GoroutinePool.Submit(func() {
-		admin_customerService.UpdateCustomerServiceTrafficLog(userTrafficLogMap, userIds)
+		admin_customerService.UpdateCustomerServiceTrafficLog(userTrafficLogMap, customerServerIDs)
 	})
 	//更新用户已用流量信息
 	global.GoroutinePool.Submit(func() {
-		admin_customerService.UpdateCustomerServiceTrafficUsed(&customerServiceArr, userIds)
+		admin_customerService.UpdateCustomerServiceTrafficUsed(&customerServiceArr, customerServerIDs)
 	})
 	ctx.String(200, "success")
 

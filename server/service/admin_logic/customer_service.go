@@ -74,12 +74,12 @@ func (c *CustomerService) UpdateCustomerServiceTrafficUsed(customerServiceArr *[
 }
 
 // 更新客户流量记录
-func (c *CustomerService) UpdateCustomerServiceTrafficLog(userTrafficLogMap map[int64]model.UserTrafficLog, userIds []int64) error {
+func (c *CustomerService) UpdateCustomerServiceTrafficLog(userTrafficLogMap map[int64]model.UserTrafficLog, customerServerIDs []int64) error {
 	var query []model.UserTrafficLog
 	now := time.Now()
 	//当日0点
 	todayZero := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
-	err := global.DB.Where("created_at > ? AND sub_user_id IN ?", todayZero, userIds).Find(&query).Error
+	err := global.DB.Where("created_at > ? AND sub_user_id IN ?", todayZero, customerServerIDs).Find(&query).Error
 	if err != nil {
 		return err
 	}
@@ -99,11 +99,11 @@ func (c *CustomerService) UpdateCustomerServiceTrafficLog(userTrafficLogMap map[
 	if len(query) == 0 {
 		return nil
 	}
+	return nil
 	return global.DB.Clauses(clause.OnConflict{
 		Columns:   []clause.Column{{Name: "id"}},
 		DoUpdates: clause.AssignmentColumns([]string{"u", "d"}),
 	}).Create(&query).Error
-
 }
 
 // 清理流量记录
