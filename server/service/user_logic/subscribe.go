@@ -329,7 +329,7 @@ func Surge(nodes *[]model.Node) string {
 			nodeItem = append(nodeItem, fmt.Sprintf("%d", v.Port))
 			nodeItem = append(nodeItem, fmt.Sprintf("username=%s", v.UUID))
 			nodeItem = append(nodeItem, "tfo=true")
-			//nodeItem = append(nodeItem, "udp-relay=true")
+			nodeItem = append(nodeItem, "udp-relay=true")
 			//
 			nodeItem = append(nodeItem, "vmess-aead=true")
 			//tls
@@ -340,16 +340,19 @@ func Surge(nodes *[]model.Node) string {
 					sni = v.Sni
 				}
 				nodeItem = append(nodeItem, fmt.Sprintf("sni=%s", sni))
-
 				if v.AllowInsecure {
 					nodeItem = append(nodeItem, "skip-cert-verify=true")
 				}
-
 			}
 			//ws
 			if v.Network == constant.NETWORK_WS {
 				nodeItem = append(nodeItem, "ws=true")
-
+				if v.Path != "" {
+					nodeItem = append(nodeItem, fmt.Sprintf("ws-path=%s", v.Path))
+				}
+				if v.Host != "" {
+					nodeItem = append(nodeItem, fmt.Sprintf("ws-headers=Host:%s", v.Host))
+				}
 			}
 			nodeArr = append(nodeArr, strings.Join(nodeItem, ", "))
 			proxyGroupProxy = append(proxyGroupProxy, v.Remarks)
@@ -382,12 +385,17 @@ func Surge(nodes *[]model.Node) string {
 			nodeItem = append(nodeItem, v.Address)
 			nodeItem = append(nodeItem, fmt.Sprintf("%d", v.Port))
 			nodeItem = append(nodeItem, fmt.Sprintf("password=%s", v.UUID))
-			nodeItem = append(nodeItem, "sni="+v.Address)
+			nodeItem = append(nodeItem, fmt.Sprintf("download-bandwidth=%d", v.HyDownMbps))
+			sni := v.Address
+			if v.Sni != "" {
+				sni = v.Sni
+			}
+			nodeItem = append(nodeItem, fmt.Sprintf("sni=%s", sni))
+			//nodeItem = append(nodeItem, "tfo=true")
+			nodeItem = append(nodeItem, "udp-relay=true")
 			if v.AllowInsecure {
 				nodeItem = append(nodeItem, "skip-cert-verify=true")
 			}
-			//nodeItem = append(nodeItem, "tfo=true")
-			//nodeItem = append(nodeItem, "udp-relay=true")
 			nodeArr = append(nodeArr, strings.Join(nodeItem, ", "))
 			proxyGroupProxy = append(proxyGroupProxy, v.Remarks)
 			proxyGroupAuto = append(proxyGroupAuto, v.Remarks)
@@ -404,10 +412,11 @@ func Surge(nodes *[]model.Node) string {
 			nodeItem = append(nodeItem, fmt.Sprintf("encrypt-method=%s", v.Scy))
 			nodeItem = append(nodeItem, fmt.Sprintf("password=%s", SSPasswordEncodeToString(v)))
 			nodeItem = append(nodeItem, "tfo=true")
-			if v.AllowInsecure {
-				nodeItem = append(nodeItem, "skip-cert-verify=true")
-			}
-			//nodeItem = append(nodeItem, "udp-relay=true")
+			nodeItem = append(nodeItem, "udp-relay=true")
+			//if v.AllowInsecure {
+			//	nodeItem = append(nodeItem, "skip-cert-verify=true")
+			//}
+
 			nodeArr = append(nodeArr, strings.Join(nodeItem, ", "))
 			proxyGroupProxy = append(proxyGroupProxy, v.Remarks)
 			proxyGroupAuto = append(proxyGroupAuto, v.Remarks)
