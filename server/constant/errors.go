@@ -36,4 +36,10 @@ const (
 
 	//节点
 	ERROR_INVALID_NODE_TYPE = "Invalid node type."
+
+	//finance
+	ERROR_COMMISSION_IS_NOT_ENOUGH = "Insufficient commission"
+
+	//未开启开服务
+	ERROR_SERVICE_NOT_ENABLED = "Service not enabled"
 )

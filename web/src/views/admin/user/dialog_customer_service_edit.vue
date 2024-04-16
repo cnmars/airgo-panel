@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="state.title" v-model="state.isShowDialog" width="80%">
+    <el-dialog v-model="state.isShowDialog" width="80%">
       <el-form ref="userDialogFormRef" :model="adminCustomerServiceStoreData.currentCustomerService.value"
                size="default" label-position="top">
         <el-form-item :label="$t('message.adminUser.CustomerService.service_end_at')">
@@ -12,13 +12,13 @@
         </el-form-item>
         <el-form-item :label="$t('message.adminUser.CustomerService.service_status')">
           <el-switch v-model="adminCustomerServiceStoreData.currentCustomerService.value.service_status" inline-prompt
-                     active-text="开启"
-                     inactive-text="关闭"></el-switch>
+                     :active-text="$t('message.common.enable')"
+                     :inactive-text="$t('message.common.disable')"></el-switch>
         </el-form-item>
         <el-form-item :label="$t('message.adminUser.CustomerService.is_renew')">
           <el-switch v-model="adminCustomerServiceStoreData.currentCustomerService.value.is_renew" inline-prompt
-                     active-text="是"
-                     inactive-text="否"></el-switch>
+                     :active-text="$t('message.common.enable')"
+                     :inactive-text="$t('message.common.disable')"></el-switch>
         </el-form-item>
         <el-form-item :label="$t('message.adminUser.CustomerService.renewal_amount')">
           <el-input v-model="adminCustomerServiceStoreData.currentCustomerService.value.renewal_amount"></el-input>
@@ -29,8 +29,8 @@
         </el-form-item>
         <el-form-item :label="$t('message.adminUser.CustomerService.sub_status')">
           <el-switch v-model="adminCustomerServiceStoreData.currentCustomerService.value.sub_status" inline-prompt
-                     active-text="有效"
-                     inactive-text="失效"></el-switch>
+                     :active-text="$t('message.common.enable')"
+                     :inactive-text="$t('message.common.disable')"></el-switch>
         </el-form-item>
         <div
           v-if="adminCustomerServiceStoreData.currentCustomerService.value.goods_type === constantStore.GOODS_TYPE_SUBSCRIBE">
@@ -92,7 +92,6 @@ const constantStore = useConstantStore();
 
 
 const state = reactive({
-  title: "客户服务",
   isShowDialog: false
 });
 const openDialog = (row: CustomerService) => {

@@ -13,6 +13,8 @@ export default {
     confirm_password:"confirm password",
     modify_avatar:"Modify avatar",
     avatar_link:"avatar link",
+    lottery:"Lottery",
+    congratulations:"Congratulations on winning the prize!",
   }
 }
 

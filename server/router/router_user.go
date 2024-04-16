@@ -3,11 +3,11 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/ppoonk/AirGo/api/user_api"
-	"github.com/ppoonk/AirGo/middleware"
+	middleware "github.com/ppoonk/AirGo/router/middleware"
 )
 
-func InitUserRouter(RouterGroup *gin.RouterGroup) {
-	customerRouter := RouterGroup.Group("/customer")
+func (g *GinRouter) InitUserRouter(r *gin.RouterGroup) {
+	customerRouter := r.Group("/customer")
 	customerRouter.Use(middleware.RateLimitIP(), middleware.ParseJwt(), middleware.Casbin(), middleware.RateLimitVisit())
 	//user
 	userRouter := customerRouter.Group("/user")
@@ -67,5 +67,15 @@ func InitUserRouter(RouterGroup *gin.RouterGroup) {
 	trafficRouter := customerRouter.Group("/traffic")
 	{
 		trafficRouter.POST("/getSubTrafficList", user_api.GetSubTrafficList)
+	}
+	//finance
+	financeRouter := customerRouter.Group("/finance")
+	{
+		financeRouter.POST("/getBalanceStatementList", user_api.GetBalanceStatementList)
+		financeRouter.POST("/getCommissionStatementList", user_api.GetCommissionStatementList)
+		financeRouter.POST("/getInvitationUserList", user_api.GetInvitationUserList)
+		financeRouter.GET("/withdrawToBalance", user_api.WithdrawToBalance)
+		financeRouter.GET("/getCommissionSummary", user_api.GetCommissionSummary)
+
 	}
 }

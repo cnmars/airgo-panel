@@ -1,5 +1,5 @@
 system:
-  mode: dev
+  mode: release
   admin-email: admin@oicq.com
   admin-password: adminadmin
   http-port: 8899

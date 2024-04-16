@@ -6,6 +6,7 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/encrypt_plugin"
 	"github.com/ppoonk/AirGo/utils/response"
 )
@@ -17,7 +18,7 @@ func GetUserInfo(ctx *gin.Context) {
 		response.Fail("user id error", nil, ctx)
 		return
 	}
-	user, err := userService.FirstUser(&model.User{ID: uIDInt})
+	user, err := service.UserSvc.FirstUser(&model.User{ID: uIDInt})
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("GetUserInfo error:"+err.Error(), nil, ctx)
@@ -41,7 +42,7 @@ func ChangeUserPassword(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = userService.UpdateUser(&model.User{ID: uIDInt}, map[string]any{
+	err = service.UserSvc.UpdateUser(&model.User{ID: uIDInt}, map[string]any{
 		"password": encrypt_plugin.BcryptEncode(u.Password),
 	})
 	if err != nil {
@@ -50,7 +51,7 @@ func ChangeUserPassword(ctx *gin.Context) {
 		return
 	}
 	// TODO 该用户token校验依然有效，需优化
-	userService.DeleteUserCacheTokenByID(&model.User{
+	service.UserSvc.DeleteUserCacheTokenByID(&model.User{
 		ID: uIDInt,
 	})
 	response.OK("ChangeUserPassword success", nil, ctx)
@@ -70,7 +71,7 @@ func ChangeUserAvatar(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = userService.UpdateUser(&model.User{ID: uIDInt}, map[string]any{
+	err = service.UserSvc.UpdateUser(&model.User{ID: uIDInt}, map[string]any{
 		"avatar": params.Avatar,
 	})
 	if err != nil {
@@ -83,7 +84,22 @@ func ChangeUserAvatar(ctx *gin.Context) {
 
 // 打卡
 func ClockIn(ctx *gin.Context) {
-	// TODO
+	uIDInt, ok := api.GetUserIDFromGinContext(ctx)
+	if !ok {
+		response.Fail("user id error", nil, ctx)
+		return
+	}
+	index, err := service.UserSvc.ClockIn(uIDInt)
+	if err != nil {
+		global.Logrus.Error(err)
+		response.Fail("ClockIn error:"+err.Error(), nil, ctx)
+		return
+	}
+	response.OK("ClockIn success", model.CommonDataResp{
+		Total: 1,
+		Data:  index, //返回奖品索引
+	}, ctx)
+
 }
 func SetUserNotice(ctx *gin.Context) {
 	uIDInt, ok := api.GetUserIDFromGinContext(ctx)
@@ -98,7 +114,7 @@ func SetUserNotice(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = userService.UpdateUser(&model.User{ID: uIDInt}, map[string]any{
+	err = service.UserSvc.UpdateUser(&model.User{ID: uIDInt}, map[string]any{
 		"enable_tg_bot":               u.EnableTGBot,
 		"enable_email":                u.EnableEmail,
 		"enable_web_mail":             u.EnableWebMail,

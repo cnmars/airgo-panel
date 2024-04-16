@@ -5,6 +5,7 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
@@ -16,7 +17,7 @@ func GetSubTrafficList(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	list, err := trafficService.GetSubTrafficList(&params)
+	list, err := service.TrafficSvc.GetSubTrafficList(&params)
 	if err != nil {
 		response.Fail(err.Error(), nil, ctx)
 		return

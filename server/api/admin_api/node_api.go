@@ -5,13 +5,10 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
-	"github.com/ppoonk/AirGo/service/admin_logic"
-	"github.com/ppoonk/AirGo/service/common_logic"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/encrypt_plugin"
 	"github.com/ppoonk/AirGo/utils/response"
 )
-
-var nodeService admin_logic.Node
 
 // 新建节点
 func NewNode(ctx *gin.Context) {
@@ -22,7 +19,7 @@ func NewNode(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = nodeService.NewNode(&node)
+	err = service.AdminNodeSvc.NewNode(&node)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("NewNode error:"+err.Error(), nil, ctx)
@@ -40,7 +37,7 @@ func DeleteNode(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = nodeService.DeleteNode(&node)
+	err = service.AdminNodeSvc.DeleteNode(&node)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("DeleteNode error:"+err.Error(), nil, ctx)
@@ -58,7 +55,7 @@ func UpdateNode(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = nodeService.UpdateNode(&node)
+	err = service.AdminNodeSvc.UpdateNode(&node)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("UpdateNode error:"+err.Error(), nil, ctx)
@@ -76,7 +73,7 @@ func GetNodeList(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	res, err := nodeService.GetNodeList(&params)
+	res, err := service.AdminNodeSvc.GetNodeList(&params)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("GetNodeList error:"+err.Error(), nil, ctx)
@@ -95,7 +92,7 @@ func GetNodeListWithTraffic(ctx *gin.Context) {
 		return
 	}
 	params.TableName = "node"
-	res, err := nodeService.GetNodeListWithTraffic(&params)
+	res, err := service.AdminNodeSvc.GetNodeListWithTraffic(&params)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("GetNodeListWithTraffic error:"+err.Error(), nil, ctx)
@@ -113,7 +110,7 @@ func NodeSort(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = common_logic.CommonSqlUpdateMultiLine[[]model.Node](nodeArr, "id", []string{"node_order"})
+	err = service.CommonSqlUpdateMultiLine[[]model.Node](nodeArr, "id", []string{"node_order"})
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("NodeSort error:"+err.Error(), nil, ctx)
@@ -131,7 +128,7 @@ func ParseUrl(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	nodeArr := nodeService.ParseSubUrl(url.Url)
+	nodeArr := service.AdminNodeSvc.ParseSubUrl(url.Url)
 	response.OK("NewNodeShared success", nodeArr, ctx)
 }
 
@@ -145,7 +142,7 @@ func NewNodeShared(ctx *gin.Context) {
 		return
 	}
 	for _, v := range nodes {
-		_ = nodeService.NewNode(&v)
+		_ = service.AdminNodeSvc.NewNode(&v)
 
 	}
 	response.OK("NewNodeShared success", nil, ctx)
@@ -164,7 +161,7 @@ func Createx25519(ctx *gin.Context) {
 
 // 获取节点服务器状态
 func GetNodeServerStatus(ctx *gin.Context) {
-	list := nodeService.GetNodesStatus()
+	list := service.AdminNodeSvc.GetNodesStatus()
 	response.OK("GetNodeServerStatus success", list, ctx)
 
 }

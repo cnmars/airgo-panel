@@ -19,24 +19,27 @@
         <el-table-column prop="subject" :label="$t('message.adminOrder.Order.subject')" show-overflow-tooltip width="200" sortable="custom"/>
         <el-table-column prop="total_amount" :label="$t('message.adminOrder.Order.total_amount')" show-overflow-tooltip width="100" sortable="custom"/>
         <el-table-column prop="trade_status" :label="$t('message.adminOrder.Order.trade_status')" show-overflow-tooltip sortable="custom" width="100">
-          <template #default="scope">
-            <el-tag type="success" v-if="scope.row.trade_status===constantStore.ORDER_STATUS_TRADE_SUCCESS">{{$t('message.constant.ORDER_STATUS_TRADE_SUCCESS')}}</el-tag>
-            <el-tag type="warning" v-else-if="scope.row.trade_status===constantStore.ORDER_STATUS_WAIT_BUYER_PAY">{{$t('message.constant.ORDER_STATUS_WAIT_BUYER_PAY')}}</el-tag>
-            <el-tag type="info" v-else-if="scope.row.trade_status===constantStore.ORDER_STATUS_TRADE_CLOSED">{{$t('message.constant.ORDER_STATUS_TRADE_CLOSED')}}</el-tag>
-            <el-tag type="info" v-else-if="scope.row.trade_status===constantStore.ORDER_STATUS_TRADE_FINISHED">{{$t('message.constant.ORDER_STATUS_TRADE_FINISHED')}}</el-tag>
-            <el-tag type="info" v-else-if="scope.row.trade_status===constantStore.ORDER_STATUS_CREATED">{{$t('message.constant.ORDER_STATUS_CREATED')}}</el-tag>
-            <el-tag type="success" v-else-if="scope.row.trade_status===constantStore.ORDER_STATUS_COMPLETED">{{$t('message.constant.ORDER_STATUS_COMPLETED')}}</el-tag>
+          <template #default="{row}">
+            <el-tag type="success" v-if="row.trade_status===constantStore.ORDER_STATUS_TRADE_SUCCESS">{{$t('message.constant.ORDER_STATUS_TRADE_SUCCESS')}}</el-tag>
+            <el-tag type="warning" v-else-if="row.trade_status===constantStore.ORDER_STATUS_WAIT_BUYER_PAY">{{$t('message.constant.ORDER_STATUS_WAIT_BUYER_PAY')}}</el-tag>
+            <el-tag type="info" v-else-if="row.trade_status===constantStore.ORDER_STATUS_TRADE_CLOSED">{{$t('message.constant.ORDER_STATUS_TRADE_CLOSED')}}</el-tag>
+            <el-tag type="info" v-else-if="row.trade_status===constantStore.ORDER_STATUS_TRADE_FINISHED">{{$t('message.constant.ORDER_STATUS_TRADE_FINISHED')}}</el-tag>
+            <el-tag type="info" v-else-if="row.trade_status===constantStore.ORDER_STATUS_CREATED">{{$t('message.constant.ORDER_STATUS_CREATED')}}</el-tag>
+            <el-tag type="success" v-else-if="row.trade_status===constantStore.ORDER_STATUS_COMPLETED">{{$t('message.constant.ORDER_STATUS_COMPLETED')}}</el-tag>
             <el-tag type="danger" v-else>{{$t('message.constant.ORDER_STATUS_UNKNOWN_STATE')}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column :label="$t('message.common.operate')">
-          <template #default="scope">
+          <template #default="{row}">
             <el-button size="small" text type="primary"
-                       @click="showOrderInfo(scope.row)">{{$t('message.common.details')}}
+                       @click="showOrderInfo(row)">{{$t('message.common.details')}}
             </el-button>
-            <el-button v-if="scope.row.trade_status === constantStore.ORDER_STATUS_WAIT_BUYER_PAY || scope.row.trade_status === constantStore.ORDER_STATUS_CREATED"
+            <el-button v-if="(row.trade_status === constantStore.ORDER_STATUS_WAIT_BUYER_PAY
+                       || row.trade_status === constantStore.ORDER_STATUS_CREATED)
+                       && (getTimeDifference(row.created_at) < constantStore.CACHE_SUBMIT_ORDER_TIMEOUT * 60*1000)"
+
                        size="small" text type="primary"
-                       @click="toPay(scope.row)">{{$t('message.adminShop.purchase')}}
+                       @click="toPay(row)">{{$t('message.adminShop.purchase')}}
             </el-button>
           </template>
         </el-table-column>
@@ -65,7 +68,7 @@
 import {storeToRefs} from "pinia";
 import { defineAsyncComponent, onBeforeMount, onMounted, reactive, ref } from "vue";
 import {useShopStore} from "/@/stores/user_logic/shopStore";
-import {DateStrToTime} from "/@/utils/formatTime"
+import { DateStrToTime, getTimeDifference } from "/@/utils/formatTime";
 import { useConstantStore } from "/@/stores/constantStore";
 
 const shopStore = useShopStore()

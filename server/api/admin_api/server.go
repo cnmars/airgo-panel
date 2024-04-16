@@ -6,7 +6,7 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
-	"github.com/ppoonk/AirGo/service/common_logic"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
@@ -19,20 +19,20 @@ func UpdateThemeConfig(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = common_logic.CommonSqlSave[model.Theme](theme)
+	err = service.CommonSqlSave[model.Theme](theme)
 	if err != nil {
 		global.Logrus.Error(err)
 		response.Fail("UpdateThemeConfig error:"+err.Error(), nil, ctx)
 		return
 	}
 	//重新加载主题设置
-	global.Theme = theme
+	global.LocalCache.SetNoExpire(constant.CACHE_THEME, theme)
 	response.OK("UpdateThemeConfig success", nil, ctx)
 }
 
 // 获取系统设置
 func GetSetting(ctx *gin.Context) {
-	res, _, err := common_logic.CommonSqlFind[model.Server, string, model.Server]("id = 1")
+	res, _, err := service.CommonSqlFind[model.Server, string, model.Server]("id = 1")
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("GetSetting error:"+err.Error(), nil, ctx)
@@ -50,12 +50,41 @@ func UpdateSetting(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = systemService.UpdateSetting(&setting)
+	err = service.AdminServerSvc.UpdateSetting(&setting)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("UpdateSetting error:"+err.Error(), nil, ctx)
 		return
 	}
+	global.Server = setting
+	//重新加载email
+	global.GoroutinePool.Submit(func() {
+		global.Logrus.Info("重新加载 email")
+		service.EmailSvc.Reload()
+	})
+	//重新加载tg bot
+	if global.Server.Notice.EnableTGBot {
+		if global.Server.Notice.BotToken != "" {
+			global.GoroutinePool.Submit(func() {
+				global.Logrus.Info("重新加载tg bot")
+				//关闭
+				service.TgBotSvc.TGBotCloseListen()
+				//重启
+				service.TgBotSvc.TGBotStart()
+			})
+		}
+	} else {
+		global.GoroutinePool.Submit(func() {
+			global.Logrus.Info("停止 tg bot")
+			//关闭
+			service.TgBotSvc.TGBotCloseListen()
+		})
+	}
+	//重新加载通知消息时的管理员id
+	global.GoroutinePool.Submit(func() {
+		global.Logrus.Info("重新加载通知消息时的管理员id")
+		service.AdminServerSvc.AdminAccountHandler()
+	})
 	response.OK("UpdateSetting success", nil, ctx)
 }
 
@@ -64,7 +93,7 @@ func GetCurrentVersion(ctx *gin.Context) {
 }
 
 func GetLatestVersion(ctx *gin.Context) {
-	v, err := systemService.GetLatestVersion()
+	v, err := service.AdminServerSvc.GetLatestVersion()
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("GetLatestVersion error:"+err.Error(), nil, ctx)
@@ -75,7 +104,7 @@ func GetLatestVersion(ctx *gin.Context) {
 
 func UpdateLatestVersion(ctx *gin.Context) {
 	api.SSE(ctx)
-	err := systemService.DownloadLatestVersion(ctx)
+	err := service.AdminServerSvc.DownloadLatestVersion(ctx)
 	if err != nil {
 		response.ResponseSSE("message error", err.Error(), ctx)
 		return

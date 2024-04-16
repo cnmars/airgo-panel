@@ -5,13 +5,13 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
-	"github.com/ppoonk/AirGo/service/common_logic"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
 // 获取全部支付列表
 func GetPayList(ctx *gin.Context) {
-	list, _, err := common_logic.CommonSqlFind[model.Pay, string, []model.Pay]("")
+	list, _, err := service.CommonSqlFind[model.Pay, string, []model.Pay]("")
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail(err.Error(), nil, ctx)
@@ -30,7 +30,7 @@ func NewPay(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = common_logic.CommonSqlCreate[model.Pay](receivePay)
+	err = service.CommonSqlCreate[model.Pay](receivePay)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail(err.Error(), nil, ctx)
@@ -49,7 +49,7 @@ func DeletePay(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = common_logic.CommonSqlDelete[model.Pay, model.Pay](receivePay)
+	err = service.CommonSqlDelete[model.Pay, model.Pay](receivePay)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail(err.Error(), nil, ctx)
@@ -68,7 +68,7 @@ func UpdatePay(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = common_logic.CommonSqlSave[model.Pay](receivePay)
+	err = service.CommonSqlSave[model.Pay](receivePay)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail(err.Error(), nil, ctx)

@@ -8,6 +8,7 @@ declare interface Server {
     email: Email;
     security: Security;
     notice: Notice;
+    finance: Finance
 }
 declare interface Subscribe{
     backend_url: string;
@@ -73,4 +74,16 @@ declare interface RateLimitParams {
     ip_role_param: number;
     visit_param: number;
 
+}
+declare interface Finance {
+    enable_invitation_commission:boolean
+    commission_rate:number //佣金率, 范围 0~1, 佣金 = 订单金额 * 佣金率 ( 100.50 * 0.50 )
+    withdraw_threshold:number //提取到余额的阈值
+    enable_lottery:boolean
+    jackpot:JackpotItem[]
+}
+
+declare interface JackpotItem {
+    balance:number
+    weight:number
 }

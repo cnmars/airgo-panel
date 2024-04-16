@@ -5,12 +5,9 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
-	"github.com/ppoonk/AirGo/service/admin_logic"
-	"github.com/ppoonk/AirGo/service/common_logic"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 )
-
-var reportService admin_logic.Report
 
 // 获取数据库的所有表名
 func GetTables(ctx *gin.Context) {
@@ -25,7 +22,7 @@ func GetTables(ctx *gin.Context) {
 		response.Fail("Database name is empty", nil, ctx)
 		return
 	}
-	res, err := reportService.GetTables(dbName.DbName)
+	res, err := service.AdminReportSvc.GetTables(dbName.DbName)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("GetTables error:"+err.Error(), nil, ctx)
@@ -43,7 +40,7 @@ func GetColumn(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	m1, m2, m3 := reportService.GetColumnByReflect(dbInfo.TableName)
+	m1, m2, m3 := service.AdminReportSvc.GetColumnByReflect(dbInfo.TableName)
 	response.OK("GetColumn success", gin.H{
 		"field_list":              m1,
 		"field_chinese_name_list": m2,
@@ -61,7 +58,7 @@ func ReportSubmit(ctx *gin.Context) {
 		return
 	}
 	//return
-	res, total, err := common_logic.CommonSqlFindWithFieldParams(&fieldParams)
+	res, total, err := service.CommonSqlFindWithFieldParams(&fieldParams)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("ReportSubmit error:"+err.Error(), nil, ctx)

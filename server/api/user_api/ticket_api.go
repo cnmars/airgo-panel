@@ -7,8 +7,7 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
-	"github.com/ppoonk/AirGo/service/admin_logic"
-	"github.com/ppoonk/AirGo/service/common_logic"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 	"strings"
 )
@@ -26,7 +25,7 @@ func NewTicket(ctx *gin.Context) {
 	}
 	uID, _ := api.GetUserIDFromGinContext(ctx)
 	ticket.UserID = uID
-	err = ticketService.NewTicket(&ticket)
+	err = service.TicketSvc.NewTicket(&ticket)
 	if err != nil {
 		response.Fail("NewTicket error:"+err.Error(), nil, ctx)
 		return
@@ -36,13 +35,13 @@ func NewTicket(ctx *gin.Context) {
 		if !global.Server.Notice.WhenNewTicket {
 			return
 		}
-		user, err := userService.FirstUser(&model.User{ID: uID})
+		user, err := service.UserSvc.FirstUser(&model.User{ID: uID})
 		if err != nil {
 			return
 		}
-		msg := admin_logic.MessageInfo{
+		msg := service.MessageInfo{
 			UserID:      uID,
-			MessageType: admin_logic.MESSAGE_TYPE_USER,
+			MessageType: service.MESSAGE_TYPE_USER,
 			User:        user,
 			Message: strings.Join([]string{
 				"【新工单提醒】",
@@ -52,7 +51,7 @@ func NewTicket(ctx *gin.Context) {
 				fmt.Sprintf("工单详情：%s\n", ticket.Details),
 			}, "\n"),
 		}
-		admin_logic.PushMessageSvc.PushMessage(&msg)
+		service.PushMessageSvc.PushMessage(&msg)
 	})
 	response.OK("NewTicket success", nil, ctx)
 
@@ -66,7 +65,7 @@ func UpdateUserTicket(ctx *gin.Context) {
 	}
 	uID, _ := api.GetUserIDFromGinContext(ctx)
 	ticket.UserID = uID
-	err = ticketService.UpdateUserTicket(&ticket)
+	err = service.TicketSvc.UpdateUserTicket(&ticket)
 	if err != nil {
 		response.Fail("UpdateTicket error:"+err.Error(), nil, ctx)
 		return
@@ -88,7 +87,7 @@ func GetUserTicketList(ctx *gin.Context) {
 		Condition:      "=",
 		ConditionValue: fmt.Sprintf("%d", uID),
 	})
-	data, total, err := common_logic.CommonSqlFindWithFieldParams(&params)
+	data, total, err := service.CommonSqlFindWithFieldParams(&params)
 	if err != nil {
 		response.Fail("GetUserTicketList error:"+err.Error(), nil, ctx)
 		return
@@ -111,12 +110,12 @@ func SendTicketMessage(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR, nil, ctx)
 		return
 	}
-	_, err = ticketService.FirstTicket(&model.Ticket{ID: msg.TicketID, UserID: uID})
+	_, err = service.TicketSvc.FirstTicket(&model.Ticket{ID: msg.TicketID, UserID: uID})
 	if err != nil {
 		response.Fail(err.Error(), nil, ctx)
 		return
 	}
-	err = ticketService.NewTicketMessage(&msg)
+	err = service.TicketSvc.NewTicketMessage(&msg)
 	if err != nil {
 		response.Fail(err.Error(), nil, ctx)
 		return
@@ -135,7 +134,7 @@ func FirstTicket(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR, nil, ctx)
 		return
 	}
-	ticket, err := ticketService.FirstTicket(&model.Ticket{ID: params.ID, UserID: uID})
+	ticket, err := service.TicketSvc.FirstTicket(&model.Ticket{ID: params.ID, UserID: uID})
 
 	if err != nil {
 		response.Fail("FirstTicket error:"+err.Error(), nil, ctx)

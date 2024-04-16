@@ -4,11 +4,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ppoonk/AirGo/api/public_api"
 	"github.com/ppoonk/AirGo/api/user_api"
-	"github.com/ppoonk/AirGo/middleware"
+	middleware "github.com/ppoonk/AirGo/router/middleware"
 )
 
-func InitPublicRouter(RouterGroup *gin.RouterGroup) {
-	publicRouter := RouterGroup.Group("/public")
+func (g *GinRouter) InitPublicRouter(r *gin.RouterGroup) {
+	publicRouter := r.Group("/public")
 	//airgo
 	airgoRouter := publicRouter.Group("/airgo")
 	{

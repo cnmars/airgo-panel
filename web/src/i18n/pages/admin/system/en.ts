@@ -1,12 +1,13 @@
 export default {
  adminServer:{
-   tapWebsite:"Website",
-   tapSubscribe:"Subscribe",
-   tapPayment:"Payment",
-   tapEmail:"Email",
-   tapSecurity:"Security",
-   tapNotice:"Notice",
-   tapMigration:"Migration",
+   tabWebsite:"Website",
+   tabSubscribe:"Subscribe",
+   tabPayment:"Payment",
+   tabEmail:"Email",
+   tabSecurity:"Security",
+   tabNotice:"Notice",
+   tabMigration:"Migration",
+   tabFinance:"Finance",
    emailTesting:"Email testing",
    emailCodeTip:"Email verification code content, supports HTML, 'emailcode' is a verification code field, cannot be deleted!",
    migrationTip:"Please backup your data before migration. Due to data incompatibility between panels, the migration only retains the user's basic account email and uuid data, and sets the user password to 123456. Please guide the user to change the password in a timely manner",
@@ -59,8 +60,8 @@ export default {
      buffer_time: "buffer time",
      issuer: "issuer",
      // security RateLimitParams
-     ip_role_param:"ip role param",
-     visit_param:"visit param",
+     ip_role_param:"ip limit",
+     visit_param:"visit limit",
      // notice
      push_method:"push method",
      trigger_condition:"trigger condition",
@@ -75,6 +76,15 @@ export default {
      when_user_purchased: "when user purchased",
      when_node_offline: "when node offline",
      when_new_ticket:"when new ticket",
+     //finance
+     enable_invitation_commission:'commission',
+     commission_rate:'commission rate',
+     withdraw_threshold:'withdraw threshold',
+     enable_lottery:'lottery',
+     jackpot:"jackpot",
+     prize:"prize",
+     weight:"weight",
+
    },
    Migration:{
      panel_type:"panel type",

@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@element-plus/icons-vue": "^2.1.0",
 		"@kangc/v-md-editor": "^2.3.15",
+		"@lucky-canvas/vue": "^0.1.11",
 		"@types/node-rsa": "^1.1.1",
 		"@types/uuid": "^9.0.8",
 		"@wangeditor/editor": "^5.1.23",
@@ -23,6 +24,7 @@
 		"image-conversion": "^2.1.1",
 		"js-cookie": "^3.0.5",
 		"jsencrypt": "^3.3.2",
+		"lucky-canvas": "^1.7.27",
 		"mitt": "^3.0.0",
 		"nprogress": "^0.2.0",
 		"pinia": "^2.0.33",

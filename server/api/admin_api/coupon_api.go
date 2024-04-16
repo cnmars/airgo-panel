@@ -5,11 +5,9 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
-	"github.com/ppoonk/AirGo/service/admin_logic"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 )
-
-var couponService admin_logic.Coupon
 
 // 新建折扣
 func NewCoupon(ctx *gin.Context) {
@@ -20,7 +18,7 @@ func NewCoupon(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = couponService.NewCoupon(&coupon)
+	err = service.AdminCouponSvc.NewCoupon(&coupon)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("NewCoupon error:"+err.Error(), nil, ctx)
@@ -38,7 +36,7 @@ func DeleteCoupon(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = couponService.DeleteCoupon(&coupon)
+	err = service.AdminCouponSvc.DeleteCoupon(&coupon)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("DeleteCoupon error:"+err.Error(), nil, ctx)
@@ -56,7 +54,7 @@ func UpdateCoupon(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = couponService.UpdateCoupon(&coupon)
+	err = service.AdminCouponSvc.UpdateCoupon(&coupon)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("UpdateCoupon error:"+err.Error(), nil, ctx)
@@ -67,7 +65,7 @@ func UpdateCoupon(ctx *gin.Context) {
 
 // 获取折扣列表
 func GetCouponList(ctx *gin.Context) {
-	res, err := couponService.GetCouponList()
+	res, err := service.AdminCouponSvc.GetCouponList()
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("GetCouponList error:"+err.Error(), nil, ctx)

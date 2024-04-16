@@ -5,7 +5,7 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
-	"github.com/ppoonk/AirGo/service/admin_logic"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/encrypt_plugin"
 	"github.com/ppoonk/AirGo/utils/other_plugin"
 	"github.com/ppoonk/AirGo/utils/response"
@@ -15,7 +15,7 @@ import (
 )
 
 func GetBase64Captcha(ctx *gin.Context) {
-	id, b64s, _, err := global.Base64Captcha.Generate()
+	id, b64s, _, err := service.CaptchaSvc.Base64Captcha.Generate()
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("SendBase64Captcha"+err.Error(), nil, ctx)
@@ -76,7 +76,7 @@ func SendEmailCode(ctx *gin.Context, e *model.EmailRequest, keyPre string) {
 	}
 	//内容
 	originalText := strings.Replace(global.Server.Email.EmailContent, "emailcode", randomStr, -1)
-	emailMsg := admin_logic.EmailMsg{
+	emailMsg := service.EmailMsg{
 		From:      from,
 		To:        e.TargetEmail,
 		NickName:  global.Server.Email.EmailNickname,
@@ -84,7 +84,7 @@ func SendEmailCode(ctx *gin.Context, e *model.EmailRequest, keyPre string) {
 		EmailText: originalText,
 	}
 	// 入队:邮件验证码发送队列
-	admin_logic.EmailSvc.PushEmailToQueue(&emailMsg)
+	service.EmailSvc.PushEmailToQueue(&emailMsg)
 	response.OK("Email code has been sent.", nil, ctx)
 	return
 }
@@ -143,7 +143,7 @@ func GetSub(ctx *gin.Context) {
 next:
 	//fmt.Println("clientType:", clientType)
 	id := ctx.Param("id")
-	res, header := customerService.GetSubscribe(id, clientType)
+	res, header := service.CustomerServiceSvc.GetSubscribe(id, clientType)
 	if res == "" {
 		return
 	}

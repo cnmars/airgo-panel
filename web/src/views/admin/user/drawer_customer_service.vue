@@ -58,6 +58,8 @@
           <template #default="{row}">
             <el-button size="small" text type="primary" @click="openDialog(row)">{{ $t("message.common.modify") }}
             </el-button>
+            <el-button size="small" text type="danger" @click="deleteCustomerService(row)">{{ $t("message.common.delete") }}
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -71,6 +73,9 @@ import { reactive, ref, defineAsyncComponent } from "vue";
 import { useAdminCustomerServiceStore } from "/@/stores/admin_logic/customerServiceStore";
 import { storeToRefs } from "pinia";
 import { DateStrToTime } from "/@/utils/formatTime";
+import { ElMessageBox } from "element-plus";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const adminCustomerServiceStore = useAdminCustomerServiceStore();
 const adminCustomerServiceStoreData = storeToRefs(adminCustomerServiceStore);
@@ -80,16 +85,35 @@ const CustomerServiceEditDialog = defineAsyncComponent(() => import("/@/views/ad
 const customerServiceEditDialogRef = ref();
 const state = reactive({
   isShowDialog: false,
-  isShowDrawer: false
+  isShowDrawer: false,
+  user_id:0,
 });
 const openDrawer = (row: SysUser) => {
+  state.user_id = row.id
   state.isShowDrawer = true;
-  adminCustomerServiceStore.getCustomerServiceList({ user_id: row.id } as CustomerService);
+  getData()
 };
+const getData=()=>{
+  adminCustomerServiceStore.getCustomerServiceList({ user_id: state.user_id} as CustomerService);
+}
 const openDialog = (row: CustomerService) => {
   state.isShowDrawer = true;
   customerServiceEditDialogRef.value.openDialog(row);
 };
+const deleteCustomerService=(row: CustomerService)=>{
+  ElMessageBox.confirm(t("message.common.message_confirm_delete"), t("message.common.tip"), {
+    confirmButtonText: t("message.common.button_confirm"),
+    cancelButtonText: t("message.common.button_cancel"),
+    type: "warning"
+  })
+    .then(() => {
+      adminCustomerServiceStore.deleteCustomerService(row).then(()=>{
+        getData()
+      })
+    })
+    .catch(() => {
+    });
+}
 // 暴露变量
 defineExpose({
   openDrawer

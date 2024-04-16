@@ -21,7 +21,8 @@ export default {
     personal: "Personal",
     serverStatus: "Server Status",
     documents: "Documents",
-    ticket: "Ticket"
+    ticket: "Ticket",
+    finance:"Finance",
   },
   staticRoutes: {
     signIn: "signIn",

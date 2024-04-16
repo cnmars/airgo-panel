@@ -13,5 +13,7 @@ export default {
     confirm_password:"确认密码",
     modify_avatar:"修改头像",
     avatar_link:"头像链接",
+    lottery:"签到抽奖",
+    congratulations:"恭喜中奖!",
   }
 }

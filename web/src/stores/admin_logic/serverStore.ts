@@ -69,6 +69,13 @@ export const useAdminServerStore = defineStore("serverAdminStore", {
                 when_node_offline:false,
                 when_new_ticket:false,
             } as Notice,
+            finance: {
+                enable_invitation_commission:false,
+                commission_rate:0, //佣金率, 范围 0~1, 佣金 = 订单金额 * 佣金率 ( 100.50 * 0.50 )
+                withdraw_threshold:0, //提取到余额的阈值
+                enable_lottery:false,
+                jackpot:[] as JackpotItem[],
+            } as Finance,
 
         } as Server,
         version:{

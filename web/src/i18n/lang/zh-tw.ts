@@ -20,7 +20,8 @@ export default {
 		personal: "個人資訊",
 		serverStatus: "節點狀態",
 		documents: "檔案",
-		ticket: "工單"
+		ticket: "工單",
+		finance:"財務中心",
 	},
 	staticRoutes: {
 		signIn: '登入',

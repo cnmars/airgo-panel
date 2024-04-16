@@ -5,13 +5,13 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
-	"github.com/ppoonk/AirGo/service/common_logic"
+	service "github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
 // 查询全部商品
 func GetGoodsList(ctx *gin.Context) {
-	goodsArr, err := shopService.GetGoodsList()
+	goodsArr, err := service.AdminShopSvc.GetGoodsList()
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("GetGoodsList error:"+err.Error(), nil, ctx)
@@ -44,7 +44,7 @@ func NewGoods(ctx *gin.Context) {
 		cacheKey = constant.CACHE_ALL_ENABLED_GOODS_RECHARGE
 		goods.DeliverType = constant.DELIVER_TYPE_NONE
 	}
-	err = shopService.NewGoods(&goods)
+	err = service.AdminShopSvc.NewGoods(&goods)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("NewGoods error:"+err.Error(), nil, ctx)
@@ -63,7 +63,7 @@ func DeleteGoods(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = shopService.DeleteGoods(&goods)
+	err = service.AdminShopSvc.DeleteGoods(&goods)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("DeleteGoods error:"+err.Error(), nil, ctx)
@@ -85,7 +85,7 @@ func UpdateGoods(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = shopService.UpdateGoods(&goods)
+	err = service.AdminShopSvc.UpdateGoods(&goods)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("UpdateGoods error:"+err.Error(), nil, ctx)
@@ -103,7 +103,7 @@ func GoodsSort(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = common_logic.CommonSqlUpdateMultiLine[[]model.Goods](arr, "id", []string{"goods_order"})
+	err = service.CommonSqlUpdateMultiLine[[]model.Goods](arr, "id", []string{"goods_order"})
 	if err != nil {
 		global.Logrus.Error(err)
 		response.Fail("GoodsSort error:"+err.Error(), nil, ctx)

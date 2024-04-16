@@ -160,7 +160,7 @@ export const useThemeConfig = defineStore('themeStore', {
                 const apiStore = useApiStore()
                 const res = await request(apiStore.publicApi.getThemeConfig)
                 this.themeConfig = res.data
-                Session.set('themeConfig', this.themeConfig)
+                // Session.set('themeConfig', this.themeConfig) //关闭缓存
             }
         },
         //设置主题

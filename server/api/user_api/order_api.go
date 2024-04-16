@@ -7,6 +7,7 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 	"time"
 )
@@ -25,7 +26,7 @@ func GetOrderList(ctx *gin.Context) {
 		response.Fail("GetOrderList error:user id error", nil, ctx)
 		return
 	}
-	res, err := orderService.GetUserOrders(&params, uIDInt)
+	res, err := service.OrderSvc.GetUserOrders(&params, uIDInt)
 	if err != nil {
 		response.Fail("GetOrderList error:"+err.Error(), nil, ctx)
 		return
@@ -40,7 +41,7 @@ func GetOrderInfo(ctx *gin.Context) {
 		response.Fail("GetOrderInfo error:"+err.Error(), nil, ctx)
 		return
 	}
-	preOrder, msg, err := orderService.PreHandleOrder(orderReq)
+	preOrder, msg, err := service.OrderSvc.PreHandleOrder(orderReq)
 
 	if err != nil {
 		response.Fail("GetOrderInfo error:"+err.Error(), nil, ctx)
@@ -63,14 +64,14 @@ func PreCreateOrder(ctx *gin.Context) {
 		return
 	}
 	// 2、订单拦截逻辑，处理一些校验
-	err = orderService.PreCheckOrder(orderReq)
+	err = service.OrderSvc.PreCheckOrder(orderReq)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("PreCreateOrder error:"+err.Error(), nil, ctx)
 		return
 	}
 	// 3、订单预处理，计算价格
-	preOrder, _, err := orderService.PreHandleOrder(orderReq)
+	preOrder, _, err := service.OrderSvc.PreHandleOrder(orderReq)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("PreCreateOrder error:"+err.Error(), nil, ctx)

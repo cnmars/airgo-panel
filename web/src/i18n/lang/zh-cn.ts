@@ -19,8 +19,9 @@ export default {
     myOrder: "我的订单",
     personal: "个人信息",
     serverStatus: "节点状态",
-    documents: "文档",
-    ticket: "工单"
+    documents: "使用文档",
+    ticket: "我的工单",
+    finance:"财务中心",
   },
   staticRoutes: {
     signIn: "登录",

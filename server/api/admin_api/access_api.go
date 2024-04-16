@@ -5,7 +5,7 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
-	"github.com/ppoonk/AirGo/service/common_logic"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
@@ -17,7 +17,7 @@ func NewAccessRoutes(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = common_logic.CommonSqlCreate[model.Access](acc)
+	err = service.CommonSqlCreate[model.Access](acc)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("NewAccessRoutes error:"+err.Error(), nil, ctx)
@@ -36,7 +36,7 @@ func UpdateAccessRoutes(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = common_logic.CommonSqlSave[model.Access](acc)
+	err = service.CommonSqlSave[model.Access](acc)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("UpdateAccessRoutes error:"+err.Error(), nil, ctx)
@@ -55,7 +55,7 @@ func DeleteAccessRoutes(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = common_logic.CommonSqlDelete[model.Access](acc)
+	err = service.CommonSqlDelete[model.Access](acc)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("DeleteAccessRoutes error:"+err.Error(), nil, ctx)
@@ -74,7 +74,7 @@ func GetAccessRoutesList(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	list, total, err := common_logic.CommonSqlFindWithFieldParams(&p)
+	list, total, err := service.CommonSqlFindWithFieldParams(&p)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("GetAccessRoutesList error:"+err.Error(), nil, ctx)

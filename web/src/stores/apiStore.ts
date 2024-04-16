@@ -32,6 +32,7 @@ export const useApiStore = defineStore("apiStore", {
             // customerService
             getCustomerServiceList:{path: adminApiPre + "/customerService/getCustomerServiceList", method: "post"} as ApiItem,
             updateCustomerService:{path: adminApiPre + "/customerService/updateCustomerService", method: "post"} as ApiItem,
+            deleteCustomerService:{path: adminApiPre + "/customerService/deleteCustomerService", method: "post"} as ApiItem,
 
             //menu
             newMenu:{path: adminApiPre + "/menu/newMenu", method: "post"} as ApiItem,
@@ -163,6 +164,12 @@ export const useApiStore = defineStore("apiStore", {
             firstTicket:{path: userApiPre + "/ticket/firstTicket", method: "post"} as ApiItem,
             //traffic
             getSubTrafficList:{path: userApiPre + "/traffic/getSubTrafficList", method: "post"} as ApiItem,
+            //finance
+            getBalanceStatementList:{path: userApiPre + "/finance/getBalanceStatementList", method: "post"} as ApiItem,
+            getCommissionStatementList:{path: userApiPre + "/finance/getCommissionStatementList", method: "post"} as ApiItem,
+            getInvitationUserList:{path: userApiPre + "/finance/getInvitationUserList", method: "post"} as ApiItem,
+            withdrawToBalance:{path: userApiPre + "/finance/withdrawToBalance", method: "get"} as ApiItem,
+            getCommissionSummary:{path: userApiPre + "/finance/getCommissionSummary", method: "get"} as ApiItem,
         },
     }),
     actions: {

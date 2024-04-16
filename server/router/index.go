@@ -4,9 +4,8 @@ import (
 	"crypto/tls"
 	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
-	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
-	"github.com/ppoonk/AirGo/middleware"
+	middleware "github.com/ppoonk/AirGo/router/middleware"
 	"github.com/ppoonk/AirGo/web"
 	"io"
 	"os"
@@ -14,15 +13,19 @@ import (
 	"sync"
 )
 
-type GinServer struct {
+type GinRouter struct {
 	Router *gin.Engine
 }
 
-var Server = &GinServer{
+func NewGinRouter() *GinRouter {
+	return &GinRouter{Router: nil}
+}
+
+var Server = &GinRouter{
 	Router: nil,
 }
 
-func (g *GinServer) InitRouter() {
+func (g *GinRouter) InitRouter() {
 	gin.SetMode(gin.ReleaseMode)
 	var writer io.Writer
 	if global.Config.SystemParams.Mode == "dev" {
@@ -37,7 +40,7 @@ func (g *GinServer) InitRouter() {
 	g.Router.Use(middleware.Cors(), middleware.Recovery())
 
 	//api路由
-	RouterGroup := g.Router.Group("/api")
+	apiRouter := g.Router.Group("/api")
 
 	//swagger 路由
 	//docs.SwaggerInfo.BasePath = ""
@@ -46,13 +49,12 @@ func (g *GinServer) InitRouter() {
 	//	swaggerRouter.GET("/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	//}
 	//注册路由
-	InitAdminRouter(RouterGroup)
-	InitUserRouter(RouterGroup)
-	InitPublicRouter(RouterGroup)
-	global.LocalCache.SetNoExpire(constant.GIN_ROUTES, Server.Router.Routes())
+	g.InitAdminRouter(apiRouter)
+	g.InitUserRouter(apiRouter)
+	g.InitPublicRouter(apiRouter)
 }
 
-func (g *GinServer) Start() {
+func (g *GinRouter) Start() {
 	w := sync.WaitGroup{}
 	w.Add(2)
 	go func() {

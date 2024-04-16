@@ -6,7 +6,7 @@ const (
 	CACHE_DEFAULT_ARTICLE = "CACHE_DEFAULT_ARTICLE" //默认文章
 
 	// 订单
-	CACHE_SUBMIT_ORDER_TIMEOUT         = 5                               //time.Minute
+	CACHE_SUBMIT_ORDER_TIMEOUT         = 10                              //time.Minute
 	CACHE_SUBMIT_ORDER_BY_USERID       = "SUBMIT_ORDER_BY_USERID:"       //用户提交的订单
 	CACHE_SUBMIT_ORDER_BY_ORDERID      = "SUBMIT_ORDER_BY_ORDERID:"      //用户提交的订单
 	CACHE_USERID_AND_GOODSID           = "USERID_AND_GOODSID:"           //幂等性检查
@@ -27,8 +27,8 @@ const (
 	CACHE_USER_ROLES_BY_USERID   = "UserRolesByUserID:"
 
 	//节点
-	CACHE_NODE_STATUS_BY_NODEID             = "NodeStatusByNodeID:"           //节点状态 todo 优化
-	CACHE_NODE_STATUS_IS_NOTIFIED_BY_NODEID = "NodeStatusIsNotifiedByNodeID:" // todo 优化
+	CACHE_NODE_STATUS_BY_NODEID             = "NodeStatusByNodeID:"           //节点状态
+	CACHE_NODE_STATUS_IS_NOTIFIED_BY_NODEID = "NodeStatusIsNotifiedByNodeID:" //
 
 	// 邮箱验证码
 	CACHE_USER_REGISTER_EMAIL_CODE_BY_USERNAME  = "UserRegisterEmailCodeByUserName:" //注册验证码
@@ -38,4 +38,7 @@ const (
 	CACHE_USER_TOKEN_BY_ID      = "UserTokenByID:"     //用户缓存的token
 	CACHE_USER_MENU_LIST_BY_ID  = "UserRouteListByID:" // 用户菜单（路由）
 	CACHE_USER_IS_CLOCKIN_BY_ID = "UserIsClockInByID:"
+
+	//主题
+	CACHE_THEME = "Theme"
 )

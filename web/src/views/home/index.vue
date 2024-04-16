@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="personal layout-pd">
     <div class="home-card-item" v-if="customerServiceStoreData.customerServiceList.value.length === 0">
       <el-card>
         <el-skeleton :rows="5" animated />
@@ -7,24 +7,22 @@
       </el-card>
     </div>
 
-    <el-row :gutter="15" class="home-card-one mb15">
+    <el-row :gutter="15">
       <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"
               v-for="(v, k) in customerServiceStoreData.customerServiceList.value" :key="k">
-        <div class="home-card-item">
-          <el-card>
-            <template #header>
-              <div class="card-header-left">
-                <el-text >{{ v.subject }}</el-text>
-              </div>
-            </template>
+        <div style="margin-bottom:20px;border-radius:10px;background: rgb(224,224,224,0.5);padding: 10px">
+            <div style="text-align: right;color: #9b9da1;font-size: 10px">
+              <span>ID: </span><span>{{v.id}}</span>
+            </div>
+            <div style="margin-bottom: 10px;font-size: 20px;font-weight: bolder">{{ v.subject }}</div>
             <el-descriptions
               :column="4"
               border
               size="small"
               direction="vertical"
             >
-              <el-descriptions-item :label="$t('message.home.des_start')">{{ DateStrToTime(v.service_start_at) }}</el-descriptions-item>
-              <el-descriptions-item :label="$t('message.home.des_end')">{{ DateStrToTime(v.service_end_at) }}</el-descriptions-item>
+              <el-descriptions-item :label="$t('message.home.des_start')"><span style="font-size: 10px">{{ DateStrToTime(v.service_start_at) }}</span></el-descriptions-item>
+              <el-descriptions-item :label="$t('message.home.des_end')"><span style="font-size: 10px">{{ DateStrToTime(v.service_end_at) }}</span></el-descriptions-item>
               <el-descriptions-item :label="$t('message.home.des_SubStatus')">
                 <el-icon v-if="v.sub_status" color="green" size="large">
                   <SuccessFilled />
@@ -36,7 +34,7 @@
               <el-descriptions-item :label="$t('message.home.des_renewAmount')">{{ v.renewal_amount }}</el-descriptions-item>
               <el-descriptions-item :label="$t('message.home.des_trafficResetDay')">{{ v.traffic_reset_day }}</el-descriptions-item>
               <el-descriptions-item :label="$t('message.home.des_used')">
-                <span>{{ ((v.used_up + v.used_down) / 1024 / 1024 / 1024).toFixed(2) }}GB / {{ (v.total_bandwidth / 1024 / 1024 / 1024).toFixed(2)
+                <span style="font-size: 10px">{{ ((v.used_up + v.used_down) / 1024 / 1024 / 1024).toFixed(2) }}GB / {{ (v.total_bandwidth / 1024 / 1024 / 1024).toFixed(2)
                   }}GB</span>
               </el-descriptions-item>
               <el-descriptions-item :label="$t('message.home.des_usageRate')">
@@ -49,14 +47,28 @@
                 </el-progress>
               </el-descriptions-item>
             </el-descriptions>
-            <div style="margin-top: 15px">
-              <el-button size="small" style="margin-bottom: 10px" type="primary" @click="openDialogCustomerServiceDetails(v.id)">{{$t('message.home.button_details')}}</el-button>
-              <el-button size="small" style="margin-bottom: 10px" type="primary" @click="renew(v)">{{$t('message.home.button_renew')}}</el-button>
-              <el-button size="small" style="margin-bottom: 10px" type="primary" @click="openPushDialog">{{$t('message.home.button_push')}}</el-button>
-              <el-button size="small" style="margin-bottom: 10px" type="primary" @click="resetSubscribeUUID(v)">{{$t('message.home.button_resetSub')}}</el-button>
-              <el-button size="small" style="margin-bottom: 10px" type="primary" @click="openSubDialog(v.sub_uuid)">{{$t('message.home.button_copySub')}}</el-button>
-            </div>
-          </el-card>
+          <div style="margin-top: 15px;margin-bottom: 10px;display: flex">
+            <el-button size="small" type="primary" @click="openSubDialog(v.sub_uuid)">{{$t('message.home.button_copySub')}}</el-button>
+            <el-button size="small" type="danger" @click="resetSubscribeUUID(v)">{{$t('message.home.button_resetSub')}}</el-button>
+            <el-button size="small" type="success" @click="renew(v)">{{$t('message.home.button_renew')}}</el-button>
+            <el-dropdown style="margin-left: auto">
+              <span class="el-dropdown-link">
+                <el-button>更多操作<el-icon class="el-icon--right"><arrow-down /></el-icon></el-button>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item command="e" divided>
+                    <el-button size="small" style="margin-bottom: 10px" type="primary" @click="openDialogCustomerServiceDetails(v.id)">{{$t('message.home.button_details')}}</el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item command="e" divided>
+                    <el-button size="small" style="margin-bottom: 10px" type="primary" @click="openPushDialog">{{$t('message.home.button_push')}}</el-button>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+          <div>
+          </div>
         </div>
       </el-col>
     </el-row>

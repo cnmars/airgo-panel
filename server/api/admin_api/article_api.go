@@ -5,7 +5,7 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
-	"github.com/ppoonk/AirGo/service/common_logic"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
@@ -18,7 +18,7 @@ func NewArticle(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = common_logic.CommonSqlCreate[model.Article](article)
+	err = service.CommonSqlCreate[model.Article](article)
 
 	if err != nil {
 		global.Logrus.Error(err)
@@ -37,7 +37,7 @@ func DeleteArticle(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = common_logic.CommonSqlDelete[model.Article, model.Article](article)
+	err = service.CommonSqlDelete[model.Article, model.Article](article)
 	if err != nil {
 		global.Logrus.Error(err)
 		response.Fail("DeleteArticle error:"+err.Error(), nil, ctx)
@@ -55,7 +55,7 @@ func UpdateArticle(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = articleService.UpdateArticle(&article)
+	err = service.AdminArticleSvc.UpdateArticle(&article)
 	if err != nil {
 		global.Logrus.Error(err)
 		response.Fail("UpdateArticle error:"+err.Error(), nil, ctx)
@@ -77,7 +77,7 @@ func GetArticleList(ctx *gin.Context) {
 		return
 	}
 	params.TableName = "article" //
-	res, total, err := common_logic.CommonSqlFindWithFieldParams(&params)
+	res, total, err := service.CommonSqlFindWithFieldParams(&params)
 	if err != nil {
 		global.Logrus.Error(err)
 		response.Fail("GetArticle error:"+err.Error(), nil, ctx)

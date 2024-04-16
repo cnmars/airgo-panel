@@ -73,4 +73,12 @@ const (
 	// github
 	AIRGO_GITHUB_API          = "https://api.github.com/repos/ppoonk/AirGo/releases/latest"
 	AIRGO_GITHUB_DOWNLOAD_PRE = "https://github.com/ppoonk/AirGo/releases/download"
+
+	//finance
+	BALANCE_STATEMENT_TITLE_RECHARGE    = "Recharge"    //充值
+	BALANCE_STATEMENT_TITLE_EXPENDITURE = "Expenditure" //消费
+	BALANCE_STATEMENT_TITLE_WITHDRAW    = "Withdraw"    //提现
+	BALANCE_STATEMENT_TITLE_PRIZE       = "Prize"       //提现
+	BALANCE_STATEMENT_TYPE_PLUS         = "Plus"
+	BALANCE_STATEMENT_TYPE_REDUCE       = "Reduce"
 )

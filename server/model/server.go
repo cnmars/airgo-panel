@@ -14,6 +14,7 @@ type Server struct {
 	Security  Security  `json:"security" gorm:"embedded"`
 	Notice    Notice    `json:"notice"   gorm:"embedded"`
 	Subscribe Subscribe `json:"subscribe" gorm:"embedded"`
+	Finance   Finance   `json:"finance"   gorm:"embedded"`
 }
 type Notice struct {
 	EnableTGBot          bool               `json:"enable_tg_bot"`
@@ -73,7 +74,6 @@ type Website struct {
 	EnableLoginEmailCode    bool   `json:"enable_login_email_code"   gorm:"default:false;comment:是否开启登录email 验证码"`
 	IsMultipoint            bool   `json:"is_multipoint"     gorm:"default:true;comment:是否多点登录"`
 	FrontendUrl             string `json:"frontend_url"      gorm:"comment:官网地址"`
-	EnabledClockIn          bool   `json:"enabled_clock_in"  gorm:"default:true;comment:是否开启打卡"`
 }
 
 type Subscribe struct {
@@ -81,13 +81,24 @@ type Subscribe struct {
 	SubName    string `json:"sub_name"          gorm:"default:AirGo;comment:订阅名称"`
 	TEK        string `json:"tek"               gorm:"default:airgo;comment:前后端通信密钥"`
 }
+type Finance struct {
+	EnableInvitationCommission bool    `json:"enable_invitation_commission"` //是否开启邀请佣金
+	CommissionRate             float64 `json:"commission_rate"`              //佣金率, 范围 0~1, 佣金 = 订单金额 * 佣金率 ( 100.50 * 0.50 )
+	WithdrawThreshold          float64 `json:"withdraw_threshold"`           //提取到余额的阈值
+
+	EnableLottery bool    `json:"enable_lottery"` //是否开启每日打卡抽奖
+	Jackpot       Jackpot `json:"jackpot"`        //奖池
+}
 
 // 公共配置参数
 type PublicSystem struct {
-	EnableRegister          bool   `json:"enable_register"`           // 是否开启注册
-	AcceptableEmailSuffixes string `json:"acceptable_email_suffixes"` // 可接受的邮箱后缀
-	EnableEmailCode         bool   `json:"enable_email_code"`         // 是否开启注册email 验证码
-	EnableLoginEmailCode    bool   `json:"enable_login_email_code"`   // 是否开启登录email 验证码
-	BackendUrl              string `json:"backend_url"`               // 后端地址
-	EnabledClockIn          bool   `json:"enabled_clock_in"`          // 是否开启打卡
+	EnableRegister          bool    `json:"enable_register"`           // 是否开启注册
+	AcceptableEmailSuffixes string  `json:"acceptable_email_suffixes"` // 可接受的邮箱后缀
+	EnableEmailCode         bool    `json:"enable_email_code"`         // 是否开启注册email 验证码
+	EnableLoginEmailCode    bool    `json:"enable_login_email_code"`   // 是否开启登录email 验证码
+	BackendUrl              string  `json:"backend_url"`               // 后端地址
+	CommissionRate          float64 `json:"commission_rate"`           // 佣金率, 范围 0~1, 佣金 = 订单金额 * 佣金率 ( 100.50 * 0.50 )
+	WithdrawThreshold       float64 `json:"withdraw_threshold"`        // 提取到余额的阈值
+	EnableLottery           bool    `json:"enable_lottery"`            //是否开启每日打卡抽奖
+	Jackpot                 Jackpot `json:"jackpot"`                   //奖池
 }

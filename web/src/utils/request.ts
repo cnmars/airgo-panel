@@ -130,7 +130,7 @@ export function getApiPrefixAddress(){
 /**
  * 需要保持session时用此方法
  */
-export function getCurrentApiPrefixAddress(){
+export function getCurrentAddress(){
     return  window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
 }
 

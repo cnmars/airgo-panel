@@ -1,8 +1,6 @@
 package model
 
 import (
-	"database/sql/driver"
-	"encoding/json"
 	gormadapter "github.com/casbin/gorm-adapter/v3"
 )
 
@@ -43,14 +41,3 @@ var (
 		"ticket":        []Ticket{},
 	}
 )
-
-// gorm 字符串切片类型
-type SliceForGorm []string
-
-func (s *SliceForGorm) Scan(value interface{}) error {
-	bytesValue, _ := value.([]byte)
-	return json.Unmarshal(bytesValue, s)
-}
-func (s SliceForGorm) Value() (driver.Value, error) {
-	return json.Marshal(s)
-}

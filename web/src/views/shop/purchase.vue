@@ -140,7 +140,7 @@
               <el-button class="card-text-left" type="info">{{ $t("message.adminOrder.Order.duration") }}</el-button>
               <el-input-number class="card-text-right"
                                @click="getOrderInfo"
-                               v-model.number="shopStoreData.currentOrder.value.duration"></el-input-number>
+                               v-model.number="shopStoreData.currentOrder.value.duration" :min="1" :step="1" :max="36"></el-input-number>
             </div>
             <div class="card-text">
               <el-button class="card-text-left" type="info">{{ $t("message.adminOrder.Order.price") }}</el-button>

@@ -5,12 +5,13 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
 // 获取角色列表
 func GetRoleList(ctx *gin.Context) {
-	res, err := roleService.GetRoleList()
+	res, err := service.AdminRoleSvc.GetRoleList()
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("GetRoleList error:"+err.Error(), nil, ctx)
@@ -30,14 +31,14 @@ func UpdateRole(ctx *gin.Context) {
 		return
 	}
 	//处理角色
-	err = roleService.UpdateRole(&roleParams)
+	err = service.AdminRoleSvc.UpdateRole(&roleParams)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("UpdateRole error:"+err.Error(), nil, ctx)
 		return
 	}
 	//处理casbin
-	err = casbinService.UpdateCasbinPolicy(&model.CasbinInfo{RoleID: roleParams.ID, CasbinItems: roleParams.CasbinItems})
+	err = service.AdminCasbinSvc.UpdateCasbinPolicy(&model.CasbinInfo{RoleID: roleParams.ID, CasbinItems: roleParams.CasbinItems})
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("UpdateRole error:"+err.Error(), nil, ctx)
@@ -57,14 +58,14 @@ func NewRole(ctx *gin.Context) {
 		return
 	}
 	//处理角色
-	err = roleService.NewRole(&roleParams)
+	err = service.AdminRoleSvc.NewRole(&roleParams)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("NewRole error:"+err.Error(), nil, ctx)
 		return
 	}
 	//处理casbin
-	err = casbinService.UpdateCasbinPolicy(&model.CasbinInfo{RoleID: roleParams.ID, CasbinItems: roleParams.CasbinItems})
+	err = service.AdminCasbinSvc.UpdateCasbinPolicy(&model.CasbinInfo{RoleID: roleParams.ID, CasbinItems: roleParams.CasbinItems})
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("NewRole error:"+err.Error(), nil, ctx)
@@ -83,7 +84,7 @@ func DelRole(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = roleService.DelRole(&role)
+	err = service.AdminRoleSvc.DelRole(&role)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("DelRole error:"+err.Error(), nil, ctx)
@@ -95,7 +96,7 @@ func DelRole(ctx *gin.Context) {
 
 // 获取全部权限
 func GetAllPolicy(ctx *gin.Context) {
-	res := casbinService.GetAllPolicy()
+	res := service.AdminCasbinSvc.GetAllPolicy()
 	response.OK("GetAllPolicy success", res, ctx)
 }
 
@@ -108,6 +109,6 @@ func GetPolicyByID(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	res := casbinService.GetPolicyByRoleID(&model.CasbinInfo{RoleID: casbinInfo.RoleID})
+	res := service.AdminCasbinSvc.GetPolicyByRoleID(&model.CasbinInfo{RoleID: casbinInfo.RoleID})
 	response.OK("GetPolicyByID success", res, ctx)
 }

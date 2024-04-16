@@ -5,18 +5,19 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
 // 获取全部动态路由
 func GetAllMenuList(ctx *gin.Context) {
-	routeList, err := menuService.GetMenuList()
+	routeList, err := service.AdminMenuSvc.GetMenuList()
 	if err != nil {
 		global.Logrus.Error(err)
 		response.Fail("GetMenusByMenuIds error:"+err.Error(), nil, ctx)
 		return
 	}
-	route := menuService.GetMenus(routeList)
+	route := service.AdminMenuSvc.GetMenus(routeList)
 	response.OK("GetAllMenuList success", route, ctx)
 }
 
@@ -30,7 +31,7 @@ func NewMenu(ctx *gin.Context) {
 		return
 	}
 	menu.ID = 0
-	err = menuService.NewMenu(&menu)
+	err = service.AdminMenuSvc.NewMenu(&menu)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("NewMenu error:"+err.Error(), nil, ctx)
@@ -48,7 +49,7 @@ func DelMenu(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = menuService.DelMenu(&route)
+	err = service.AdminMenuSvc.DelMenu(&route)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("DelMenu error:"+err.Error(), nil, ctx)
@@ -67,7 +68,7 @@ func UpdateMenu(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = menuService.UpdateMenu(&route)
+	err = service.AdminMenuSvc.UpdateMenu(&route)
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("UpdateMenu error:"+err.Error(), nil, ctx)

@@ -77,11 +77,13 @@ const toLogin = () => {
 
 // 页面加载时
 onMounted(() => {
-  let i = ''
-  if (route.query.i !== undefined){
-    i = route.query.i as string
+  //获取aff  http://localhost:8080/#/login?aff=12345
+  let aff = ''
+  if (route.query.aff){
+    aff = route.query.aff as string
+    // console.log("邀请码：",aff)
+    Session.set('invitation', aff)
   }
-  Session.set('invitation', i)
   NextLoading.done();
 });
 </script>

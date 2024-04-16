@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/model"
-	"github.com/ppoonk/AirGo/service/common_logic"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
@@ -15,7 +15,7 @@ func DeleteTicket(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = common_logic.CommonSqlDelete[model.Ticket, model.Ticket](ticket)
+	err = service.CommonSqlDelete[model.Ticket, model.Ticket](ticket)
 	if err != nil {
 		response.Fail("DeleteTicket error:"+err.Error(), nil, ctx)
 		return
@@ -31,7 +31,7 @@ func UpdateTicket(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	err = common_logic.CommonSqlSave[model.Ticket](ticket)
+	err = service.CommonSqlSave[model.Ticket](ticket)
 	if err != nil {
 		response.Fail("UpdateTicket error:"+err.Error(), nil, ctx)
 		return
@@ -47,7 +47,7 @@ func GetTicketList(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	data, total, err := common_logic.CommonSqlFindWithFieldParams(&params)
+	data, total, err := service.CommonSqlFindWithFieldParams(&params)
 	if err != nil {
 		response.Fail("GetTicketList error:"+err.Error(), nil, ctx)
 		return
@@ -65,7 +65,7 @@ func FirstTicket(ctx *gin.Context) {
 		response.Fail(constant.ERROR_REQUEST_PARAMETER_PARSING_ERROR+err.Error(), nil, ctx)
 		return
 	}
-	ticket, err := ticketService.FirstTicket(&model.Ticket{ID: params.ID})
+	ticket, err := service.AdminTicketSvc.FirstTicket(&model.Ticket{ID: params.ID})
 
 	if err != nil {
 		response.Fail("FirstTicket error:"+err.Error(), nil, ctx)
@@ -81,7 +81,7 @@ func SendTicketMessage(ctx *gin.Context) {
 		return
 	}
 	msg.IsAdmin = true
-	err = ticketService.NewTicketMessage(&msg)
+	err = service.AdminTicketSvc.NewTicketMessage(&msg)
 	if err != nil {
 		response.Fail(err.Error(), nil, ctx)
 		return

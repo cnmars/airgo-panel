@@ -7,6 +7,7 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
+	"github.com/ppoonk/AirGo/service"
 	"strconv"
 	"strings"
 	"time"
@@ -33,7 +34,7 @@ func AGGetNodeInfo(ctx *gin.Context) {
 	}
 	//处理ss节点加密
 	if node.Protocol == "shadowsocks" {
-		node.ServerKey = nodeService.GetShadowsocksServerKey(node)
+		node.ServerKey = service.AdminNodeSvc.GetShadowsocksServerKey(node)
 	}
 	//etag
 	api.EtagHandler(node, ctx)
@@ -91,7 +92,7 @@ func AGGetUserlist(ctx *gin.Context) {
 		return
 	}
 	//节点属于哪些goods
-	goods, err := shopService.FindGoodsByNodeID(nodeIDInt)
+	goods, err := service.AdminShopSvc.FindGoodsByNodeID(nodeIDInt)
 	if err != nil {
 		ctx.AbortWithStatus(400)
 		return
@@ -150,7 +151,7 @@ func AGReportUserTraffic(ctx *gin.Context) {
 	}
 	//fmt.Println("用户流量统计", AGUserTraffic)
 	//查询节点倍率
-	node, err := nodeService.FirstNode(&model.Node{ID: AGUserTraffic.ID})
+	node, err := service.AdminNodeSvc.FirstNode(&model.Node{ID: AGUserTraffic.ID})
 	if err != nil {
 		global.Logrus.Error("error", err.Error())
 		ctx.AbortWithStatus(400)
@@ -189,19 +190,19 @@ func AGReportUserTraffic(ctx *gin.Context) {
 	}
 	// 处理探针
 	global.GoroutinePool.Submit(func() {
-		nodeService.UpdateNodeStatus(customerServerIDs, &trafficLog)
+		service.AdminNodeSvc.UpdateNodeStatus(customerServerIDs, &trafficLog)
 	})
 	//插入节点流量统计
 	global.GoroutinePool.Submit(func() {
-		nodeService.UpdateNodeTraffic(&trafficLog, &AGUserTraffic)
+		service.AdminNodeSvc.UpdateNodeTraffic(&trafficLog, &AGUserTraffic)
 	})
 	//插入用户流量统计
 	global.GoroutinePool.Submit(func() {
-		admin_customerService.UpdateCustomerServiceTrafficLog(userTrafficLogMap, customerServerIDs)
+		service.AdminCustomerServiceSvc.UpdateCustomerServiceTrafficLog(userTrafficLogMap, customerServerIDs)
 	})
 	//更新用户已用流量信息
 	global.GoroutinePool.Submit(func() {
-		admin_customerService.UpdateCustomerServiceTrafficUsed(&customerServiceArr, customerServerIDs)
+		service.AdminCustomerServiceSvc.UpdateCustomerServiceTrafficUsed(&customerServiceArr, customerServerIDs)
 	})
 	ctx.String(200, "success")
 

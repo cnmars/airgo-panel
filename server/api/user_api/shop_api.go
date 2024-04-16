@@ -5,6 +5,7 @@ import (
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
+	"github.com/ppoonk/AirGo/service"
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
@@ -28,7 +29,7 @@ func Purchase(ctx *gin.Context) {
 	sysOrder := value.(*model.Order)
 	sysOrder.PayID = orderRequest.PayID //提取前端传的pay_id
 	// 获取支付信息
-	orderResult, err := shopService.Purchase(sysOrder)
+	orderResult, err := service.ShopSvc.Purchase(sysOrder)
 
 	if err != nil {
 		global.Logrus.Error(err.Error())
@@ -49,7 +50,7 @@ func GetEnabledGoodsList(ctx *gin.Context) {
 		response.Fail("GetEnabledGoodsList error:GetQuery error", nil, ctx)
 		return
 	}
-	goodsArr, err := shopService.GetGoodsList(&model.Goods{GoodsType: goods_type, IsShow: true, IsSale: true})
+	goodsArr, err := service.ShopSvc.GetGoodsList(&model.Goods{GoodsType: goods_type, IsShow: true, IsSale: true})
 	if err != nil {
 		global.Logrus.Error(err.Error())
 		response.Fail("GetEnabledGoodsList error:"+err.Error(), nil, ctx)

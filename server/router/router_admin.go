@@ -3,11 +3,11 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/ppoonk/AirGo/api/admin_api"
-	"github.com/ppoonk/AirGo/middleware"
+	middleware "github.com/ppoonk/AirGo/router/middleware"
 )
 
-func InitAdminRouter(RouterGroup *gin.RouterGroup) {
-	adminRouter := RouterGroup.Group("/admin")
+func (g *GinRouter) InitAdminRouter(r *gin.RouterGroup) {
+	adminRouter := r.Group("/admin")
 	adminRouter.Use(middleware.ParseJwt(), middleware.Casbin())
 	// user
 	userAdminRouter := adminRouter.Group("/user")
@@ -23,6 +23,7 @@ func InitAdminRouter(RouterGroup *gin.RouterGroup) {
 	{
 		customerServiceAdminRouter.POST("/getCustomerServiceList", admin_api.GetCustomerServiceList)
 		customerServiceAdminRouter.POST("/updateCustomerService", admin_api.UpdateCustomerService)
+		customerServiceAdminRouter.POST("/deleteCustomerService", admin_api.DeleteCustomerService)
 	}
 	// menu
 	menuAdminRouter := adminRouter.Group("/menu")
