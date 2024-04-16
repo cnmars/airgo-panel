@@ -99,9 +99,11 @@ func GetSub(ctx *gin.Context) {
 	//v2rayNG/1.8.9
 	//V2rayU/4.0.0 CFNetwork/1128.0.1 Darwin/19.6.0 (x86_64)
 	//v2rayN/6.30
+	//clash-verge/v1.5.11
 
 	clientType := ctx.Query("type")
 	ua := ctx.Request.Header.Get("User-Agent")
+	//fmt.Println("ua:", ua)
 	if clientType != "" { //手动指定客户端的优先级最高
 		goto next
 	}
@@ -117,7 +119,7 @@ func GetSub(ctx *gin.Context) {
 		clientType = "v2rayN"
 		goto next
 	}
-	if strings.HasPrefix(ua, "Clash") {
+	if strings.HasPrefix(ua, "Clash") || strings.HasPrefix(ua, "clash") {
 		clientType = "Clash"
 		goto next
 	}

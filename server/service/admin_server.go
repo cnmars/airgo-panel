@@ -206,20 +206,21 @@ func (s *AdminServer) Reload() error {
 
 // 版本升级时，额外需要处理的数据，例如数据库字段值批量修改
 func (s *AdminServer) ChangeDataForUpdate() error {
-	return global.DB.Transaction(func(tx *gorm.DB) error {
-		err := tx.Exec("UPDATE node SET protocol = 'hysteria2' WHERE protocol = 'hysteria' ").Error
-		if err != nil {
-			return err
-		}
-		err = tx.Exec("UPDATE node SET vless_flow = '' WHERE vless_flow = 'none' ").Error
-		if err != nil {
-			return err
-		}
-		err = tx.Exec("UPDATE node SET security = '' WHERE security = 'none' ").Error
-		if err != nil {
-			return err
-		}
-		return nil
-	})
+	//return global.DB.Transaction(func(tx *gorm.DB) error {
+	//	err := tx.Exec("UPDATE node SET protocol = 'hysteria2' WHERE protocol = 'hysteria' ").Error
+	//	if err != nil {
+	//		return err
+	//	}
+	//	err = tx.Exec("UPDATE node SET vless_flow = '' WHERE vless_flow = 'none' ").Error
+	//	if err != nil {
+	//		return err
+	//	}
+	//	err = tx.Exec("UPDATE node SET security = '' WHERE security = 'none' ").Error
+	//	if err != nil {
+	//		return err
+	//	}
+	//	return nil
+	//})
+	return nil
 
 }
