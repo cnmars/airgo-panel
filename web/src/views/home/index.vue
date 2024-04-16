@@ -61,7 +61,7 @@
                     <el-button size="small" style="margin-bottom: 10px" type="primary" @click="openDialogCustomerServiceDetails(v.id)">{{$t('message.home.button_details')}}</el-button>
                   </el-dropdown-item>
                   <el-dropdown-item command="e" divided>
-                    <el-button size="small" style="margin-bottom: 10px" type="primary" @click="openPushDialog">{{$t('message.home.button_push')}}</el-button>
+                    <el-button size="small" style="margin-bottom: 10px" type="primary" @click="openPushDialog(v)">{{$t('message.home.button_push')}}</el-button>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -208,7 +208,9 @@ const closePushDialog = () => {
   state.isShowPushDialog = false;
 };
 const toPush = () => {
-  customerServiceStore.pushCustomerService().then(() => {
+  customerServiceStore.pushCustomerService().then((res) => {
+    ElMessage.success(res.msg)
+    getCustomerServiceList()
     closePushDialog();
   });
 };

@@ -170,8 +170,8 @@ func MessageHandlerForUser(update *tgbotapi.Update) tgbotapi.Chattable {
 			return tgbotapi.NewMessage(update.Message.Chat.ID, fmt.Sprintf("您的tg id：%d", update.Message.Chat.ID))
 		case "官网":
 			return tgbotapi.NewMessage(update.Message.Chat.ID, "官网："+global.Server.Website.FrontendUrl)
-		case "抽奖":
-			return nil
+		case "每日抽奖":
+			return Lottery(update)
 
 		default:
 			return nil
@@ -214,6 +214,8 @@ func MessageHandlerForAdmin(update *tgbotapi.Update) tgbotapi.Chattable {
 			return ShowMenuForAdmin1(update)
 		case "切换管理员菜单":
 			return ShowMenuForAdmin2(update)
+		case "每日抽奖":
+			return Lottery(update)
 		default:
 			return nil
 		}
@@ -229,10 +231,11 @@ func ShowMenuForUser(update *tgbotapi.Update) tgbotapi.Chattable {
 	bt3 := tgbotapi.NewKeyboardButton("解绑")
 	bt4 := tgbotapi.NewKeyboardButton("TG ID")
 	bt5 := tgbotapi.NewKeyboardButton("官网")
+	bt6 := tgbotapi.NewKeyboardButton("每日抽奖")
 
 	row1 := tgbotapi.NewKeyboardButtonRow(bt1)
 	row2 := tgbotapi.NewKeyboardButtonRow(bt2, bt3, bt4)
-	row3 := tgbotapi.NewKeyboardButtonRow(bt5)
+	row3 := tgbotapi.NewKeyboardButtonRow(bt5, bt6)
 
 	keyboard := tgbotapi.NewReplyKeyboard(row1, row2, row3)
 
@@ -250,12 +253,13 @@ func ShowMenuForAdmin1(update *tgbotapi.Update) tgbotapi.Chattable {
 	bt3 := tgbotapi.NewKeyboardButton("解绑")
 	bt4 := tgbotapi.NewKeyboardButton("TG ID")
 	bt5 := tgbotapi.NewKeyboardButton("官网")
-	bt6 := tgbotapi.NewKeyboardButton("切换管理员菜单")
+	bt6 := tgbotapi.NewKeyboardButton("每日抽奖")
+	bt7 := tgbotapi.NewKeyboardButton("切换管理员菜单")
 
 	row1 := tgbotapi.NewKeyboardButtonRow(bt1)
 	row2 := tgbotapi.NewKeyboardButtonRow(bt2, bt3, bt4)
-	row3 := tgbotapi.NewKeyboardButtonRow(bt5)
-	row4 := tgbotapi.NewKeyboardButtonRow(bt6)
+	row3 := tgbotapi.NewKeyboardButtonRow(bt5, bt6)
+	row4 := tgbotapi.NewKeyboardButtonRow(bt7)
 
 	keyboard := tgbotapi.NewReplyKeyboard(row1, row2, row3, row4)
 
@@ -393,7 +397,17 @@ func Lottery(update *tgbotapi.Update) tgbotapi.Chattable {
 	msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 	msg.ReplyToMessageID = update.Message.MessageID
 
-	UserSvc.ClockIn(1)
+	user, err := UserSvc.FirstUser(&model.User{TgID: int64(update.Message.From.ID)})
+	if err != nil {
+		msg.Text = err.Error()
+		return msg
+	}
+	_, balance, err := UserSvc.ClockIn(user.ID)
+	if err != nil {
+		msg.Text = err.Error()
+		return msg
+	}
+	msg.Text = fmt.Sprintf("恭喜中奖！余额 + %.2f", balance)
 	return msg
 }
 

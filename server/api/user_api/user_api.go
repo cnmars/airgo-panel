@@ -89,7 +89,7 @@ func ClockIn(ctx *gin.Context) {
 		response.Fail("user id error", nil, ctx)
 		return
 	}
-	index, err := service.UserSvc.ClockIn(uIDInt)
+	index, _, err := service.UserSvc.ClockIn(uIDInt)
 	if err != nil {
 		global.Logrus.Error(err)
 		response.Fail("ClockIn error:"+err.Error(), nil, ctx)
@@ -115,6 +115,7 @@ func SetUserNotice(ctx *gin.Context) {
 		return
 	}
 	err = service.UserSvc.UpdateUser(&model.User{ID: uIDInt}, map[string]any{
+		"tg_id":                       u.TgID,
 		"enable_tg_bot":               u.EnableTGBot,
 		"enable_email":                u.EnableEmail,
 		"enable_web_mail":             u.EnableWebMail,

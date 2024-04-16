@@ -101,7 +101,7 @@ func (us *User) SaveUser(u *model.User) error {
 // 更新用户信息
 func (us *User) UpdateUser(userParams *model.User, values map[string]any) error {
 	return global.DB.Transaction(func(tx *gorm.DB) error {
-		return tx.Model(&model.User{}).Where(&userParams).Updates(values).Error
+		return tx.Debug().Model(&model.User{}).Where(&userParams).Updates(values).Error
 	})
 }
 
@@ -247,14 +247,14 @@ func (us *User) VerifyEmailWhenResetPassword(params model.UserLoginRequest) (boo
 }
 
 // 打卡抽奖
-func (us *User) ClockIn(uID int64) (int, error) {
+func (us *User) ClockIn(uID int64) (int, float64, error) {
 	if !global.Server.Finance.EnableLottery {
-		return 0, errors.New(constant.ERROR_SERVICE_NOT_ENABLED)
+		return 0, 0, errors.New(constant.ERROR_SERVICE_NOT_ENABLED)
 	}
 	//判断是否已签到打卡
 	_, ok := global.LocalCache.Get(fmt.Sprintf("%s%d", constant.CACHE_USER_IS_CLOCKIN_BY_ID, uID))
 	if ok {
-		return 0, errors.New("Already checked in today")
+		return 0, 0, errors.New("Already checked in today")
 	}
 	var (
 		totalWeight int
@@ -275,7 +275,7 @@ func (us *User) ClockIn(uID int64) (int, error) {
 	}
 	user, err := us.FirstUser(&model.User{ID: uID})
 	if err != nil {
-		return 0, err
+		return 0, 0, err
 	}
 	startAmount := user.Balance
 	user.Balance += balance
@@ -283,7 +283,7 @@ func (us *User) ClockIn(uID int64) (int, error) {
 	user.Balance, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", user.Balance), 64)
 	err = us.SaveUser(user)
 	if err != nil {
-		return 0, err
+		return 0, 0, err
 	}
 	//处理余额流水
 	err = FinanceSvc.NewBalanceStatement(&model.BalanceStatement{
@@ -294,7 +294,7 @@ func (us *User) ClockIn(uID int64) (int, error) {
 		FinalAmount: fmt.Sprintf("%.2f", user.Balance),
 	})
 	if err != nil {
-		return 0, err
+		return 0, 0, err
 	}
 	if user.WhenBalanceChanged { //通知
 		global.GoroutinePool.Submit(func() {
@@ -307,5 +307,5 @@ func (us *User) ClockIn(uID int64) (int, error) {
 		struct{}{},
 		time_plugin.GetTimeIntervalBetweenNowAndMidnightTheNextDay())
 
-	return index, nil
+	return index, balance, nil
 }
