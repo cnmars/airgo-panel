@@ -30,6 +30,7 @@ func (c *CustomerService) GetCustomerServiceListByUserID(params *model.QueryPara
 	data.Data = csArr
 	return &data, nil
 }
+
 func (c *CustomerService) GetCustomerServiceList(csParams *model.CustomerService) (*[]model.CustomerService, error) {
 	var csArr []model.CustomerService
 	err := global.DB.Model(&model.CustomerService{}).Where(&csParams).Find(&csArr).Error
