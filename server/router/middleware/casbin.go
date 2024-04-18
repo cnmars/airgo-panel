@@ -73,7 +73,10 @@ func Casbin() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		global.LocalCache.Set(fmt.Sprintf("%s%d", constant.CACHE_USER_ROLEIDS_BY_USERID, uIdInt), roleIds, 5*time.Minute)
+		global.LocalCache.Set(fmt.Sprintf("%s%d",
+			constant.CACHE_USER_ROLEIDS_BY_USERID, uIdInt),
+			roleIds,
+			constant.CACHE_CASBIN_ROLEIDS_TIMEOUT*time.Minute)
 		//将角色组写入 gin.Context
 		c.Set("roleIds", roleIds)
 		c.Next()

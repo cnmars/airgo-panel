@@ -234,7 +234,10 @@ func (n *AdminNode) UpdateNodeStatus(customerServerIDs []int64, trafficLog *mode
 		oldStatus.D, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", float64(trafficLog.D)/duration), 64) //Byte per second
 		oldStatus.U, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", float64(trafficLog.U)/duration), 64)
 		oldStatus.LastTime = now
-		global.LocalCache.Set(fmt.Sprintf("%s%d", constant.CACHE_NODE_STATUS_BY_NODEID, trafficLog.NodeID), oldStatus, 2*time.Minute)
+		global.LocalCache.Set(fmt.Sprintf("%s%d",
+			constant.CACHE_NODE_STATUS_BY_NODEID, trafficLog.NodeID),
+			oldStatus,
+			constant.CAHCE_NODE_STATUS_TIMEOUT*time.Minute)
 	} else {
 		var nodeStatus model.NodeStatus
 		nodeStatus.Status = true
@@ -243,7 +246,10 @@ func (n *AdminNode) UpdateNodeStatus(customerServerIDs []int64, trafficLog *mode
 		nodeStatus.D, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", float64(trafficLog.D)/duration), 64) //Byte per second
 		nodeStatus.U, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", float64(trafficLog.U)/duration), 64)
 		nodeStatus.LastTime = time.Now()
-		global.LocalCache.Set(fmt.Sprintf("%s%d", constant.CACHE_NODE_STATUS_BY_NODEID, trafficLog.NodeID), nodeStatus, 2*time.Minute)
+		global.LocalCache.Set(fmt.Sprintf("%s%d", constant.CACHE_NODE_STATUS_BY_NODEID,
+			trafficLog.NodeID),
+			nodeStatus,
+			constant.CAHCE_NODE_STATUS_TIMEOUT*time.Minute)
 	}
 }
 

@@ -53,7 +53,8 @@ func AGReportNodeStatus(ctx *gin.Context) {
 		return
 	}
 	//处理探针
-	cacheStatus, ok := global.LocalCache.Get(fmt.Sprintf("%s%d", constant.CACHE_NODE_STATUS_BY_NODEID, AGNodeStatus.ID))
+	cacheStatus, ok := global.LocalCache.Get(fmt.Sprintf("%s%d",
+		constant.CACHE_NODE_STATUS_BY_NODEID, AGNodeStatus.ID))
 	if ok {
 		oldStatus := cacheStatus.(model.NodeStatus)
 		oldStatus.Status = true
@@ -61,7 +62,10 @@ func AGReportNodeStatus(ctx *gin.Context) {
 		oldStatus.Mem = AGNodeStatus.Mem
 		oldStatus.Disk = AGNodeStatus.Disk
 		//oldStatus.Uptime=AGNodeStatus.Uptime
-		global.LocalCache.Set(fmt.Sprintf("%s%d", constant.CACHE_NODE_STATUS_BY_NODEID, AGNodeStatus.ID), oldStatus, 2*time.Minute) //2分钟后过期
+		global.LocalCache.Set(fmt.Sprintf("%s%d",
+			constant.CACHE_NODE_STATUS_BY_NODEID, AGNodeStatus.ID),
+			oldStatus,
+			constant.CAHCE_NODE_STATUS_TIMEOUT*time.Minute)
 	} else {
 		var status model.NodeStatus
 		status.Status = true
@@ -69,7 +73,10 @@ func AGReportNodeStatus(ctx *gin.Context) {
 		status.CPU = AGNodeStatus.CPU
 		status.Mem = AGNodeStatus.Mem
 		status.Disk = AGNodeStatus.Disk
-		global.LocalCache.Set(fmt.Sprintf("%s%d", constant.CACHE_NODE_STATUS_BY_NODEID, AGNodeStatus.ID), status, 2*time.Minute) //2分钟后过期
+		global.LocalCache.Set(fmt.Sprintf("%s%d",
+			constant.CACHE_NODE_STATUS_BY_NODEID, AGNodeStatus.ID),
+			status,
+			constant.CAHCE_NODE_STATUS_TIMEOUT*time.Minute)
 	}
 	ctx.String(200, "success")
 }

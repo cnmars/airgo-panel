@@ -19,6 +19,9 @@ func (c *AdminCustomerService) GetCustomerServiceList(csParams *model.CustomerSe
 }
 
 // 更新客户服务
+// gorm Save：
+// 存在主键字段: 做插入操作
+// 不存在主键字段：做更新操作
 func (c *AdminCustomerService) UpdateCustomerService(csParams *model.CustomerService) error {
 	return global.DB.Transaction(func(tx *gorm.DB) error {
 		return tx.Save(&csParams).Error

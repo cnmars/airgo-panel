@@ -477,7 +477,7 @@ func (o *Order) DeleteOneOrderFromCache(orderParams *model.Order) {
 	if ok {
 		global.LocalCache.Set(constant.CACHE_SUBMIT_ORDER_BY_ORDERID+orderParams.OutTradeNo,
 			&model.Order{},
-			5*time.Second)
+			5*time.Second) //直接删会触发 server/app/app.go:76 设置触发删除后的捕获函数
 	}
 }
 

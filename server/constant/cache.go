@@ -25,12 +25,18 @@ const (
 	// 角色
 	CACHE_USER_ROLEIDS_BY_USERID = "UserRoleIDsByUserID:"
 	CACHE_USER_ROLES_BY_USERID   = "UserRolesByUserID:"
+	CACHE_CASBIN_ROLEIDS_TIMEOUT = 1 //casbin role ids 缓存超时时间, time.Minute
+
+	//菜单
+	CAHCE_USER_MENUS_TIMEOUT = 1 //用户菜单缓存超时时间，time.Minute
 
 	//节点
+	CAHCE_NODE_STATUS_TIMEOUT               = 2                               //节点状态 缓存超时时间，time.Minute
 	CACHE_NODE_STATUS_BY_NODEID             = "NodeStatusByNodeID:"           //节点状态
 	CACHE_NODE_STATUS_IS_NOTIFIED_BY_NODEID = "NodeStatusIsNotifiedByNodeID:" //
 
 	// 邮箱验证码
+	CAHCE_EMAIL_CODE_TIMEOUT                    = 3                                  //邮箱验证码超时时间，time.Minute
 	CACHE_USER_REGISTER_EMAIL_CODE_BY_USERNAME  = "UserRegisterEmailCodeByUserName:" //注册验证码
 	CACHE_USER_RESET_PWD_EMAIL_CODE_BY_USERNAME = "UserResetPwdEmailCodeByUserName:" //重置密码验证码
 
