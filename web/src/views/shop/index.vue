@@ -153,7 +153,7 @@
           </el-button>
 					<el-button type="primary"
                      :disabled="shopStoreData.currentGoods.value.stock <= 0"
-                     @click="openPurchase(shopStoreData.currentGoods.value)"
+                     @click="openPurchase()"
                      size="default">{{ $t("message.adminShop.purchase") }}
           </el-button>
 				</span>
@@ -163,10 +163,9 @@
   </div>
 </template>
 
-<script setup lang="ts" name="pagesLazyImg">
+<script setup lang="ts">
 import { reactive, onMounted, ref, defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
-// import other from '/@/utils/other';
 
 import { useShopStore } from "/@/stores/user_logic/shopStore";
 import { storeToRefs } from "pinia";

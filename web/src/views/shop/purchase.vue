@@ -361,7 +361,8 @@ const closeDialog = () => {
   state.alipayUrl = "";
   state.epayUrl = "";
   shopStoreData.currentOrder.value = {} as Order;
-
+  //如果在响应之前关闭弹窗，也要关闭定时器
+  clearInterval(timer);
 };
 const getOrderInfo = () => {
   state.isShowDialog = true;
@@ -396,9 +397,11 @@ const back = () => {
   }
 };
 
+//轮询定时器
+let timer: NodeJS.Timeout
 const loop = () => {
   let i = 0;
-  let timer = setInterval(() => {
+  timer = setInterval(() => {
     getOrderInfoWaitPay(timer, i++);
   }, 3000);
 };
