@@ -3,6 +3,13 @@
     <el-dialog v-model="state.isShowDialog" width="80%">
       <el-form ref="userDialogFormRef" :model="adminCustomerServiceStoreData.currentCustomerService.value"
                size="default" label-position="top">
+        <el-form-item :label="$t('message.adminUser.CustomerService.service_start_at')">
+          <el-date-picker
+            v-model="adminCustomerServiceStoreData.currentCustomerService.value.service_start_at"
+            type="datetime"
+            size="default"
+          />
+        </el-form-item>
         <el-form-item :label="$t('message.adminUser.CustomerService.service_end_at')">
           <el-date-picker
             v-model="adminCustomerServiceStoreData.currentCustomerService.value.service_end_at"
@@ -27,13 +34,35 @@
           <el-input-number
             v-model.number="adminCustomerServiceStoreData.currentCustomerService.value.duration"></el-input-number>
         </el-form-item>
-        <el-form-item :label="$t('message.adminUser.CustomerService.sub_status')">
-          <el-switch v-model="adminCustomerServiceStoreData.currentCustomerService.value.sub_status" inline-prompt
-                     :active-text="$t('message.common.enable')"
-                     :inactive-text="$t('message.common.disable')"></el-switch>
+        <el-form-item :label="$t('message.adminUser.CustomerService.goods_id')">
+          <el-select
+            v-model="adminCustomerServiceStoreData.currentCustomerService.value.goods_id"
+            filterable
+            allow-create
+            default-first-option
+            :reserve-keyword="false"
+            style="width: 100%"
+            @change="goodsChanged()"
+          >
+            <el-option
+              v-for="(v,k) in adminShopStoreData.goodsList.value"
+              :key="k"
+              :label="v.subject"
+              :value="v.id">
+              <span style="float: left">{{ v.subject }}</span>
+              <span style="float: right;color: var(--el-text-color-secondary);font-size: 13px;">ID: {{ v.id }}</span
+              >
+            </el-option>
+          </el-select>
         </el-form-item>
+        <el-divider></el-divider>
         <div
           v-if="adminCustomerServiceStoreData.currentCustomerService.value.goods_type === constantStore.GOODS_TYPE_SUBSCRIBE">
+          <el-form-item :label="$t('message.adminUser.CustomerService.sub_status')">
+            <el-switch v-model="adminCustomerServiceStoreData.currentCustomerService.value.sub_status" inline-prompt
+                       :active-text="$t('message.common.enable')"
+                       :inactive-text="$t('message.common.disable')"></el-switch>
+          </el-form-item>
           <el-form-item :label="$t('message.adminUser.CustomerService.total_bandwidth')">
             <el-input-number
               v-model.number="adminCustomerServiceStoreData.currentCustomerService.value.total_bandwidth"></el-input-number>
@@ -85,22 +114,38 @@ import { storeToRefs } from "pinia";
 import { DateStrToTime } from "/@/utils/formatTime";
 import { useConstantStore } from "/@/stores/constantStore";
 import { v4 as uuid } from "uuid";
+import { useAdminShopStore } from "/@/stores/admin_logic/shopStore";
+import { useAdminUserStore } from "/@/stores/admin_logic/userStore";
 
 const adminCustomerServiceStore = useAdminCustomerServiceStore();
 const adminCustomerServiceStoreData = storeToRefs(adminCustomerServiceStore);
 const constantStore = useConstantStore();
-
+const adminShopStore = useAdminShopStore()
+const adminShopStoreData = storeToRefs(adminShopStore)
+const adminUserStore = useAdminUserStore()
+const adminUserStoreData = storeToRefs(adminUserStore)
 
 const state = reactive({
-  isShowDialog: false
+  isShowDialog: false,
+  type:'',
 });
-const openDialog = (row: CustomerService) => {
+const openDialog = (type: string, row?: CustomerService) => {
+  state.type = type;
   state.isShowDialog = true;
-  adminCustomerServiceStoreData.currentCustomerService.value = row;
-  //处理一下流量
-  adminCustomerServiceStoreData.currentCustomerService.value.total_bandwidth = Number((adminCustomerServiceStoreData.currentCustomerService.value.total_bandwidth / 1024 / 1024 / 1024).toFixed(2));
-  adminCustomerServiceStoreData.currentCustomerService.value.used_up = Number((adminCustomerServiceStoreData.currentCustomerService.value.used_up / 1024 / 1024 / 1024).toFixed(2));
-  adminCustomerServiceStoreData.currentCustomerService.value.used_down = Number((adminCustomerServiceStoreData.currentCustomerService.value.used_down / 1024 / 1024 / 1024).toFixed(2));
+  adminShopStore.getGoodsList()
+  if (type === "edit") {
+    adminCustomerServiceStoreData.currentCustomerService.value = row;
+    //处理一下流量
+    adminCustomerServiceStoreData.currentCustomerService.value.total_bandwidth = Number((adminCustomerServiceStoreData.currentCustomerService.value.total_bandwidth / 1024 / 1024 / 1024).toFixed(2));
+    adminCustomerServiceStoreData.currentCustomerService.value.used_up = Number((adminCustomerServiceStoreData.currentCustomerService.value.used_up / 1024 / 1024 / 1024).toFixed(2));
+    adminCustomerServiceStoreData.currentCustomerService.value.used_down = Number((adminCustomerServiceStoreData.currentCustomerService.value.used_down / 1024 / 1024 / 1024).toFixed(2));
+  } else {
+    adminCustomerServiceStoreData.currentCustomerService.value = {} as CustomerService
+    adminCustomerServiceStoreData.currentCustomerService.value.user_id = adminUserStoreData.currentUser.value.id
+    adminCustomerServiceStoreData.currentCustomerService.value.user_name = adminUserStoreData.currentUser.value.user_name
+    adminCustomerServiceStoreData.currentCustomerService.value.duration = 1
+  }
+
 };
 
 const closeDialog = () => {
@@ -119,6 +164,17 @@ const onSubmit = () => {
 const resetSubUUID = () => {
   adminCustomerServiceStoreData.currentCustomerService.value.sub_uuid = uuid();
 };
+const goodsChanged=()=>{
+  adminShopStoreData.goodsList.value.forEach((item)=>{
+    if(adminCustomerServiceStoreData.currentCustomerService.value.goods_id === item.id){
+      adminCustomerServiceStoreData.currentCustomerService.value.subject = item.subject
+      adminCustomerServiceStoreData.currentCustomerService.value.des = item.des
+      adminCustomerServiceStoreData.currentCustomerService.value.price = item.price
+      adminCustomerServiceStoreData.currentCustomerService.value.goods_type = item.goods_type
+    }
+  })
+
+}
 
 defineExpose({
   openDialog
