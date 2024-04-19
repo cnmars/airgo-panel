@@ -254,7 +254,7 @@ func (us *User) ClockIn(uID int64) (int, float64, error) {
 	//判断是否已签到打卡
 	_, ok := global.LocalCache.Get(fmt.Sprintf("%s%d", constant.CACHE_USER_IS_CLOCKIN_BY_ID, uID))
 	if ok {
-		return 0, 0, errors.New("Already checked in today")
+		return 0, 0, errors.New("You have already drawn a lottery today")
 	}
 	var (
 		totalWeight int
