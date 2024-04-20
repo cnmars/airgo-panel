@@ -1,6 +1,7 @@
 package user_api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/ppoonk/AirGo/api"
 	"github.com/ppoonk/AirGo/constant"
@@ -23,12 +24,23 @@ func GetBalanceStatementList(ctx *gin.Context) {
 		response.Fail("user id error", nil, ctx)
 		return
 	}
-	data, err := service.FinanceSvc.GetBalanceStatementList(&params, uIDInt)
+	params.FieldParamsList = append(params.FieldParamsList, model.FieldParamsItem{
+		//Operator:       "", //前端只查分页，不传其他参数 不用填
+		Field: "user_id",
+		//FieldType:      "",
+		Condition:      "=",
+		ConditionValue: fmt.Sprintf("%d", uIDInt),
+	})
+	var data model.CommonDataResp
+	list, total, err := service.CommonSqlFindWithFieldParams(&params)
 	if err != nil {
 		global.Logrus.Error(err)
-		response.Fail("GetBalanceStatementList error:", err.Error(), ctx)
+		response.Fail("GetBalanceStatementList error:"+err.Error(), nil, ctx)
 		return
 	}
+	data.Data = list
+	data.Total = total
+
 	response.OK("GetBalanceStatementList success", data, ctx)
 }
 
@@ -45,12 +57,22 @@ func GetCommissionStatementList(ctx *gin.Context) {
 		response.Fail("user id error", nil, ctx)
 		return
 	}
-	data, err := service.FinanceSvc.GetCommissionStatementList(&params, uIDInt)
+	params.FieldParamsList = append(params.FieldParamsList, model.FieldParamsItem{
+		//Operator:       "", //前端只查分页，不传其他参数 不用填
+		Field: "user_id",
+		//FieldType:      "",
+		Condition:      "=",
+		ConditionValue: fmt.Sprintf("%d", uIDInt),
+	})
+	var data model.CommonDataResp
+	list, total, err := service.CommonSqlFindWithFieldParams(&params)
 	if err != nil {
 		global.Logrus.Error(err)
-		response.Fail("GetCommissionStatementList error:", err.Error(), ctx)
+		response.Fail("GetCommissionStatementList error:"+err.Error(), nil, ctx)
 		return
 	}
+	data.Data = list
+	data.Total = total
 	response.OK("GetCommissionStatementList success", data, ctx)
 }
 
@@ -63,7 +85,7 @@ func WithdrawToBalance(ctx *gin.Context) {
 	err := service.FinanceSvc.WithdrawToBalance(uIDInt)
 	if err != nil {
 		global.Logrus.Error(err)
-		response.Fail("WithdrawToBalance error:", err.Error(), ctx)
+		response.Fail("WithdrawToBalance error:"+err.Error(), nil, ctx)
 		return
 	}
 	response.OK("WithdrawToBalance success", nil, ctx)
@@ -78,7 +100,7 @@ func GetCommissionSummary(ctx *gin.Context) {
 	data, err := service.FinanceSvc.GetCommissionSummary(uIDInt)
 	if err != nil {
 		global.Logrus.Error(err)
-		response.Fail("GetCommissionSummary error:", err.Error(), ctx)
+		response.Fail("GetCommissionSummary error:"+err.Error(), nil, ctx)
 		return
 	}
 	response.OK("GetCommissionSummary success", data, ctx)
@@ -98,11 +120,21 @@ func GetInvitationUserList(ctx *gin.Context) {
 		response.Fail("user id error", nil, ctx)
 		return
 	}
-	data, err := service.FinanceSvc.GetInvitationUserList(&params, uIDInt)
+	params.FieldParamsList = append(params.FieldParamsList, model.FieldParamsItem{
+		//Operator:       "", //前端只查分页，不传其他参数 不用填
+		Field: "referrer_user_id",
+		//FieldType:      "",
+		Condition:      "=",
+		ConditionValue: fmt.Sprintf("%d", uIDInt),
+	})
+	var data model.CommonDataResp
+	list, total, err := service.CommonSqlFindWithFieldParams(&params)
 	if err != nil {
 		global.Logrus.Error(err)
-		response.Fail("GetInvitationUserList error:", err.Error(), ctx)
+		response.Fail("GetInvitationUserList error:"+err.Error(), nil, ctx)
 		return
 	}
+	data.Data = list
+	data.Total = total
 	response.OK("GetInvitationUserList success", data, ctx)
 }

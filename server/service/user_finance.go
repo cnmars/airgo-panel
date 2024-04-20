@@ -8,7 +8,6 @@ import (
 	"github.com/ppoonk/AirGo/model"
 	"gorm.io/gorm"
 	"strconv"
-	"strings"
 )
 
 type Finance struct {
@@ -22,64 +21,10 @@ func (f *Finance) NewBalanceStatement(params *model.BalanceStatement) error {
 	})
 }
 
-func (f *Finance) GetBalanceStatementList(params *model.QueryParams, uID int64) (*model.CommonDataResp, error) {
-	var data model.CommonDataResp
-	var list []model.BalanceStatement
-	totalSql, dataSql := CommonSqlFindSqlHandler(params)
-	dataSql = dataSql[strings.Index(dataSql, "WHERE ")+6:]
-	//拼接查询参数
-	totalSql = fmt.Sprintf("user_id = %d AND %s", uID, totalSql)
-	dataSql = fmt.Sprintf("user_id = %d AND %s", uID, dataSql)
-	err := global.DB.Debug().
-		Model(&model.BalanceStatement{}).
-		Where(dataSql).
-		Find(&list).Error
-	if err != nil {
-		return nil, err
-	}
-	err = global.DB.
-		Model(&model.BalanceStatement{}).
-		Raw(totalSql).
-		Count(&data.Total).
-		Error
-	if err != nil {
-		return nil, err
-	}
-	data.Data = list
-	return &data, nil
-}
-
 func (f *Finance) NewCommissionStatement(params *model.CommissionStatement) error {
 	return global.DB.Transaction(func(tx *gorm.DB) error {
 		return tx.Create(params).Error
 	})
-}
-
-func (f *Finance) GetCommissionStatementList(params *model.QueryParams, uID int64) (*model.CommonDataResp, error) {
-	var data model.CommonDataResp
-	var list []model.CommissionStatement
-	totalSql, dataSql := CommonSqlFindSqlHandler(params)
-	dataSql = dataSql[strings.Index(dataSql, "WHERE ")+6:]
-	//拼接查询参数
-	totalSql = fmt.Sprintf("user_id = %d AND %s", uID, totalSql)
-	dataSql = fmt.Sprintf("user_id = %d AND %s", uID, dataSql)
-	err := global.DB.
-		Model(&model.CommissionStatement{}).
-		Where(dataSql).
-		Find(&list).Error
-	if err != nil {
-		return nil, err
-	}
-	err = global.DB.
-		Model(&model.CommissionStatement{}).
-		Raw(totalSql).
-		Count(&data.Total).
-		Error
-	if err != nil {
-		return nil, err
-	}
-	data.Data = list
-	return &data, nil
 }
 
 func (f *Finance) SetWithdrew(uID int64) error {
@@ -177,32 +122,4 @@ func (f *Finance) GetCommissionSummary(uID int64) (*model.FinanceSummary, error)
 		TotalConsumptionAmount:  fmt.Sprintf("%.2f", totalConsumption),
 	}, nil
 
-}
-
-func (f *Finance) GetInvitationUserList(params *model.QueryParams, uID int64) (*model.CommonDataResp, error) {
-	var data model.CommonDataResp
-	var list []model.User
-	totalSql, dataSql := CommonSqlFindSqlHandler(params)
-	dataSql = dataSql[strings.Index(dataSql, "WHERE ")+6:]
-	//拼接查询参数
-	totalSql = fmt.Sprintf("user_id = %d AND %s", uID, totalSql)
-	dataSql = fmt.Sprintf("referrer_user_id = %d AND %s", uID, dataSql)
-	err := global.DB.
-		Model(&model.User{}).
-		Select("created_at", "user_name").
-		Where(dataSql).
-		Find(&list).Error
-	if err != nil {
-		return nil, err
-	}
-	err = global.DB.
-		Model(&model.User{}).
-		Raw(totalSql).
-		Count(&data.Total).
-		Error
-	if err != nil {
-		return nil, err
-	}
-	data.Data = list
-	return &data, nil
 }
