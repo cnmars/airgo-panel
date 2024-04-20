@@ -310,20 +310,8 @@ func BindTGPre(update *tgbotapi.Update) tgbotapi.Chattable {
 func BindTG(update *tgbotapi.Update) tgbotapi.Chattable {
 	msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 	msg.ReplyToMessageID = update.Message.MessageID
-	//查询用户
-	user, err := UserSvc.FirstUser(&model.User{TgID: int64(update.Message.From.ID)})
-	if err != nil {
-		msg.Text = err.Error()
-		return msg
-	}
-	if user != nil {
-		if user.TgID != 0 {
-			msg.Text = fmt.Sprintf("已经绑定账户: %s\n绑定其他用户请先解绑", user.UserName)
-			return msg
-		}
-	}
-	userText := strings.TrimSpace(update.Message.Text[strings.LastIndex(update.Message.Text, "/bind")+6:])
 
+	userText := strings.TrimSpace(update.Message.Text[strings.LastIndex(update.Message.Text, "/bind")+6:])
 	userName := strings.Split(userText, "|")[0]
 	pwd := strings.Split(userText, "|")[1]
 
@@ -342,6 +330,10 @@ func BindTG(update *tgbotapi.Update) tgbotapi.Chattable {
 			return msg
 		}
 		if user != nil {
+			if user.TgID != 0 {
+				msg.Text = fmt.Sprintf("已经绑定账户: %s\n绑定其他用户请先解绑", user.UserName)
+				return msg
+			}
 			if err = encrypt_plugin.BcryptDecode(pwd, user.Password); err != nil {
 				msg.Text = "密码错误！绑定格式：/bind xxx@email.com|your_password"
 				return msg
