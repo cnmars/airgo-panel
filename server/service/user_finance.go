@@ -25,15 +25,23 @@ func (f *Finance) NewBalanceStatement(params *model.BalanceStatement) error {
 func (f *Finance) GetBalanceStatementList(params *model.QueryParams, uID int64) (*model.CommonDataResp, error) {
 	var data model.CommonDataResp
 	var list []model.BalanceStatement
-	_, dataSql := CommonSqlFindSqlHandler(params)
+	totalSql, dataSql := CommonSqlFindSqlHandler(params)
 	dataSql = dataSql[strings.Index(dataSql, "WHERE ")+6:]
 	//拼接查询参数
+	totalSql = fmt.Sprintf("user_id = %d AND %s", uID, totalSql)
 	dataSql = fmt.Sprintf("user_id = %d AND %s", uID, dataSql)
-	err := global.DB.
+	err := global.DB.Debug().
 		Model(&model.BalanceStatement{}).
-		Count(&data.Total).
 		Where(dataSql).
 		Find(&list).Error
+	if err != nil {
+		return nil, err
+	}
+	err = global.DB.
+		Model(&model.BalanceStatement{}).
+		Raw(totalSql).
+		Count(&data.Total).
+		Error
 	if err != nil {
 		return nil, err
 	}
@@ -50,15 +58,23 @@ func (f *Finance) NewCommissionStatement(params *model.CommissionStatement) erro
 func (f *Finance) GetCommissionStatementList(params *model.QueryParams, uID int64) (*model.CommonDataResp, error) {
 	var data model.CommonDataResp
 	var list []model.CommissionStatement
-	_, dataSql := CommonSqlFindSqlHandler(params)
+	totalSql, dataSql := CommonSqlFindSqlHandler(params)
 	dataSql = dataSql[strings.Index(dataSql, "WHERE ")+6:]
 	//拼接查询参数
+	totalSql = fmt.Sprintf("user_id = %d AND %s", uID, totalSql)
 	dataSql = fmt.Sprintf("user_id = %d AND %s", uID, dataSql)
 	err := global.DB.
 		Model(&model.CommissionStatement{}).
 		Where(dataSql).
-		Count(&data.Total).
 		Find(&list).Error
+	if err != nil {
+		return nil, err
+	}
+	err = global.DB.
+		Model(&model.CommissionStatement{}).
+		Raw(totalSql).
+		Count(&data.Total).
+		Error
 	if err != nil {
 		return nil, err
 	}
@@ -166,16 +182,24 @@ func (f *Finance) GetCommissionSummary(uID int64) (*model.FinanceSummary, error)
 func (f *Finance) GetInvitationUserList(params *model.QueryParams, uID int64) (*model.CommonDataResp, error) {
 	var data model.CommonDataResp
 	var list []model.User
-	_, dataSql := CommonSqlFindSqlHandler(params)
+	totalSql, dataSql := CommonSqlFindSqlHandler(params)
 	dataSql = dataSql[strings.Index(dataSql, "WHERE ")+6:]
 	//拼接查询参数
+	totalSql = fmt.Sprintf("user_id = %d AND %s", uID, totalSql)
 	dataSql = fmt.Sprintf("referrer_user_id = %d AND %s", uID, dataSql)
-	err := global.DB.Debug().
+	err := global.DB.
 		Model(&model.User{}).
 		Select("created_at", "user_name").
 		Where(dataSql).
-		Count(&data.Total).
 		Find(&list).Error
+	if err != nil {
+		return nil, err
+	}
+	err = global.DB.
+		Model(&model.User{}).
+		Raw(totalSql).
+		Count(&data.Total).
+		Error
 	if err != nil {
 		return nil, err
 	}
