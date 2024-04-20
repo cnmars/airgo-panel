@@ -66,9 +66,11 @@ func Register(ctx *gin.Context) {
 		InvitationCode: encrypt_plugin.RandomString(8),          //随机邀请码
 	}
 	//查找推荐人
-	referrerUser, err := service.UserSvc.FirstUser(&model.User{InvitationCode: u.ReferrerCode})
-	if referrerUser.ID != 0 {
-		newUser.ReferrerUserID = referrerUser.ID
+	if u.ReferrerCode != "" {
+		referrerUser, _ := service.UserSvc.FirstUser(&model.User{InvitationCode: u.ReferrerCode})
+		if referrerUser.ID != 0 {
+			newUser.ReferrerUserID = referrerUser.ID
+		}
 	}
 	err = service.UserSvc.Register(newUser)
 	if err != nil {
