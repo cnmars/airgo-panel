@@ -24,7 +24,7 @@
                   :key="k" @click="showGoodsDetails(v)">
               <div shadow="hover" style="margin-top: 10px;border-radius:10px;background: rgba(224,224,224,0.5);padding: 20px;">
                 <div >
-                  <el-image :src="v.cover_image" lazy style="height: 100px;width: 100%" fit="cover">
+                  <el-image :src="v.cover_image" lazy style="height: 100px;width: 100%" fit="contain">
                     <template #error>
                       <div class="image-slot">
                         <el-icon>
