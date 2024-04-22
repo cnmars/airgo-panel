@@ -268,7 +268,7 @@ sqlite:
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/ppoonk/V2bX/main/scripts/install.sh)
 ```
-- After installation is completed, please modify the configuration file as needed in `/usr/local/AV/config. json`
+- After installation is completed, please modify the configuration file as needed in `/etc/V2bX/config.json`
 - Start: Use administrative scripts `AV` or directly start AV using `systemictl start AV`
 
 ### 5-1-2 docker install V2bX

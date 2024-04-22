@@ -267,7 +267,7 @@ sqlite:
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/ppoonk/V2bX/main/scripts/install.sh)
 ```
-- 安装完成后请根据需要在```/usr/local/AV/config.json```中修改配置文件
+- 安装完成后请根据需要在```/etc/V2bX/config.json```中修改配置文件
 - 启动：使用管理脚本```AV```或直接 `systemctl start AV`
 
 ### 5-1-2 docker 安装 V2bX
