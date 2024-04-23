@@ -57,7 +57,7 @@ const (
 	ORDER_STATUS_TRADE_CLOSED   = "TRADE_CLOSED"
 	ORDER_STATUS_TRADE_SUCCESS  = "TRADE_SUCCESS"
 	ORDER_STATUS_TRADE_FINISHED = "TRADE_FINISHED"
-	ORDER_STATUS_COMPLETED      = "COMPLETED "
+	ORDER_STATUS_COMPLETED      = "COMPLETED"
 
 	// 支付类型
 	PAY_TYPE_ALIPAY  = "alipay"  // 支付宝alipay
@@ -71,8 +71,8 @@ const (
 	ARTICLE_TYPE_KNOWLEDGE = "knowledge"
 
 	// github
-	AIRGO_GITHUB_API          = "https://api.github.com/repos/ppoonk/AirGo/releases/latest"
-	AIRGO_GITHUB_DOWNLOAD_PRE = "https://github.com/ppoonk/AirGo/releases/download"
+	AIRGO_GITHUB_API          = "https://api.github.com/repos/shuangyu233/AirGo/releases/latest"
+	AIRGO_GITHUB_DOWNLOAD_PRE = "https://github.com/shuangyu233/AirGo/releases/download"
 
 	//finance
 	BALANCE_STATEMENT_TITLE_RECHARGE    = "Recharge"    //充值
