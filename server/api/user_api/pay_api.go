@@ -8,7 +8,13 @@ import (
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
-// 获取已激活支付列表
+// GetEnabledPayList
+// @Tags [customer api] pay
+// @Summary 获取已激活支付列表
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/pay/getEnabledPayList [get]
 func GetEnabledPayList(ctx *gin.Context) {
 	list, _, err := service.CommonSqlFind[model.Pay, string, []model.Pay]("status = true")
 	if err != nil {

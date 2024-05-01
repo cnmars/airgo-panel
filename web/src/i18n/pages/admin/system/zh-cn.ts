@@ -27,6 +27,7 @@ export default {
       upgrade_warning:"升级有风险，请做好数据备份!",
 
       enable_register: "启用注册",
+      enable_base64_captcha:"启用注册图片验证码",
       enable_email_code: "启用注册验证码",
       enable_login_email_code: "启用登录验证码",
       acceptable_email_suffixes: "合法邮箱后缀",

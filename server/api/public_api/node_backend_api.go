@@ -15,9 +15,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// AGGetNodeInfo
+// @Tags [public api] node
+// @Summary 获取节点配置信息
+// @Produce json
+// @Param id query int64 true "节点ID"
+// @Param key query string true "节点密钥"
+// @Success 200 {object} model.Node "成功"
+// @Failure 400  "请求错误"
+// @Failure 304  "数据和上次一致"
+// @Router /api/public/airgo/node/getNodeInfo [get]
 func AGGetNodeInfo(ctx *gin.Context) {
 	//验证key
 	if global.Server.Subscribe.TEK != ctx.Query("key") {
+		ctx.AbortWithStatus(400)
 		return
 	}
 	id := ctx.Query("id")
@@ -30,6 +41,7 @@ func AGGetNodeInfo(ctx *gin.Context) {
 	err = global.DB.Model(&model.Node{}).Where(&model.Node{ID: nodeIDInt}).Preload("Access").First(&node).Error
 	if err != nil {
 		global.Logrus.Error("AGGetNodeInfo error,id="+id, err.Error())
+		ctx.AbortWithStatus(400)
 		return
 	}
 	//处理ss节点加密
@@ -40,6 +52,16 @@ func AGGetNodeInfo(ctx *gin.Context) {
 	api.EtagHandler(node, ctx)
 }
 
+// AGReportNodeStatus
+// @Tags [public api] node
+// @Summary 上报节点状态
+// @Produce json
+// @Param key query string true "节点密钥"
+// @Param data body model.AGNodeStatus true "参数"
+// @Success 200 {object} string "成功"
+// @Failure 400  "请求错误"
+// @Failure 304  "数据和上次一致"
+// @Router /api/public/airgo/node/AGReportNodeStatus [post]
 func AGReportNodeStatus(ctx *gin.Context) {
 	//验证key
 	if global.Server.Subscribe.TEK != ctx.Query("key") {
@@ -81,6 +103,16 @@ func AGReportNodeStatus(ctx *gin.Context) {
 	ctx.String(200, "success")
 }
 
+// AGGetUserlist
+// @Tags [public api] node
+// @Summary 获取用户列表
+// @Produce json
+// @Param id query int64 true "节点ID"
+// @Param key query string true "节点密钥"
+// @Success 200 {object} string "成功"
+// @Failure 400  "请求错误"
+// @Failure 304  "数据和上次一致"
+// @Router /api/public/airgo/user/AGGetUserlist [get]
 func AGGetUserlist(ctx *gin.Context) {
 	//验证key
 	if global.Server.Subscribe.TEK != ctx.Query("key") {
@@ -144,6 +176,16 @@ func AGGetUserlist(ctx *gin.Context) {
 	api.EtagHandler(users, ctx)
 }
 
+// AGReportUserTraffic
+// @Tags [public api] node
+// @Summary 上报用户流量
+// @Produce json
+// @Param key query string true "节点密钥"
+// @Param data body model.AGUserTraffic true "参数"
+// @Success 200 {object} string "成功"
+// @Failure 400  "请求错误"
+// @Failure 304  "数据和上次一致"
+// @Router /api/public/airgo/user/AGReportUserTraffic [post]
 func AGReportUserTraffic(ctx *gin.Context) {
 	//验证key
 	if global.Server.Subscribe.TEK != ctx.Query("key") {
@@ -215,6 +257,16 @@ func AGReportUserTraffic(ctx *gin.Context) {
 
 }
 
+// AGReportNodeOnlineUsers
+// @Tags [public api] node
+// @Summary 上报在线用户
+// @Produce json
+// @Param key query string true "节点密钥"
+// @Param data body model.AGOnlineUser true "参数"
+// @Success 200 {object} string "成功"
+// @Failure 400  "请求错误"
+// @Failure 304  "数据和上次一致"
+// @Router /api/public/airgo/user/AGReportNodeOnlineUsers [post]
 func AGReportNodeOnlineUsers(ctx *gin.Context) {
 	//验证key
 	if global.Server.Subscribe.TEK != ctx.Query("key") {

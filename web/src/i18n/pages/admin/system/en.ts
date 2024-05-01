@@ -27,6 +27,7 @@ export default {
      upgrade_warning:"Upgrading carries risks, please backup your data properly!",
 
      enable_register: "enable register",
+     enable_base64_captcha:"enable_base64_captcha",
      enable_email_code: "enable register email code",
      enable_login_email_code: "enable login email code",
      acceptable_email_suffixes: "acceptable email suffixes",

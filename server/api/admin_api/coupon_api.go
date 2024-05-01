@@ -9,7 +9,14 @@ import (
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
-// 新建折扣
+// NewCoupon
+// @Tags [admin api] coupon
+// @Summary 新建折扣
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Coupon true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/coupon/newCoupon [post]
 func NewCoupon(ctx *gin.Context) {
 	var coupon model.Coupon
 	err := ctx.ShouldBind(&coupon)
@@ -27,7 +34,14 @@ func NewCoupon(ctx *gin.Context) {
 	response.OK("NewCoupon success", nil, ctx)
 }
 
-// 删除折扣
+// DeleteCoupon
+// @Tags [admin api] coupon
+// @Summary 删除折扣
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Coupon true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/coupon/deleteCoupon [delete]
 func DeleteCoupon(ctx *gin.Context) {
 	var coupon model.Coupon
 	err := ctx.ShouldBind(&coupon)
@@ -45,7 +59,14 @@ func DeleteCoupon(ctx *gin.Context) {
 	response.OK("DeleteCoupon success", nil, ctx)
 }
 
-// 更新折扣
+// UpdateCoupon
+// @Tags [admin api] coupon
+// @Summary 更新折扣
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Coupon true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/coupon/updateCoupon [post]
 func UpdateCoupon(ctx *gin.Context) {
 	var coupon model.Coupon
 	err := ctx.ShouldBind(&coupon)
@@ -63,7 +84,13 @@ func UpdateCoupon(ctx *gin.Context) {
 	response.OK("UpdateCoupon success", nil, ctx)
 }
 
-// 获取折扣列表
+// GetCouponList
+// @Tags [admin api] coupon
+// @Summary 获取折扣列表
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/coupon/getCouponList [post]
 func GetCouponList(ctx *gin.Context) {
 	res, err := service.AdminCouponSvc.GetCouponList()
 	if err != nil {

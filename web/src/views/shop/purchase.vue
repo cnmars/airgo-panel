@@ -441,7 +441,7 @@ const getOrderInfoWaitPay = (timer: NodeJS.Timeout, i: number) => {
 const nextSubmitOrder = () => {
   state.isShowLoading = true;
   shopStoreData.currentOrder.value.id = 0;
-  request(apiStoreData.userApi.value.preCreatePay, shopStoreData.currentOrder.value).then((res) => {
+  request(apiStoreData.userApi.value.preCreateOrder, shopStoreData.currentOrder.value).then((res) => {
     //保存订单信息到pinia
     shopStoreData.currentOrder.value = res.data;
     //

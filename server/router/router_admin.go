@@ -23,7 +23,7 @@ func (g *GinRouter) InitAdminRouter(r *gin.RouterGroup) {
 	{
 		customerServiceAdminRouter.POST("/getCustomerServiceList", admin_api.GetCustomerServiceList)
 		customerServiceAdminRouter.POST("/updateCustomerService", admin_api.UpdateCustomerService)
-		customerServiceAdminRouter.POST("/deleteCustomerService", admin_api.DeleteCustomerService)
+		customerServiceAdminRouter.DELETE("/deleteCustomerService", admin_api.DeleteCustomerService)
 	}
 	// menu
 	menuAdminRouter := adminRouter.Group("/menu")
@@ -36,10 +36,10 @@ func (g *GinRouter) InitAdminRouter(r *gin.RouterGroup) {
 	//role
 	roleAdminRouter := adminRouter.Group("/role")
 	{
-		roleAdminRouter.POST("/newRole", admin_api.NewRole)         //添加role
-		roleAdminRouter.POST("/getRoleList", admin_api.GetRoleList) //获取role list
-		roleAdminRouter.POST("/updateRole", admin_api.UpdateRole)   //更新role
-		roleAdminRouter.DELETE("/delRole", admin_api.DelRole)       //删除role
+		roleAdminRouter.POST("/newRole", admin_api.NewRole)        //添加role
+		roleAdminRouter.GET("/getRoleList", admin_api.GetRoleList) //获取role list
+		roleAdminRouter.POST("/updateRole", admin_api.UpdateRole)  //更新role
+		roleAdminRouter.DELETE("/delRole", admin_api.DelRole)      //删除role
 
 		roleAdminRouter.GET("/getAllPolicy", admin_api.GetAllPolicy)    //获取全部权限
 		roleAdminRouter.POST("/getPolicyByID", admin_api.GetPolicyByID) //获取用户权限

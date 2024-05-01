@@ -10,6 +10,13 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// GetCustomerServiceList
+// @Tags [customer api] customer service
+// @Summary 获取服务列表
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/customerService/getCustomerServiceList [get]
 func GetCustomerServiceList(ctx *gin.Context) {
 	uID, _ := api.GetUserIDFromGinContext(ctx)
 	csArr, err := service.CustomerServiceSvc.GetCustomerServiceList(&model.CustomerService{UserID: uID, ServiceStatus: true})
@@ -19,6 +26,15 @@ func GetCustomerServiceList(ctx *gin.Context) {
 	}
 	response.OK("Success", csArr, ctx)
 }
+
+// ResetSubscribeUUID
+// @Tags [customer api] customer service
+// @Summary 重置订阅uuid
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.CustomerService true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/customerService/resetSubscribeUUID [post]
 func ResetSubscribeUUID(ctx *gin.Context) {
 	var cs model.CustomerService
 	err := ctx.ShouldBind(&cs)
@@ -42,6 +58,15 @@ func ResetSubscribeUUID(ctx *gin.Context) {
 	}
 	response.OK("Success", nil, ctx)
 }
+
+// PushCustomerService
+// @Tags [customer api] customer service
+// @Summary push
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.PushCustomerServiceRequest true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/customerService/pushCustomerService [post]
 func PushCustomerService(ctx *gin.Context) {
 	var cs model.PushCustomerServiceRequest
 	err := ctx.ShouldBind(&cs)

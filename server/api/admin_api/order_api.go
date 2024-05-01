@@ -9,7 +9,14 @@ import (
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
-// 获取全部订单，分页获取
+// GetOrderList
+// @Tags [admin api] order
+// @Summary 获取全部订单，分页获取
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.QueryParams true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/order/getOrderList [post]
 func GetOrderList(ctx *gin.Context) {
 	var params model.QueryParams
 	err := ctx.ShouldBind(&params)
@@ -31,7 +38,14 @@ func GetOrderList(ctx *gin.Context) {
 
 }
 
-// 获取订单统计
+// OrderSummary
+// @Tags [admin api] order
+// @Summary 获取订单统计
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.QueryParams true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/order/orderSummary [post]
 func OrderSummary(ctx *gin.Context) {
 	var params model.QueryParams
 	err := ctx.ShouldBind(&params)
@@ -44,7 +58,14 @@ func OrderSummary(ctx *gin.Context) {
 	response.OK("OrderSummary success", res, ctx)
 }
 
-// 更新用户订单
+// UpdateOrder
+// @Tags [admin api] order
+// @Summary 更新用户订单
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Order true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/order/updateOrder [post]
 func UpdateOrder(ctx *gin.Context) {
 	var order model.Order
 	err := ctx.ShouldBind(&order)

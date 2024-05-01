@@ -14,6 +14,12 @@ import (
 	"time"
 )
 
+// GetBase64Captcha
+// @Tags [public api] code
+// @Summary 获取图片验证码
+// @Produce json
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/public/code/getBase64Captcha [get]
 func GetBase64Captcha(ctx *gin.Context) {
 	id, b64s, _, err := service.CaptchaSvc.Base64Captcha.Generate()
 	if err != nil {
@@ -28,6 +34,12 @@ func GetBase64Captcha(ctx *gin.Context) {
 
 }
 
+// GetEmailCode
+// @Tags [public api] code
+// @Summary 获取邮箱验证码
+// @Produce json
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/public/code/getEmailCode [post]
 func GetEmailCode(ctx *gin.Context) {
 	var e model.EmailRequest
 	err := ctx.ShouldBind(&e)
@@ -89,7 +101,14 @@ func SendEmailCode(ctx *gin.Context, e *model.EmailRequest, keyPre string) {
 	return
 }
 
-// 获取订阅
+// GetSub
+// @Tags [public api] sub
+// @Summary 获取订阅
+// @Produce json
+// @Param id path string true "订阅id"
+// @Param type query string true "客户端类型"
+// @Success 200 {object} string "请求成功"
+// @Router /api/public/sub/{id} [get]
 func GetSub(ctx *gin.Context) {
 	//Shadowrocket/2070 CFNetwork/1325.0.1 Darwin/21.1.0
 	//ClashMetaForAndroid/2.8.9.Meta

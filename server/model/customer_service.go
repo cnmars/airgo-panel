@@ -16,8 +16,8 @@ type CustomerService struct {
 	UserName string `json:"user_name"    gorm:"comment:用户名"`
 	//
 	ServiceStatus  bool      `json:"service_status"   gorm:"comment:服务是否有效"`
-	ServiceStartAt time.Time `json:"service_start_at" gorm:"comment:服务开始时间"`
-	ServiceEndAt   time.Time `json:"service_end_at"   gorm:"comment:服务结束时间"`
+	ServiceStartAt time.Time `json:"service_start_at" gorm:"comment:服务开始时间;default:null"`
+	ServiceEndAt   time.Time `json:"service_end_at"   gorm:"comment:服务结束时间;default:null"`
 	// 续费参数
 	IsRenew       bool   `json:"is_renew"         gorm:"comment:是否可续费"`
 	RenewalAmount string `json:"renewal_amount"   gorm:"comment:续费金额"`

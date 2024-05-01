@@ -100,8 +100,8 @@ export const useUserStore = defineStore('userStore', {
         async setUserNotice() {
             return  request(apiStore.userApi.setUserNotice, this.userInfos)
         },
-        async clockin(){
-            return  await request(apiStore.userApi.clockin)
+        async clockIn(){
+            return  await request(apiStore.userApi.clockIn)
         }
     },
 });

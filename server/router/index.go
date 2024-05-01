@@ -4,9 +4,12 @@ import (
 	"crypto/tls"
 	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
+	"github.com/ppoonk/AirGo/docs"
 	"github.com/ppoonk/AirGo/global"
 	middleware "github.com/ppoonk/AirGo/router/middleware"
 	"github.com/ppoonk/AirGo/web"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"io"
 	"os"
 	"strconv"
@@ -21,10 +24,6 @@ func NewGinRouter() *GinRouter {
 	return &GinRouter{Router: nil}
 }
 
-var Server = &GinRouter{
-	Router: nil,
-}
-
 func (g *GinRouter) InitRouter() {
 	gin.SetMode(gin.ReleaseMode)
 	var writer io.Writer
@@ -35,20 +34,27 @@ func (g *GinRouter) InitRouter() {
 	}
 	gin.DefaultWriter = writer
 	g.Router = gin.Default()
-	// targetPtah=web 是embed和web文件夹的相对路径
-	g.Router.Use(middleware.Serve("/", middleware.EmbedFolder(web.Static, "web")))
-	g.Router.Use(middleware.Cors(), middleware.Recovery())
 
-	//api路由
+	// 静态资源路由，以 / 开头，且不是 /api 开头的，都被当成静态资源，静态资源目录为 项目/server/web/web
+	if global.Config.SystemParams.EnableAssetsApi {
+		// targetPtah=web 是embed和web文件夹的相对路径
+		g.Router.Use(middleware.Serve("/", middleware.EmbedFolder(web.Static, "web")))
+		g.Router.Use(middleware.Cors(), middleware.Recovery())
+	}
+
+	// 业务api路由组
 	apiRouter := g.Router.Group("/api")
 
-	//swagger 路由
-	//docs.SwaggerInfo.BasePath = ""
-	//swaggerRouter := RouterGroup.Group("/swagger").Use(middleware.ParseJwt(), middleware.Casbin())
-	//{
-	//	swaggerRouter.GET("/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	//}
-	//注册路由
+	// swagger 路由 例如：http://localhost:8899/api/swagger/index.html
+	if global.Config.SystemParams.EnableSwaggerApi {
+		docs.SwaggerInfo.BasePath = ""
+		swaggerRouter := apiRouter.Group("/swagger")
+		{
+			swaggerRouter.GET("/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+		}
+	}
+
+	// 注册业务路由
 	g.InitAdminRouter(apiRouter)
 	g.InitUserRouter(apiRouter)
 	g.InitPublicRouter(apiRouter)

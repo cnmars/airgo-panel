@@ -8,6 +8,14 @@ import (
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
+// DeleteTicket
+// @Tags [admin api] ticket
+// @Summary 删除工单
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Ticket true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/ticket/deleteTicket [delete]
 func DeleteTicket(ctx *gin.Context) {
 	var ticket model.Ticket
 	err := ctx.ShouldBind(&ticket)
@@ -24,6 +32,14 @@ func DeleteTicket(ctx *gin.Context) {
 
 }
 
+// UpdateTicket
+// @Tags [admin api] ticket
+// @Summary 更新工单
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Ticket true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/ticket/updateTicket [post]
 func UpdateTicket(ctx *gin.Context) {
 	var ticket model.Ticket
 	err := ctx.ShouldBind(&ticket)
@@ -40,6 +56,14 @@ func UpdateTicket(ctx *gin.Context) {
 
 }
 
+// GetTicketList
+// @Tags [admin api] ticket
+// @Summary 获取工单列表
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.QueryParams true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/ticket/getTicketList [post]
 func GetTicketList(ctx *gin.Context) {
 	var params model.QueryParams
 	err := ctx.ShouldBind(&params)
@@ -58,6 +82,14 @@ func GetTicketList(ctx *gin.Context) {
 	}, ctx)
 }
 
+// FirstTicket
+// @Tags [admin api] ticket
+// @Summary 获取工单
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Ticket true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/ticket/firstTicket [post]
 func FirstTicket(ctx *gin.Context) {
 	var params model.Ticket
 	err := ctx.ShouldBind(&params)
@@ -73,6 +105,15 @@ func FirstTicket(ctx *gin.Context) {
 	}
 	response.OK("FirstTicket success", ticket, ctx)
 }
+
+// SendTicketMessage
+// @Tags [admin api] ticket
+// @Summary 发送工单消息
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.TicketMessage true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/ticket/sendTicketMessage [post]
 func SendTicketMessage(ctx *gin.Context) {
 	var msg model.TicketMessage
 	err := ctx.ShouldBind(&msg)

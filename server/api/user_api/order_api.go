@@ -12,7 +12,14 @@ import (
 	"time"
 )
 
-// 获取用户订单by user id
+// GetOrderList
+// @Tags [customer api] order
+// @Summary 获取用户订单
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.QueryParams true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/order/getOrderList [post]
 func GetOrderList(ctx *gin.Context) {
 	var params model.QueryParams
 	err := ctx.ShouldBind(&params)
@@ -34,7 +41,14 @@ func GetOrderList(ctx *gin.Context) {
 	response.OK("GetOrderList success", res, ctx)
 }
 
-// 获取订单详情（计算价格等）
+// GetOrderInfo
+// @Tags [customer api] order
+// @Summary 获取订单详情
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Order true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/order/getOrderInfo [post]
 func GetOrderInfo(ctx *gin.Context) {
 	orderReq, err := OrderRequestHandler(ctx)
 	if err != nil {
@@ -54,7 +68,14 @@ func GetOrderInfo(ctx *gin.Context) {
 	response.OK("GetOrderInfo success", preOrder, ctx)
 }
 
-// 订单预创建，生成系统订单（提交订单）
+// PreCreateOrder
+// @Tags [customer api] order
+// @Summary 订单预创建，生成系统订单（提交订单）
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Order true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/order/preCreateOrder [post]
 func PreCreateOrder(ctx *gin.Context) {
 	// 1、订单请求预处理
 	orderReq, err := OrderRequestHandler(ctx)
@@ -100,6 +121,7 @@ func PreCreateOrder(ctx *gin.Context) {
 	}
 	response.OK("PreCreateOrder success", preOrder, ctx)
 }
+
 func OrderRequestHandler(ctx *gin.Context) (*model.Order, error) {
 	//
 	var orderReq model.Order
@@ -114,6 +136,15 @@ func OrderRequestHandler(ctx *gin.Context) (*model.Order, error) {
 	orderReq.UserName = uName
 	return &orderReq, nil
 }
+
+// GetOrderInfoWaitPay
+// @Tags [customer api] order
+// @Summary 获取待付款订单）
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Order true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/order/getOrderInfoWaitPay [post]
 func GetOrderInfoWaitPay(ctx *gin.Context) {
 	orderRequest, err := OrderRequestHandler(ctx)
 

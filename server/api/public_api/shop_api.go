@@ -9,7 +9,14 @@ import (
 	"github.com/smartwalle/alipay/v3"
 )
 
-// 易支付异步回调
+// EpayNotify
+// @Tags [public api] shop
+// @Summary 易支付异步回调
+// @Produce json
+// @Param data body model.EpayResultResponse true "参数"
+// @Success 200 {object} string "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Failure 400 "请求错误"
+// @Router /api/public/shop/epayNotify [get]
 func EpayNotify(ctx *gin.Context) {
 	var epayRes model.EpayResultResponse
 	err := ctx.ShouldBindQuery(&epayRes)
@@ -46,7 +53,11 @@ func EpayNotify(ctx *gin.Context) {
 }
 
 // AlipayNotify
-// 支付宝异步回调
+// @Tags [public api] shop
+// @Summary 支付宝异步回调
+// @Produce json
+// @Failure 400 "请求错误"
+// @Router /api/public/shop/alipayNotify [post]
 func AlipayNotify(ctx *gin.Context) {
 	err := ctx.Request.ParseForm()
 	if err != nil {

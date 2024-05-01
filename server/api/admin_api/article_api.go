@@ -9,7 +9,14 @@ import (
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
-// 新建文章
+// NewArticle
+// @Tags [admin api] article
+// @Summary 新建文章
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Article true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/article/newArticle [post]
 func NewArticle(ctx *gin.Context) {
 	var article model.Article
 	err := ctx.ShouldBind(&article)
@@ -28,7 +35,14 @@ func NewArticle(ctx *gin.Context) {
 	response.OK("NewArticle success", nil, ctx)
 }
 
-// 删除文章
+// DeleteArticle
+// @Tags [admin api] article
+// @Summary 删除文章
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Article true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/article/deleteArticle [delete]
 func DeleteArticle(ctx *gin.Context) {
 	var article model.Article
 	err := ctx.ShouldBind(&article)
@@ -46,7 +60,14 @@ func DeleteArticle(ctx *gin.Context) {
 	response.OK("DeleteArticle success", nil, ctx)
 }
 
-// 更新文章
+// UpdateArticle
+// @Tags [admin api] article
+// @Summary 更新文章
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Article true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/article/updateArticle [post]
 func UpdateArticle(ctx *gin.Context) {
 	var article model.Article
 	err := ctx.ShouldBind(&article)
@@ -67,7 +88,14 @@ func UpdateArticle(ctx *gin.Context) {
 
 }
 
-// 获取文章
+// GetArticleList
+// @Tags [admin api] article
+// @Summary 获取文章列表
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.QueryParams true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/article/getArticleList [post]
 func GetArticleList(ctx *gin.Context) {
 	var params model.QueryParams
 	err := ctx.ShouldBind(&params)

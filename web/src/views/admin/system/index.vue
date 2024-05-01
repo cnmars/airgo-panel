@@ -49,6 +49,12 @@
                          :inactive-text="$t('message.common.disable')"
                          style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"></el-switch>
             </el-form-item>
+            <el-form-item :label="$t('message.adminServer.Server.enable_base64_captcha')" >
+              <el-switch v-model="serverConfig.serverConfig.value.website.enable_base64_captcha" inline-prompt
+                         :active-text="$t('message.common.enable')"
+                         :inactive-text="$t('message.common.disable')"
+                         style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"></el-switch>
+            </el-form-item>
             <el-divider></el-divider>
             <el-form-item :label="$t('message.adminServer.Server.frontend_url')" >
               <el-input v-model="serverConfig.serverConfig.value.website.frontend_url" placeholder="http://xxx.com" />

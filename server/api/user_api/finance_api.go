@@ -11,6 +11,14 @@ import (
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
+// GetBalanceStatementList
+// @Tags [customer api] finance
+// @Summary 获取余额流水
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.QueryParams true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/finance/getBalanceStatementList [post]
 func GetBalanceStatementList(ctx *gin.Context) {
 	var params model.QueryParams
 	err := ctx.ShouldBind(&params)
@@ -44,6 +52,14 @@ func GetBalanceStatementList(ctx *gin.Context) {
 	response.OK("GetBalanceStatementList success", data, ctx)
 }
 
+// GetCommissionStatementList
+// @Tags [customer api] finance
+// @Summary 获取佣金流水
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.QueryParams true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/finance/getCommissionStatementList [post]
 func GetCommissionStatementList(ctx *gin.Context) {
 	var params model.QueryParams
 	err := ctx.ShouldBind(&params)
@@ -76,6 +92,13 @@ func GetCommissionStatementList(ctx *gin.Context) {
 	response.OK("GetCommissionStatementList success", data, ctx)
 }
 
+// WithdrawToBalance
+// @Tags [customer api] finance
+// @Summary 提现
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/finance/withdrawToBalance [get]
 func WithdrawToBalance(ctx *gin.Context) {
 	uIDInt, ok := api.GetUserIDFromGinContext(ctx)
 	if !ok {
@@ -91,6 +114,13 @@ func WithdrawToBalance(ctx *gin.Context) {
 	response.OK("WithdrawToBalance success", nil, ctx)
 }
 
+// GetCommissionSummary
+// @Tags [customer api] finance
+// @Summary 获取佣金统计
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/finance/getCommissionSummary [get]
 func GetCommissionSummary(ctx *gin.Context) {
 	uIDInt, ok := api.GetUserIDFromGinContext(ctx)
 	if !ok {
@@ -107,6 +137,14 @@ func GetCommissionSummary(ctx *gin.Context) {
 
 }
 
+// GetInvitationUserList
+// @Tags [customer api] finance
+// @Summary 获取邀请人数
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.QueryParams true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/finance/getInvitationUserList [post]
 func GetInvitationUserList(ctx *gin.Context) {
 	var params model.QueryParams
 	err := ctx.ShouldBind(&params)

@@ -11,7 +11,13 @@ import (
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
-// 获取自身信息
+// GetUserInfo
+// @Tags [customer api] user
+// @Summary 获取自身信息
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/user/getUserInfo [get]
 func GetUserInfo(ctx *gin.Context) {
 	uIDInt, ok := api.GetUserIDFromGinContext(ctx)
 	if !ok {
@@ -28,7 +34,14 @@ func GetUserInfo(ctx *gin.Context) {
 	response.OK("GetUserInfo success", user, ctx)
 }
 
-// 修改密码
+// ChangeUserPassword
+// @Tags [customer api] user
+// @Summary 修改密码
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.UserChangePasswordRequest true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/user/changeUserPassword [post]
 func ChangeUserPassword(ctx *gin.Context) {
 	uIDInt, ok := api.GetUserIDFromGinContext(ctx)
 	if !ok {
@@ -57,7 +70,14 @@ func ChangeUserPassword(ctx *gin.Context) {
 	response.OK("ChangeUserPassword success", nil, ctx)
 }
 
-// 修改头像
+// ChangeUserAvatar
+// @Tags [customer api] user
+// @Summary 修改头像
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.UserChangeAvatarRequest true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/user/changeUserAvatar [post]
 func ChangeUserAvatar(ctx *gin.Context) {
 	uIDInt, ok := api.GetUserIDFromGinContext(ctx)
 	if !ok {
@@ -82,7 +102,13 @@ func ChangeUserAvatar(ctx *gin.Context) {
 	response.OK("ChangeUserAvatar success", nil, ctx)
 }
 
-// 打卡
+// ClockIn
+// @Tags [customer api] user
+// @Summary 打卡
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/user/clockIn [get]
 func ClockIn(ctx *gin.Context) {
 	uIDInt, ok := api.GetUserIDFromGinContext(ctx)
 	if !ok {
@@ -101,6 +127,15 @@ func ClockIn(ctx *gin.Context) {
 	}, ctx)
 
 }
+
+// SetUserNotice
+// @Tags [customer api] user
+// @Summary 设置用户通知
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.User true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/user/setUserNotice [post]
 func SetUserNotice(ctx *gin.Context) {
 	uIDInt, ok := api.GetUserIDFromGinContext(ctx)
 	if !ok {

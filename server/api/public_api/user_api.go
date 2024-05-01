@@ -14,7 +14,13 @@ import (
 	"time"
 )
 
-// 用户注册
+// Register
+// @Tags [public api] user
+// @Summary 用户注册
+// @Produce json
+// @Param data body model.UserRegister true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/public/user/register [post]
 func Register(ctx *gin.Context) {
 	if !global.Server.Website.EnableRegister {
 		response.Fail("Registration closed", nil, ctx)
@@ -33,9 +39,11 @@ func Register(ctx *gin.Context) {
 		response.Fail("The suffix name of this email is not supported!", nil, ctx)
 	}
 	//处理base64Captcha
-	if !service.CaptchaSvc.Base64CaptchaStore.Verify(u.Base64Captcha.ID, u.Base64Captcha.B64s, true) {
-		response.Fail("Base64Captcha Verification code error,please try again!", nil, ctx) //验证错校验失败会清除store中的value，需要前端重新获取
-		return
+	if global.Server.Website.EnableBase64Captcha {
+		if !service.CaptchaSvc.Base64CaptchaStore.Verify(u.Base64Captcha.ID, u.Base64Captcha.B64s, true) {
+			response.Fail("Base64Captcha Verification code error,please try again!", nil, ctx) //验证错校验失败会清除store中的value，需要前端重新获取
+			return
+		}
 	}
 	//处理邮箱验证码
 	if global.Server.Website.EnableEmailCode {
@@ -98,7 +106,13 @@ func Register(ctx *gin.Context) {
 	response.OK("Register success", nil, ctx)
 }
 
-// 用户登录
+// Login
+// @Tags [public api] user
+// @Summary 用户登录
+// @Produce json
+// @Param data body model.UserLoginRequest true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/public/user/login [post]
 func Login(c *gin.Context) {
 	var l model.UserLoginRequest
 	err := c.ShouldBind(&l)
@@ -122,7 +136,13 @@ func Login(c *gin.Context) {
 	}, c)
 }
 
-// 重置密码
+// ResetUserPassword
+// @Tags [public api] user
+// @Summary 重置密码
+// @Produce json
+// @Param data body model.UserLoginRequest true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/public/user/resetUserPassword [post]
 func ResetUserPassword(ctx *gin.Context) {
 	var u model.UserLoginRequest
 	err := ctx.ShouldBind(&u)

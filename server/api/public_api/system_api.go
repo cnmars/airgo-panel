@@ -9,7 +9,12 @@ import (
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
-// 主题配置
+// GetThemeConfig
+// @Tags [public api] server
+// @Summary 获取主题
+// @Produce json
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/public/server/getThemeConfig [get]
 func GetThemeConfig(ctx *gin.Context) {
 	if cache, ok := global.LocalCache.Get(constant.CACHE_THEME); ok {
 		response.OK("GetThemeConfig success", cache, ctx)
@@ -25,11 +30,17 @@ func GetThemeConfig(ctx *gin.Context) {
 
 }
 
-// 获取公共系统设置
+// GetPublicSetting
+// @Tags [public api] server
+// @Summary 获取公共系统设置
+// @Produce json
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/public/server/getPublicSetting [get]
 func GetPublicSetting(ctx *gin.Context) {
 	var ps = model.PublicSystem{
 		EnableRegister:          global.Server.Website.EnableRegister,
 		AcceptableEmailSuffixes: global.Server.Website.AcceptableEmailSuffixes,
+		EnableBase64Captcha:     global.Server.Website.EnableBase64Captcha,
 		EnableEmailCode:         global.Server.Website.EnableEmailCode,
 		EnableLoginEmailCode:    global.Server.Website.EnableLoginEmailCode,
 		BackendUrl:              global.Server.Subscribe.BackendUrl,

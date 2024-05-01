@@ -15,6 +15,7 @@ export const usePublicStore = defineStore('publicStore', {
         } as Base64CaptchaInfo,
         publicSetting:{
             enable_register: true,          // 是否开启注册
+            enable_base64_captcha:true, //是否开启注册图片验证码
             enable_email_code: false,       //是否开启注册邮箱验证码
             enable_login_email_code: false, //是否开启登录邮箱验证码
             acceptable_email_suffixes: '', //可接受的邮箱后缀

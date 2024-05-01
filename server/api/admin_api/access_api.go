@@ -9,6 +9,14 @@ import (
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
+// NewAccessRoutes
+// @Tags [admin api] access
+// @Summary 新建访问控制
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Access true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/access/newAccess [post]
 func NewAccessRoutes(ctx *gin.Context) {
 	var acc model.Access
 	err := ctx.ShouldBind(&acc)
@@ -27,7 +35,14 @@ func NewAccessRoutes(ctx *gin.Context) {
 
 }
 
-// 修改路由控制
+// UpdateAccessRoutes
+// @Tags [admin api] access
+// @Summary 修改路由控制
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Access true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/access/updateAccess [post]
 func UpdateAccessRoutes(ctx *gin.Context) {
 	var acc model.Access
 	err := ctx.ShouldBind(&acc)
@@ -46,7 +61,14 @@ func UpdateAccessRoutes(ctx *gin.Context) {
 
 }
 
-// 删除路由控制
+// DeleteAccessRoutes
+// @Tags [admin api] access
+// @Summary 删除访问控制
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Access true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/access/deleteAccess [delete]
 func DeleteAccessRoutes(ctx *gin.Context) {
 	var acc model.Access
 	err := ctx.ShouldBind(&acc)
@@ -65,7 +87,14 @@ func DeleteAccessRoutes(ctx *gin.Context) {
 
 }
 
-// 查询路由控制列表
+// GetAccessRoutesList
+// @Tags [admin api] access
+// @Summary 查询路由控制列表
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.QueryParams true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/access/getAccessList [post]
 func GetAccessRoutesList(ctx *gin.Context) {
 	var p model.QueryParams
 	err := ctx.ShouldBind(&p)

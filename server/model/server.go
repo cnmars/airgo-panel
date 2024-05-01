@@ -70,6 +70,7 @@ type RateLimitParams struct {
 type Website struct {
 	EnableRegister          bool   `json:"enable_register"           gorm:"default:true;comment:是否开启注册"`
 	AcceptableEmailSuffixes string `json:"acceptable_email_suffixes" gorm:"comment:可接受的邮箱后缀"`
+	EnableBase64Captcha     bool   `json:"enable_base64_captcha"    gorm:"default:true;comment:是否开启注册图片验证码"`
 	EnableEmailCode         bool   `json:"enable_email_code"         gorm:"default:false;comment:是否开启注册email 验证码"`
 	EnableLoginEmailCode    bool   `json:"enable_login_email_code"   gorm:"default:false;comment:是否开启登录email 验证码"`
 	IsMultipoint            bool   `json:"is_multipoint"     gorm:"default:true;comment:是否多点登录"`
@@ -94,6 +95,7 @@ type Finance struct {
 type PublicSystem struct {
 	EnableRegister          bool    `json:"enable_register"`           // 是否开启注册
 	AcceptableEmailSuffixes string  `json:"acceptable_email_suffixes"` // 可接受的邮箱后缀
+	EnableBase64Captcha     bool    `json:"enable_base64_captcha"`     // 是否开启注册图片验证码
 	EnableEmailCode         bool    `json:"enable_email_code"`         // 是否开启注册email 验证码
 	EnableLoginEmailCode    bool    `json:"enable_login_email_code"`   // 是否开启登录email 验证码
 	BackendUrl              string  `json:"backend_url"`               // 后端地址

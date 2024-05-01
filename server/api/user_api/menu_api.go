@@ -11,7 +11,13 @@ import (
 	"time"
 )
 
-// 获取用户动态路由
+// GetMenuList
+// @Tags [customer api] menu
+// @Summary 获取用户菜单
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/menu/getMenuList [get]
 func GetMenuList(ctx *gin.Context) {
 	uIdInt, _ := api.GetUserIDFromGinContext(ctx)
 	//查cache

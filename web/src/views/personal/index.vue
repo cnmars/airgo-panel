@@ -196,7 +196,7 @@ const setJackpot=()=>{
 //开始抽奖
 const startCallback =() =>{
   // 调用抽奖组件的play方法开始游戏
-  userStore.clockin().then((res)=>{
+  userStore.clockIn().then((res)=>{
     myLuckyRef.value.play()
     const index = res.data.data //res.data 格式： {"total":1,"data":1}
     myLuckyRef.value.stop(index)

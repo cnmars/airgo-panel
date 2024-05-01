@@ -9,7 +9,14 @@ import (
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
-// 支付主逻辑
+// Purchase
+// @Tags [customer api] shop
+// @Summary 支付主逻辑
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Order true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/shop/purchase [post]
 func Purchase(ctx *gin.Context) {
 	// 前端传的订单信息
 	var orderRequest model.Order
@@ -41,7 +48,14 @@ func Purchase(ctx *gin.Context) {
 	response.OK("success", orderResult, ctx)
 }
 
-// 查询已启用商品列表
+// GetEnabledGoodsList
+// @Tags [customer api] shop
+// @Summary 查询已启用商品列表
+// @Produce json
+// @Param Authorization header string true "Bearer 用户token"
+// @Param goods_type query string true "商品类型"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/customer/shop/getEnabledGoodsList [get]
 func GetEnabledGoodsList(ctx *gin.Context) {
 	//获取查询参数
 	goods_type, ok := ctx.GetQuery("goods_type")

@@ -9,7 +9,13 @@ import (
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
-// 查询全部商品
+// GetGoodsList
+// @Tags [admin api] shop
+// @Summary 查询全部商品
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/shop/getGoodsList [get]
 func GetGoodsList(ctx *gin.Context) {
 	goodsArr, err := service.AdminShopSvc.GetGoodsList()
 	if err != nil {
@@ -21,7 +27,14 @@ func GetGoodsList(ctx *gin.Context) {
 
 }
 
-// 新建商品
+// NewGoods
+// @Tags [admin api] shop
+// @Summary 新建商品
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Goods true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/shop/newGoods [post]
 func NewGoods(ctx *gin.Context) {
 	var goods model.Goods
 	err := ctx.ShouldBind(&goods)
@@ -54,7 +67,14 @@ func NewGoods(ctx *gin.Context) {
 	response.OK("NewGoods success", nil, ctx)
 }
 
-// 删除商品
+// DeleteGoods
+// @Tags [admin api] shop
+// @Summary 删除商品
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Goods true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/shop/deleteGoods [delete]
 func DeleteGoods(ctx *gin.Context) {
 	var goods model.Goods
 	err := ctx.ShouldBind(&goods)
@@ -76,7 +96,14 @@ func DeleteGoods(ctx *gin.Context) {
 
 }
 
-// 更新商品
+// UpdateGoods
+// @Tags [admin api] shop
+// @Summary 更新商品
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Goods true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/shop/updateGoods [post]
 func UpdateGoods(ctx *gin.Context) {
 	var goods model.Goods
 	err := ctx.ShouldBind(&goods)
@@ -94,7 +121,14 @@ func UpdateGoods(ctx *gin.Context) {
 	response.OK("UpdateGoods success", nil, ctx)
 }
 
-// 排序
+// GoodsSort
+// @Tags [admin api] shop
+// @Summary 商品排序
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body []model.Goods true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/shop/goodsSort [post]
 func GoodsSort(ctx *gin.Context) {
 	var arr []model.Goods
 	err := ctx.ShouldBind(&arr)

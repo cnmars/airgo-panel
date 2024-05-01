@@ -9,7 +9,13 @@ import (
 	"github.com/ppoonk/AirGo/utils/response"
 )
 
-// 获取全部支付列表
+// GetPayList
+// @Tags [admin api] pay
+// @Summary 获取全部支付列表
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/pay/getPayList [get]
 func GetPayList(ctx *gin.Context) {
 	list, _, err := service.CommonSqlFind[model.Pay, string, []model.Pay]("")
 	if err != nil {
@@ -21,7 +27,14 @@ func GetPayList(ctx *gin.Context) {
 
 }
 
-// 新建支付
+// NewPay
+// @Tags [admin api] pay
+// @Summary 新建支付
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Pay true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/pay/newPay [post]
 func NewPay(ctx *gin.Context) {
 	var receivePay model.Pay
 	err := ctx.ShouldBind(&receivePay)
@@ -40,7 +53,14 @@ func NewPay(ctx *gin.Context) {
 
 }
 
-// 删除支付
+// DeletePay
+// @Tags [admin api] pay
+// @Summary 删除支付
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Pay true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/pay/deletePay [delete]
 func DeletePay(ctx *gin.Context) {
 	var receivePay model.Pay
 	err := ctx.ShouldBind(&receivePay)
@@ -59,7 +79,14 @@ func DeletePay(ctx *gin.Context) {
 
 }
 
-// 修改支付
+// UpdatePay
+// @Tags [admin api] pay
+// @Summary 修改支付
+// @Produce json
+// @Param Authorization header string false "Bearer 用户token"
+// @Param data body model.Pay true "参数"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Router /api/admin/pay/updatePay [post]
 func UpdatePay(ctx *gin.Context) {
 	var receivePay model.Pay
 	err := ctx.ShouldBind(&receivePay)

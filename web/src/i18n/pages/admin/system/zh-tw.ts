@@ -27,6 +27,7 @@ export default {
       upgrade_warning:"陞級有風險，請做好資料備份!",
 
       enable_register: "啟用注册",
+      enable_base64_captcha:"启用注册图片验证码",
       enable_email_code: "啟用注册驗證碼",
       enable_login_email_code: "啟用登入驗證碼",
       acceptable_email_suffixes: "合法郵箱尾碼",
