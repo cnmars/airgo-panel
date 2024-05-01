@@ -3,13 +3,14 @@ package service
 import (
 	"errors"
 	"fmt"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/ppoonk/AirGo/constant"
 	"github.com/ppoonk/AirGo/global"
 	"github.com/ppoonk/AirGo/model"
 	"gorm.io/gorm"
-	"strconv"
-	"strings"
-	"time"
 )
 
 type Order struct {
@@ -508,12 +509,13 @@ func (o *Order) OrderTimeout(k string, v any) {
 	}
 }
 
+// 查询计算总消费
 func (o *Order) GetUserTotalConsumptionAmount(uID int64) (float64, error) {
 	var list []model.Order
 	var totalConsumption float64
 	err := global.DB.
 		Model(&model.Order{}).
-		Where("user_id = ? AND pay_type in ?", uID, []string{constant.PAY_TYPE_ALIPAY, constant.PAY_TYPE_EPAY}).
+		Where("user_id = ? AND pay_type in ? AND trade_status = ?", uID, []string{constant.PAY_TYPE_ALIPAY, constant.PAY_TYPE_EPAY, constant.PAY_TYPE_BALANCE}, constant.ORDER_STATUS_TRADE_SUCCESS).
 		Select("total_amount").
 		Find(&list).Error
 	if err != nil {

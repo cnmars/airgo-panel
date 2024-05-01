@@ -31,8 +31,10 @@
       </el-col>
       <el-col :span="24">
         <el-card shadow="hover" class="mt15 personal-edit">
-          <el-divider content-position="left"><span>{{ $t("message.adminServer.Server.push_method") }}</span>
+          <div class="personal-edit-title">{{$t('message.personal.message_setting')}}</div>
+          <el-divider content-position="left"><span>{{ $t("message.personal.push_setting") }}</span>
           </el-divider>
+          <el-text class="mx-1">{{ $t("message.adminServer.Server.push_method") }} :</el-text>
           <el-form :model="userInfos" label-width="100px"
                    label-position="left">
             <el-form-item :label="$t('message.adminServer.Server.enable_tg_bot')" class="label">
@@ -74,7 +76,7 @@
       </el-col>
       <el-col :span="24">
         <el-card shadow="hover" class="mt15 personal-edit">
-          <div class="personal-edit-title">{{$t('message.personal.login_password')}}</div>
+          <div class="personal-edit-title">{{$t('message.personal.account_setting')}}</div>
           <div class="personal-edit-safe-box">
             <div class="personal-edit-safe-item">
               <div class="personal-edit-safe-item-left">

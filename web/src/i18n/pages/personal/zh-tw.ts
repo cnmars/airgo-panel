@@ -2,8 +2,11 @@ export default {
   personal:{
     personal_information:"個人資訊",
     notification_setting:"通知設定",
-    security_setting:"安全設置",
+    security_setting:"安全設定",
     financial_management:"財務管理",
+    message_setting:"通知設定",
+    push_setting:"推播",
+    account_setting:"帳戶設定",
     login_password:"登入密碼",
     balance:"用戶餘額",
     nickname:"昵稱",
