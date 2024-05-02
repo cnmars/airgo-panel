@@ -81,8 +81,11 @@ func (g *GinRouter) Start() {
 		w.Done()
 	}()
 	w.Wait()
+	
 	//syscall.SIGHUP 将触发重启; syscall.SIGINT, syscall.SIGTERM 并将触发服务器关闭（它将完成运行请求)。https://github.com/fvbock/endless
-	// TODO windows下使用endless报错：undefined: syscall.SIGUSR1
+	// windows下使用endless报错：undefined: syscall.SIGUSR1
+	// 解决办法：https://github.com/golang/go/pull/51541/commits/1a70eff904944dde32213a27d3357c7380067fd0
+
 	global.Logrus.Info("Server stop")
 	os.Exit(0)
 }

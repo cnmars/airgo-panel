@@ -76,6 +76,6 @@ jobs:
           project_path: server
           binary_name: AirGo
           extra_files: LICENSE server/config.yaml
-          pre_command: export CGO_ENABLED=0
+          pre_command: bash ${GITHUB_WORKSPACE}/server/scripts/pre_command_actions.sh
           build_flags: -trimpath
           ldflags: -s -w
