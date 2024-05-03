@@ -1,13 +1,11 @@
 <template>
   <div>
     <el-dialog v-model="state.isShowDialog" width="90%" destroy-on-close>
-      <el-card>
         <div class="home-container layout-pd">
           <div class="home-card-item" style="height: 200px">
             <div style="height: 100%" ref="homeLineRef"></div>
           </div>
         </div>
-      </el-card>
     </el-dialog>
   </div>
 

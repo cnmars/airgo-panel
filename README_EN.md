@@ -12,7 +12,7 @@
 
 <hr/>
 
-Support：vless，vmess，shadowsocks，hysteria2
+Support protocols：vless，vmess，shadowsocks，hysteria2
 
 <hr/>
 
@@ -51,15 +51,17 @@ Support：vless，vmess，shadowsocks，hysteria2
 * [6 Update Panel](#6-update-panel)
   * [6-1 Update backend](#6-1-update-backend)
   * [6-2 Update front-end](#6-2-update-front-end)
-* [7 命令行](#7-命令行)
-* [8 开发](#8-开发)
+* [7 command](#7-command-line)
+* [8 develop](#8-develop)
 <!-- TOC -->
 
-TG Channel：[https://t.me/Air_Go](https://t.me/Air_Go)
+<br>
 
-TG group：[https://t.me/AirGo_Group](https://t.me/AirGo_Group)
+>TG Channel：[https://t.me/Air_Go](https://t.me/Air_Go)
+TG Group：[https://t.me/AirGo_Group](https://t.me/AirGo_Group)
+Last update date of document：2024.4.28
 
-Last update date of document：2024.4.8
+<br>
 
 # Display of panel functions
 
@@ -216,7 +218,7 @@ It is recommended to use `github codespaces` compilation as it will not install 
 
 ### 2-2-3 Set partial personalized data
 
-modify  `keywords`，`description`，`title`，`favicon.ico` in `./web/index.html`
+You can modify  `keywords`，`description`，`title`，`favicon.ico` in `./web/index.html` by your favorite
 
 
 

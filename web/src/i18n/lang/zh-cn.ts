@@ -56,7 +56,8 @@ export default {
     logOutMessage: "此操作将退出登录, 是否继续?",
     logOutConfirm: "确定",
     logOutCancel: "取消",
-    logOutExit: "退出中"
+    logOutExit: "退出中",
+    back:"返回",
   },
   tagsView: {
     refresh: "刷新",

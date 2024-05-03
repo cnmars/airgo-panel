@@ -12,7 +12,7 @@
 
 <hr/>
 
-支持：vless，vmess，shadowsocks，hysteria2
+Supported protocols：Vless，Vmess，shadowsocks，Hysteria2
 
 
 <div style="color: darkgray">AirGo, front and rear end separation, multi user, multi protocol proxy service management system, simple and easy to use.</div>
@@ -57,11 +57,13 @@
 * [8 开发](#8-开发)
 <!-- TOC -->
 
-TG频道：[https://t.me/Air_Go](https://t.me/Air_Go)
+<br>
 
+>TG频道：[https://t.me/Air_Go](https://t.me/Air_Go)
 TG群组：[https://t.me/AirGo_Group](https://t.me/AirGo_Group)
-
 文档上次更新日期：2024.4.8
+
+<br>
 
 # 面板部分功能展示
 
@@ -215,7 +217,7 @@ services:
 - 打包后的静态资源文件夹为 web，将web文件夹上传到服务器合适位置。新建网站（纯静态），网站位置选择该web文件夹
 
 ### 2-2-3 设置部分个性化数据
-修改`./web/index.html`中的 `keywords`，`description`，`title`，`favicon.ico` 等
+根据需要，可以自行修改`./web/index.html`中的 `keywords`（网站关键词），`description`（网站描述），`title`，（网站标题）`favicon.ico` （网站ico图标）等
 
 
 
@@ -362,11 +364,11 @@ services:
 # 7 命令行
 
 ```
-./AirGo help                    Help about any command
-./AirGo reset --resetAdmin      reset admin password
-./AirGo start                   start AirGo
-./AirGo update                  update AirGo
-./AirGo version                 show the version of AirGo
+./AirGo help                    获取帮助
+./AirGo reset --resetAdmin      重置admin password
+./AirGo start                   启动AirGo
+./AirGo update                  更新数据库相关AirGo数据
+./AirGo version                 查看AirGo的当前版本
 ```
 
 # 8 开发

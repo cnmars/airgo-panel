@@ -1,12 +1,20 @@
 export default {
   home: {
-    no_data:"暂无数据",
+    overview:"概览",
+    no_data:"暂无订阅",
+    my_invited:"我邀请的人数",
+    invite_url:"邀请链接",
+    ticketing_number:"进行中的工单数量",
+    my_subscribe:"我的订阅",
 
     button_push:"PUSH",
     button_details:"详情",
     button_renew:"续费",
-    button_resetSub:"重置订阅",
+    button_resetSub:"重置订阅地址",
     button_copySub:"复制订阅",
+    button_more:"更多",
+    button_openOneClickImport:"⚡一键订阅",
+    button_gotostore:"前往商店",
 
     des_start:"开始",
     des_end:"结束",
@@ -21,7 +29,7 @@ export default {
     downstream_traffic:"下行流量",
 
     target_username:"目标用户名",
-    message_confirm_reset_sub:"是否确认重置订阅?",
+    message_confirm_reset_sub:"是否确认重置订阅地址?",
     subscription:"订阅",
     selectSubPre:"选择订阅前缀",
   },

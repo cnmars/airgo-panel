@@ -43,3 +43,18 @@ func (t *Ticket) NewTicketMessage(msg *model.TicketMessage) error {
 		return tx.Create(&msg).Error
 	})
 }
+
+// 计算进行中的工单
+func (t *Ticket) GetUserTotalTicket(uID int64) (float64, error) {
+	var ticketing_count int64
+	err := global.DB.
+		Model(&model.Ticket{}).
+		Where("user_id = ? AND status = ?", uID, constant.TICKET_PROCESSING).Count(&ticketing_count).Error
+
+	if err != nil {
+		return 0, err
+	}
+	y := float64(ticketing_count)
+
+	return y, err
+}

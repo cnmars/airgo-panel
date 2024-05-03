@@ -1,16 +1,44 @@
 <template>
   <div class="personal layout-pd">
-    <div class="home-card-item" v-if="customerServiceStoreData.customerServiceList.value.length === 0">
-      <el-card>
-        <el-skeleton :rows="5" animated />
-        <h2>{{$t('message.home.no_data')}}</h2>
-      </el-card>
-    </div>
+    <h2 style="margin-left: 0.2em;margin-bottom: 0.7em; color: var(--el-text-color-primary);">{{$t('message.home.overview')}}</h2>
 
+    <el-card style="border-radius: 10px;margin-left: 0.2em;margin-right: 0.2em;word-break: break-all;">
+        <div style="margin-top: 10px;">
+        <el-row :gutter="0" align="top">
+          <el-col span="80" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+            <h3 style="font-size: large;margin-left: 0.2em;margin-right: 0.2em;margin-bottom: 2vh;"> {{ currentTime }} , {{ userInfos.nick_name }}：</h3>
+            <div></div>
+            <el-card style="margin-top: 0.5em; border-radius: 10px">
+              <i class="ri-group-3-line" style="font-size: 20px;"></i>
+              <el-text size="large" style="margin-left: 10px;">{{$t('message.home.my_invited')}} : {{ financeStoreData.commissionSummary.value.total_invitation }}          
+                 <el-button style="margin: 0.5em;font-size: 1em;width: auto;height: auto;"icon="CopyDocument"  round @click="copyText(state_invite.text);">{{$t('message.home.invite_url')}}</el-button>
+               </el-text>
+            </el-card>
+            <el-card style="margin-top: 1em;margin-bottom: 1em; border-radius: 10px">
+              <i class="ri-list-unordered" style="font-size: 20px;"></i>
+              <el-text size="large" style="margin-left: 10px;">{{ $t("message.ticket.total_ticket") }} : {{ ticketStoreData.userTicketList.value.total }}</el-text>
+              
+            </el-card>
+            <!--
+            <el-text size="large" style="margin-left:0.2em ;">自定义内容自定义内容自定义内容自定义内容自定义内容自定义内容自定义内容</el-text>-->
+          </el-col>
+        </el-row>
+        </div>
+    </el-card>
+
+    <el-divider />
+
+    <h2 style="margin-left: 0.2em;margin-bottom: 0.7em;color: var(--el-text-color-primary);">{{$t('message.home.my_subscribe')}}</h2>
+    <el-card style="border-radius: 10px;margin: 0.2em" v-if="customerServiceStoreData.customerServiceList.value.length === 0">
+        <el-skeleton :rows="2" animated />
+        <h2>{{$t('message.home.no_data')}}        <el-button style="margin: 0.5em;font-size: 0.8em;width: auto;height: auto;"icon="Link"  round @click="copyText(state_invite.text);">{{$t('message.home.button_gotostore')}}</el-button>
+</h2>
+
+    </el-card>
     <el-row :gutter="15">
       <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"
               v-for="(v, k) in customerServiceStoreData.customerServiceList.value" :key="k">
-        <div style="margin-bottom:20px;border-radius:10px;background: rgb(224,224,224,0.5);padding: 10px">
+         <el-card style="margin-left: 0.2em;margin-right: 0.2em;margin-bottom: 1em;border-radius: 10px;">
             <div style="text-align: right;color: #9b9da1;font-size: 10px">
               <span>ID: </span><span>{{v.id}}</span>
             </div>
@@ -41,22 +69,25 @@
                 <el-progress
                   :color="customColors"
                   striped
-                  striped-flow
+                   striped-flow
                   :text-inside="true" :stroke-width="16"
-                  :percentage="Number((((v.used_up + v.used_down)/v.total_bandwidth)*100).toFixed(2))">
+                  :percentage="Number((((v.used_up + v.used_down)/v.total_bandwidth)*100).toFixed(2)) ">
                 </el-progress>
               </el-descriptions-item>
             </el-descriptions>
           <div style="margin-top: 15px;margin-bottom: 10px;display: flex">
-            <el-button size="small" type="primary" @click="openSubDialog(v.sub_uuid)">{{$t('message.home.button_copySub')}}</el-button>
-            <el-button size="small" type="danger" @click="resetSubscribeUUID(v)">{{$t('message.home.button_resetSub')}}</el-button>
-            <el-button size="small" type="success" @click="renew(v)">{{$t('message.home.button_renew')}}</el-button>
+            <el-button size="small" type="primary" @click="openOneClickImport" round>{{$t('message.home.button_openOneClickImport')}}</el-button>
+            <el-button size="small" type="primary" @click="openSubDialog(v.sub_uuid)" round>{{$t('message.home.button_copySub')}}</el-button>
+            <el-button size="small" type="success" @click="renew(v)" round>{{$t('message.home.button_renew')}}</el-button>
             <el-dropdown style="margin-left: auto">
               <span class="el-dropdown-link">
-                <el-button>更多操作<el-icon class="el-icon--right"><arrow-down /></el-icon></el-button>
+                <el-button size="small" round>{{$t('message.home.button_more')}}<el-icon class="el-icon--right"><arrow-down /></el-icon></el-button>
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
+                  <el-dropdown-item command="e" divided>
+                  <el-button size="small" type="danger" @click="resetSubscribeUUID(v)">{{$t('message.home.button_resetSub')}}</el-button>
+                </el-dropdown-item>
                   <el-dropdown-item command="e" divided>
                     <el-button size="small" style="margin-bottom: 10px" type="primary" @click="openDialogCustomerServiceDetails(v.id)">{{$t('message.home.button_details')}}</el-button>
                   </el-dropdown-item>
@@ -67,11 +98,30 @@
               </template>
             </el-dropdown>
           </div>
-          <div>
-          </div>
-        </div>
+
+        </el-card>
       </el-col>
     </el-row>
+    <el-dialog v-model="state.isShowOneClickImport" title="⚡One-click import">
+      <div>
+        <div>
+             <el-text size="large">{{$t('message.home.selectSubPre')}}</el-text>
+             <el-select v-model="state.currentSubUrlPre">
+             <el-option
+               v-for="item in state.subUrlPre"
+                :key="item"
+                :label="item"
+               :value="item"
+              />
+              </el-select>
+         </div>
+          <el-button size="large" color="blue" style="width: 100%;margin-top:2vh" @click="ImportClash">一键导入 Clash Meta</el-button>
+
+          <!--
+          <el-button size="large" color="blue" style="width: 100%" @click="ImportNekoBox">一键导入 NekoBox</el-button>-->
+
+      </div>
+    </el-dialog>
     <!--    复制订阅弹窗-->
     <el-dialog v-model="state.isShowSubDialog" destroy-on-close>
       <div>
@@ -135,7 +185,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, defineAsyncComponent } from "vue";
+import { onMounted, reactive, ref, defineAsyncComponent,computed } from "vue";
 import { useApiStore } from "/@/stores/apiStore";
 import { DateStrToTime } from "/@/utils/formatTime";
 import commonFunction from "/@/utils/commonFunction";
@@ -149,6 +199,13 @@ import { useShopStore } from "/@/stores/user_logic/shopStore";
 import { useConstantStore } from "/@/stores/constantStore";
 import { useI18n } from "vue-i18n";
 import { useArticleStore } from "/@/stores/user_logic/articleStore";
+import { count } from "console";
+import { formatAxis } from "/@/utils/formatTime";
+import { useUserStore } from "/@/stores/user_logic/userStore";
+import { useFinanceStore } from "/@/stores/user_logic/financeStore";
+import { getCurrentAddress } from "/@/utils/request";
+import {useTicketStore} from "/@/stores/user_logic/ticketStore";
+
 
 const constantStore = useConstantStore()
 const shopStore = useShopStore()
@@ -172,6 +229,7 @@ const DialogCustomerServiceDetails = defineAsyncComponent(() => import("/@/views
 const DialogCustomerServiceDetailsRef = ref();
 // const format = (percentage) => (percentage === 100 ? 'Full' : `${percentage}%`)
 const state = reactive({
+  isShowOneClickImport:false,
   isShowSubDialog: false,
   isShowPushDialog: false,
   subType: ["NekoBox", "v2rayNG", "v2rayN", "Shadowrocket", "Clash", "Surge", "Quantumult", "V2rayU"],
@@ -194,6 +252,80 @@ const getCustomerServiceList = () => {
 const getPublicSetting = () => {
   publicStore.getPublicSetting();
 };
+const openOneClickImport = (subUUID: string) =>{
+  state.isShowOneClickImport = true;
+  state.subUrlPre = publicStoreData.publicSetting.value.backend_url.split('\n')
+  state.currentSubUrlPre = state.subUrlPre[0] //设置默认的订阅前缀
+  state.currentSubUUID = subUUID.replace(/-/g, "");
+
+}
+const ImportClash = () =>{
+  window.location.href = "clash://install-config?url=" + state.currentSubUrlPre + "/api/public/sub/" + state.currentSubUUID + "?type=Clash" 
+}
+const ImportNekoBox = () =>{
+  window.location.href = "clash://install-config?url=" + state.currentSubUrlPre + "/api/public/sub/" + state.currentSubUUID + "?type=" 
+
+}
+const currentTime = computed(() => {
+  return formatAxis(new Date());
+});
+const userStore = useUserStore();
+
+const { userInfos, } = storeToRefs(userStore);
+
+const financeStore = useFinanceStore()
+const financeStoreData = storeToRefs(financeStore)
+const getCommissionSummary=()=>{
+  financeStore.getCommissionSummary()
+}
+
+
+onMounted(()=>{
+  getCommissionSummary()
+  getUserTicketList()
+
+});
+
+const state_invite = reactive({
+  text: getCurrentAddress()+"/#/login?aff="+userInfos.value.invitation_code,
+  tabName: "1",
+  queryParams: {
+    table_name: "balance_statement",
+    pagination: {
+      page_num: 1, page_size: 30, order_by: "id DESC"
+    } as Pagination//分页参数
+  } as QueryParams,
+});
+
+const ticketStore = useTicketStore()
+const ticketStoreData = storeToRefs(ticketStore)
+
+
+
+
+const state_ticket = reactive({
+  isShowTicketDialog:false,
+  queryParams:{
+    table_name: 'ticket',
+    field_params_list: [
+      { field: 'id', field_chinese_name: '', field_type: '', condition: '<>', condition_value: '', operator: '', }
+    ] as FieldParams[],
+    pagination: { page_num: 1, page_size: 30, order_by: 'id DESC',
+    } as Pagination,//分页参数
+  },
+  
+})
+
+const getUserTicketList = () => {
+  ticketStore.getUserTicketList(state_ticket.queryParams)
+}
+
+
+
+
+
+
+
 const openSubDialog = (subUUID: string) => {
   state.isShowSubDialog = true;
   state.currentSubUUID = subUUID.replace(/-/g, "");
@@ -262,7 +394,7 @@ const defaultArticle=()=>{
   articleStore.getDefaultArticles().then(()=>{
     setTimeout(()=>{
       DefaultDialogRef.value.openDialog()
-    },2000)
+    },10000)
   })
 }
 
