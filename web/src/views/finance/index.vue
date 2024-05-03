@@ -1,6 +1,6 @@
 <template>
   <div class="personal layout-pd">
-      <div  style="margin-top: 10px;border-radius:10px;background: rgb(224,224,224,0.5);padding: 20px;">
+      <el-card style="border-radius:10px;padding: 10px">
         <el-row>
           <el-col :span="12">
             <el-row>
@@ -31,9 +31,9 @@
             </el-row>
           </el-col>
         </el-row>
-      </div>
+      </el-card>
 
-      <div style="margin-top: 10px;border-radius:10px;background: rgb(224,224,224,0.5);padding: 20px;">
+      <el-card style="margin-top: 10px;border-radius:10px;padding: 10px">
         <el-row>
           <el-col :span="12">
             <el-row>
@@ -95,16 +95,16 @@
             <el-button style="width: 150px;margin-right: 20px;" type="primary"
                        :disabled="Number(financeStoreData.commissionSummary.value.pending_withdrawal_amount) < pubicStoreData.publicSetting.value.withdraw_threshold "
                        @click="withdrawToBalance()">{{$t('message.finance.withdraw')}}</el-button>
-            <span style=";color: #9b9da1;font-size: 12px">{{$t('message.finance.withdraw_threshold')}}: >= {{pubicStoreData.publicSetting.value.withdraw_threshold}}</span>
+            <span style="color: #9b9da1;font-size: 12px">{{$t('message.finance.withdraw_threshold')}}: >= {{pubicStoreData.publicSetting.value.withdraw_threshold}}</span>
           </div>
           <div>
             <el-button  style="width: 150px;margin-right: 20px" type="primary" @click="copyText(state.text);">{{$t('message.finance.copy_invitation_link')}}</el-button>
-            <span style=";color: #9b9da1;font-size: 12px">{{$t('message.finance.invitation_code')}}: {{userInfos.invitation_code}}</span>
+            <span style="color: #9b9da1;font-size: 12px">{{$t('message.finance.invitation_code')}}: {{userInfos.invitation_code}}</span>
           </div>
         </div>
-      </div>
+      </el-card>
 
-      <div style="margin-top: 10px;border-radius:10px;background: rgb(224,224,224,0.5);padding: 20px;">
+      <el-card style="margin-top: 10px;border-radius:10px;padding: 10px">        
         <el-tabs style="color: #6b778c;" v-model="state.tabName" @tab-change="changeTabName()">
           <el-tab-pane name="1">
             <template #label>
@@ -218,7 +218,7 @@
             </div>
           </el-tab-pane>
         </el-tabs>
-      </div>
+      </el-card>
 
   </div>
 

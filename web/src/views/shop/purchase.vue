@@ -270,9 +270,8 @@
                 <el-link type="primary" :href="state.alipayUrl" target="_blank">{{ state.alipayUrl }}</el-link>
               </div>
               <div v-else-if="state.showPayInfo === 2">
-                <el-button type="warning" :href="state.epayUrl">{{ $t("message.adminShop.resultText5") }}
+                <el-button type="primary" round size="large"  @Click="reject_epay" >{{ $t("message.adminShop.resultText5") }}
                 </el-button>
-                <el-link type="primary" :href="state.epayUrl" target="_black">{{ state.epayUrl }}</el-link>
               </div>
             </template>
           </el-result>
@@ -511,6 +510,11 @@ const showQR = () => {
 defineExpose({
   openDialog
 });
+
+const reject_epay = () =>{
+  window.location.href = state.epayUrl 
+
+}
 
 </script>
 

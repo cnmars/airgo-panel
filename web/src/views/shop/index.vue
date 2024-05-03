@@ -17,14 +17,14 @@
       </el-radio-group>
     </div>
     <div>
-      <div v-if="shopStoreData.goodsList.value.length > 0">
-        <el-row :gutter="15">
-          <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" class="mb15"
+      <el-card v-if="shopStoreData.goodsList.value.length > 0" style="border-radius: 1vh" class="layout-padding-auto">
+        <el-row :gutter="20" align="top" >
+          <el-col :xs="{span: 12 , push: 0}" :sm="12" :md="8" :lg="5" :xl="4"
                   v-for="(v, k) in shopStoreData.goodsList.value"
                   :key="k" @click="showGoodsDetails(v)">
-              <div shadow="hover" style="margin-top: 10px;border-radius:10px;background: rgba(224,224,224,0.5);padding: 20px;">
-                <div >
-                  <el-image :src="v.cover_image" lazy style="height: 100px;width: 100%" fit="contain">
+              <el-card style=" margin-bottom: 3vh;border-radius:10px">
+                <div style="width:auto; margin: auto;">
+                  <el-image style="border-radius:5px" :src="v.cover_image"  fit="contain">
                     <template #error>
                       <div class="image-slot">
                         <el-icon>
@@ -35,21 +35,22 @@
                   </el-image>
                 </div>
                 <div>
-                  <div style="font-weight: bolder;font-size: 20px">{{ v.subject }}</div>
-                  <div style="color: #9b9da1">
-                    <span>{{ $t("message.adminShop.Goods.quota") }} {{ v.quota }}</span>
-                    <span style="margin-left: 20px">{{ $t("message.adminShop.Goods.stock") }} {{ v.stock }}</span>
-                  </div>
-                  <div class="mt15">
+                  <div style="font-weight: bolder;font-size: clamp(1.2rem, 2vw, 1.5rem);">{{ v.subject }}</div>
+                  <!--<<div style="color: #9b9da1">
+                    span>{{ $t("message.adminShop.Goods.quota") }} {{ v.quota }}</span>
+                    <span style="margin-left: 0.2rem">{{ $t("message.adminShop.Goods.stock") }} {{ v.stock }}</span>
+                  </div>-->
+                  <div class="mt15" style="text-align: right;margin-right: 0.5em;font-size: 1.4em">
                       <span style="color: red">￥</span>
-                      <span style="color: red;font-size: 30px">{{ v.price }}</span>
+                      <span style="color: red;">{{ v.price }}</span>
                   </div>
+                  <br>
                 </div>
-              </div>
+              </el-card>
 
           </el-col>
         </el-row>
-      </div>
+      </el-card>
       <el-empty v-else :description="$t('message.common.noData')"></el-empty>
     </div>
     <el-dialog v-model="state.isShowGoodsDetails" width="80%"
@@ -57,7 +58,7 @@
                destroy-on-close>
       <el-row :gutter="50">
         <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-          <div style="border-radius:10px;background: rgba(224,224,224,0.29);padding: 10px">
+          <el-card style="margin-top: 10px;border-radius:10px;padding: 10px">
             <div style="margin-top: 10px;text-align: center">
               <el-image :src="shopStoreData.currentGoods.value.cover_image"
                         lazy
@@ -72,14 +73,13 @@
                   </div>
                 </template>
               </el-image>
-            </div>
-            <el-divider></el-divider>
+            </div>            
             <div style="margin-top: 10px;">
               {{ shopStoreData.currentGoods.value.subject }}
             </div>
-          </div>
+          </el-card>
 
-          <div style="margin-top: 10px;border-radius:10px;background: rgba(224,224,224,0.29);padding: 10px">
+          <el-card style="margin-top: 10px;border-radius:10px;padding: 10px">
             <div style="margin-top: 10px;margin-bottom: 10px">
               <el-tag v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_SUBSCRIBE">
                 {{ $t("message.adminShop.Goods.goods_type") }}: {{ $t("message.constant.GOODS_TYPE_SUBSCRIBE") }}
@@ -137,13 +137,13 @@
                     v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_SUBSCRIBE"> / {{ $t("message.common.month") }}</span>
                 </span>
             </div>
-          </div>
+          </el-card>
         </el-col>
 
         <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-          <div style="margin-top: 10px;border-radius:10px;background:rgba(224,224,224,0.29)">
+          <el-card style="margin-top: 10px;border-radius:10px;padding: 10px">
             <div style="margin-top: 10px;padding: 10px" v-html="shopStoreData.currentGoods.value.des"></div>
-          </div>
+          </el-card>
         </el-col>
       </el-row>
       <template #footer>
@@ -205,8 +205,6 @@ const getAllEnabledGoods = () => {
 onMounted(() => {
   getAllEnabledGoods();
 });
+
+
 </script>
-
-<style scoped lang="scss">
-
-</style>

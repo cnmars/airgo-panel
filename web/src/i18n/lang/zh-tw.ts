@@ -57,6 +57,8 @@ export default {
 		logOutConfirm: '確定',
 		logOutCancel: '取消',
 		logOutExit: '退出中',
+		back:"返回",
+
 	},
 	tagsView: {
 		refresh: '重繪',

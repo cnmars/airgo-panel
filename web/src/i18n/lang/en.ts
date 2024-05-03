@@ -57,7 +57,9 @@ export default {
     logOutMessage: "This operation will log out. Do you want to continue?",
     logOutConfirm: "determine",
     logOutCancel: "cancel",
-    logOutExit: "Exiting"
+    logOutExit: "Exiting",
+    back:"back",
+
   },
   tagsView: {
     refresh: "refresh",

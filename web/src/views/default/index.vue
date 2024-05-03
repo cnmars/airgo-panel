@@ -31,7 +31,7 @@ onMounted(()=>{
     }
     setTimeout(()=>{
       DefaultDialogRef.value.openDialog()
-    },2000)
+    },10000)
   })
 });
 
