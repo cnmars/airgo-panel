@@ -75,12 +75,15 @@ type Website struct {
 	EnableLoginEmailCode    bool   `json:"enable_login_email_code"   gorm:"default:false;comment:是否开启登录email 验证码"`
 	IsMultipoint            bool   `json:"is_multipoint"     gorm:"default:true;comment:是否多点登录"`
 	FrontendUrl             string `json:"frontend_url"      gorm:"comment:官网地址"`
+	EnableSwaggerApi        bool   `json:"enable_swagger_api"`
+	EnableAssetsApi         bool   `json:"enable_assets_api"`
 }
 
 type Subscribe struct {
-	BackendUrl string `json:"backend_url"       gorm:"comment:后端地址"`
-	SubName    string `json:"sub_name"          gorm:"default:AirGo;comment:订阅名称"`
-	TEK        string `json:"tek"               gorm:"default:airgo;comment:前后端通信密钥"`
+	BackendUrl                 string `json:"backend_url"       gorm:"comment:后端地址"`
+	SubscribeDomainBindRequest bool   `json:"subscribe_domain_bind_request" gorm:"comment:订阅域名只接受更新订阅的请求"`
+	SubName                    string `json:"sub_name"          gorm:"default:AirGo;comment:订阅名称"`
+	TEK                        string `json:"tek"               gorm:"default:airgo;comment:前后端通信密钥"`
 }
 type Finance struct {
 	EnableInvitationCommission bool    `json:"enable_invitation_commission"` //是否开启邀请佣金

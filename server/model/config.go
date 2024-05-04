@@ -25,13 +25,11 @@ type Sqlite struct {
 	Path string `mapstructure:"path" yaml:"path"`
 }
 type SystemParams struct {
-	Mode             string `mapstructure:"mode"    yaml:"mode"` //release=正常 dev=开发
-	EnableSwaggerApi bool   `mapstructure:"enable_swagger_api" yaml:"enable_swagger_api"`
-	EnableAssetsApi  bool   `mapstructure:"enable_assets_api" yaml:"enable_assets_api"`
-	AdminEmail       string `mapstructure:"admin-email"    yaml:"admin-email"`
-	AdminPassword    string `mapstructure:"admin-password" yaml:"admin-password"`
-	HTTPPort         int    `mapstructure:"http-port"      yaml:"http-port"`
-	HTTPSPort        int    `mapstructure:"https-port"     yaml:"https-port"`
-	GRPCPort         int    `mapstructure:"grpc-port"      yaml:"grpc-port"`
-	DbType           string `mapstructure:"db-type"        yaml:"db-type"`
+	Mode          string `mapstructure:"mode"    yaml:"mode"` //release=正常 dev=开发
+	AdminEmail    string `mapstructure:"admin-email"    yaml:"admin-email"`
+	AdminPassword string `mapstructure:"admin-password" yaml:"admin-password"`
+	HTTPPort      int    `mapstructure:"http-port"      yaml:"http-port"`
+	HTTPSPort     int    `mapstructure:"https-port"     yaml:"https-port"`
+	GRPCPort      int    `mapstructure:"grpc-port"      yaml:"grpc-port"`
+	DbType        string `mapstructure:"db-type"        yaml:"db-type"`
 }
