@@ -589,7 +589,7 @@ const openUpdateDialog = () => {
 
 const SSE = () => {
   state.isShowLogData = true;
-  let url = getApiPrefixAddress() + apiStore.adminApi.updateLatestVersion.path;
+  let url = await getApiPrefixAddress() + apiStore.adminApi.updateLatestVersion.path;
   let token = Local.get("token");
   if (window.EventSource) {
     // let sseSource = new EventSource(url, { withCredentials: true });
