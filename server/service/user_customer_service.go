@@ -19,11 +19,17 @@ var CustomerServiceSvc *CustomerService
 func (c *CustomerService) GetCustomerServiceListByUserID(params *model.QueryParams, uID int64) (*model.CommonDataResp, error) {
 	var data model.CommonDataResp
 	var csArr []model.CustomerService
-	_, dataSql := CommonSqlFindSqlHandler(params)
+	totalSql, dataSql := CommonSqlFindSqlHandler(params)
 	dataSql = dataSql[strings.Index(dataSql, "WHERE ")+6:]
+	totalSql = totalSql[strings.Index(totalSql, "WHERE ")+6:]
 	//拼接查询参数
 	dataSql = fmt.Sprintf("user_id = %d AND %s", uID, dataSql)
-	err := global.DB.Model(&model.CustomerService{}).Count(&data.Total).Where(dataSql).Find(&csArr).Error
+	totalSql = fmt.Sprintf("user_id = %d AND %s", uID, totalSql)
+	err := global.DB.Model(&model.CustomerService{}).Where(dataSql).Find(&csArr).Error
+	if err != nil {
+		return nil, err
+	}
+	err = global.DB.Model(&model.CustomerService{}).Where(totalSql).Count(&data.Total).Error
 	if err != nil {
 		return nil, err
 	}
