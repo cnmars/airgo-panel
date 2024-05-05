@@ -25,6 +25,7 @@ export const usePublicStore = defineStore('publicStore', {
             withdraw_threshold:0,            //提取到余额的阈值
             enable_lottery:false,
             jackpot:[] as JackpotItem[],
+            sub_name:'',
         } ,
         acceptable_email_suffixes_arr: [] as string[],    //可接受的邮箱后缀数组
 

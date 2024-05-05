@@ -1,7 +1,5 @@
 system:
   mode: release
-  enable_swagger_api: false
-  enable_assets_api: true
   admin-email: admin@oicq.com
   admin-password: adminadmin
   http-port: 8899

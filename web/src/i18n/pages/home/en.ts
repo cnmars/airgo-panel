@@ -33,7 +33,8 @@ export default {
 
     target_username:"Target username",
     message_confirm_reset_sub:"Are you sure to reset the subscription URL?",
-    subscription:"Subscription",
+    subscription:"Copy subscription link",
     selectSubPre:"Select subscription prefix",
+    scan_qr_subscription:"Scan QR code",
   },
 };

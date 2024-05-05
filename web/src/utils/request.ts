@@ -3,7 +3,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { Local } from "/@/utils/storage";
 import qs from "qs";
 
-const apiUrl = getApiPrefixAddress()
+export const apiUrl = await getApiPrefixAddress()
 
 // 配置新建一个 axios 实例
 const service: AxiosInstance = axios.create({
@@ -118,13 +118,30 @@ export function request(apiItem: ApiItem, params?: any): Promise<AxiosResponse<a
 /**
  * 获取api前缀地址
  */
-export function getApiPrefixAddress(){
+export async function getApiPrefixAddress() {
   // @ts-ignore
-  let url = window.httpurl
-  if (url === null || url===''){
-    url = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
+  const url: string = window.httpurl
+  if (url) {
+    // @ts-ignore
+    let arr: string[] = window.httpurl.split('|')
+    let apiPre: string = ''
+    const axiosClient = axios.create({
+      timeout: 5000
+    })
+    for (const item of arr) {
+      apiPre = item.trim()
+      try {
+        const res = await axiosClient.get(apiPre + "/api/public/server/getPublicSetting")
+        if (res.data) {
+          console.log("apiPre:", apiPre)
+          break
+        }
+      } catch (err) {}
+    }
+    return apiPre
+  } else {
+    return window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
   }
-  return url
 }
 
 /**

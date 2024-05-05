@@ -14,6 +14,7 @@ declare interface Subscribe{
     backend_url: string;
     sub_name: string;
     tek: string;
+    subscribe_domain_bind_request:boolean
 }
 declare interface Notice {
     enable_tg_bot:boolean
@@ -48,8 +49,8 @@ declare interface Website {
     acceptable_email_suffixes: string;
     is_multipoint: boolean;
     frontend_url: string;
-    api_prefix: string;
-    enabled_clock_in: boolean
+    enable_swagger_api:boolean
+    enable_assets_api:boolean
 }
 
 declare interface Captcha {

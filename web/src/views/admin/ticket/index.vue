@@ -58,7 +58,7 @@ import { useRouter } from "vue-router";
 import { useAdminUserStore } from "/@/stores/admin_logic/userStore";
 import { Session } from "/@/utils/storage"
 import { useConstantStore } from "/@/stores/constantStore";
-import { getApiPrefixAddress, getCurrentAddress } from "/@/utils/request";
+import { getCurrentAddress } from "/@/utils/request";
 import { useApiStore } from "/@/stores/apiStore";
 const ticketStore = useAdminTicketStore()
 const ticketStoreData = storeToRefs(ticketStore)
