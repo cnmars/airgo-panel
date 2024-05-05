@@ -3,8 +3,9 @@
     <img :src="themeConfig.logo_link" class="layout-logo-medium-img"/>
     <span>{{ themeConfig.globalTitle }}</span>
   </div>
+  
   <div class="layout-logo-size" v-else @click="onThemeConfigChange">
-    <img :src="themeConfig.logo_link" class="layout-logo-size-img"/>
+    <el-image style="width: 65%;" :src="themeConfig.logo_link" fit="cover" />
   </div>
 </template>
 
@@ -63,22 +64,10 @@ const onThemeConfigChange = () => {
 }
 
 .layout-logo-size {
-  width: 100%;
-  //height: 50px;
-  widheightth: 100%;
-  display: flex;
-  cursor: pointer;
-  animation: logoAnimation 0.3s ease-in-out;
-
-  &-img {
-    width: 20px;
-    margin: auto;
-  }
-
-  &:hover {
-    img {
-      animation: logoAnimation 0.3s ease-in-out;
-    }
-  }
+  vertical-align: middle;
+  display: table-cell;
+  text-align: center;
+  margin-top:6px;
 }
+
 </style>

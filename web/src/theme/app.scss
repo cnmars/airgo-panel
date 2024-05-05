@@ -75,6 +75,8 @@ body,
   .layout-header {
     padding: 0 !important;
     height: auto !important;
+
+    
   }
 
   .layout-main {
@@ -188,7 +190,6 @@ body,
     bottom: 0;
     left: 0;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
     z-index: 9999998;
     animation: error-img 0.3s;
   }
@@ -367,6 +368,18 @@ body,
 }
 
 .el-card{
-  border-radius: 1vh
+  border-radius: 1vh;
+
+
+
 }
+
+.--el-card-border-color{
+  color: transparent;
+}
+
+.el-dialog__title{
+  color: rgb(0, 0, 0);
+}
+
 

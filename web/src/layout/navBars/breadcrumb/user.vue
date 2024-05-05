@@ -65,7 +65,7 @@
 			<span class="layout-navbars-breadcrumb-user-link">
         
 				<img :src="userInfos.avatar" class="layout-navbars-breadcrumb-user-link-photo mr5" />
-				<div class="layout-navbars-breadcrumb-hide">{{ userInfos.user_name }}</div>
+				<div class="layout-navbars-username-hide">{{ userInfos.user_name }}</div>
 				<el-icon class="el-icon--right">
 					<ele-ArrowDown />
 				</el-icon>

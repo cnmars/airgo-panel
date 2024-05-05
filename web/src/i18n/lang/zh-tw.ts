@@ -47,7 +47,6 @@ export default {
 		dropdown4: '401',
 		dropdown5: '登出',
 		dropdown6: '程式碼倉庫',
-		searchPlaceholder: '選單蒐索：支援中文、路由路徑',
 		newTitle: '通知',
 		newBtn: '全部已讀',
 		newGo: '前往通知中心',
@@ -73,11 +72,7 @@ export default {
 		foundMsg: '您可以先檢查網址，然後重新輸入或給我們迴響問題。',
 		foundBtn: '返回首頁',
 	},
-	noAccess: {
-		accessTitle: '您未被授權，沒有操作許可權~',
-		accessMsg: '聯繫方式：加QQ群探討665452019',
-		accessBtn: '重新授權',
-	},
+
 	layout: {
 		configTitle: '佈局配寘',
 		oneTitle: '全域主題',

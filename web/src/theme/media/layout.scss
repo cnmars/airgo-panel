@@ -16,8 +16,8 @@
 /* 页面宽度小于768px
 ------------------------------- */
 @media screen and (max-width: $sm) {
-  // Breadcrumb 面包屑
-  .layout-navbars-breadcrumb-hide {
+  // 用户名称
+  .layout-navbars-username-hide {
     display: none;
   }
   // 外链视图

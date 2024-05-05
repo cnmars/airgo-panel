@@ -60,8 +60,7 @@
           <!--          2-2、新购-->
           <el-row :gutter="50" v-else>
             <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
-              <div
-                style="margin-top: 10px;border-radius:10px;background: rgba(224,224,224,0.29);padding: 10px;text-align: center">
+              <el-card style="margin-top: 10px;border-radius: 1vh;text-align: center;" >
                 <el-image :src="shopStoreData.currentGoods.value.cover_image" fit="cover" style="height: 150px">
                   <template #error>
                     <div class="image-slot">
@@ -71,10 +70,10 @@
                     </div>
                   </template>
                 </el-image>
-              </div>
+            </el-card>
             </el-col>
             <el-col :xs="24" :sm="24" :md="18" :lg="18" :xl="18">
-              <div style="border-radius:10px;background: rgba(224,224,224,0.29);padding: 10px;margin-top: 10px">
+              <el-card style="border-radius:10px;padding: 10px;margin-top: 10px">
                 <div style="margin-top: 10px;">
                   {{ shopStoreData.currentGoods.value.subject }}
                 </div>
@@ -123,7 +122,7 @@
                     }}</span>
                 </span>
                 </div>
-              </div>
+              </el-card>
 
             </el-col>
           </el-row>

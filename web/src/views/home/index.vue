@@ -115,11 +115,12 @@
               />
               </el-select>
          </div>
-          <el-button size="large" color="blue" style="width: 100%;margin-top:2vh" @click="ImportClash">一键导入 Clash Meta</el-button>
-
-          <!--
-          <el-button size="large" color="blue" style="width: 100%" @click="ImportNekoBox">一键导入 NekoBox</el-button>-->
-
+         <el-col >
+        <el-button size="large" color="blue" style="width: 100%;margin-top:2vh" @click="ImportClash">一键导入 Clash Meta</el-button>
+         </el-col>
+         <el-col >
+          <el-button size="large" color="blue" style="width: 100%;margin-top:2vh" @click="ImportClash">一键导入 NekoBox</el-button>
+          </el-col>
       </div>
     </el-dialog>
     <!--    复制订阅弹窗-->
@@ -394,7 +395,7 @@ const defaultArticle=()=>{
   articleStore.getDefaultArticles().then(()=>{
     setTimeout(()=>{
       DefaultDialogRef.value.openDialog()
-    },10000)
+    },2000)
   })
 }
 

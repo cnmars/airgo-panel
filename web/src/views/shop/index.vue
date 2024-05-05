@@ -53,16 +53,15 @@
       </el-card>
       <el-empty v-else :description="$t('message.common.noData')"></el-empty>
     </div>
-    <el-dialog v-model="state.isShowGoodsDetails" width="80%"
+    <el-dialog v-model="state.isShowGoodsDetails" 
                :title="$t('message.common.details')"
                destroy-on-close>
-      <el-row :gutter="50">
+      <el-row :gutter="20">
         <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-          <el-card style="margin-top: 10px;border-radius:10px;padding: 10px">
-            <div style="margin-top: 10px;text-align: center">
+            <div style="text-align: center">
               <el-image :src="shopStoreData.currentGoods.value.cover_image"
                         lazy
-                        style="height: 150px"
+                        style="height: 20vh; border-radius: 1vh;"
                         fit="cover"
                         :preview-src-list="[shopStoreData.currentGoods.value.cover_image]">
                 <template #error>
@@ -74,38 +73,12 @@
                 </template>
               </el-image>
             </div>            
-            <div style="margin-top: 10px;">
+            <h2 style="margin-top: 10px;text-align: center;">
               {{ shopStoreData.currentGoods.value.subject }}
-            </div>
-          </el-card>
+            </h2>
 
-          <el-card style="margin-top: 10px;border-radius:10px;padding: 10px">
-            <div style="margin-top: 10px;margin-bottom: 10px">
-              <el-tag v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_SUBSCRIBE">
-                {{ $t("message.adminShop.Goods.goods_type") }}: {{ $t("message.constant.GOODS_TYPE_SUBSCRIBE") }}
-              </el-tag>
-              <el-tag v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_RECHARGE">
-                {{ $t("message.adminShop.Goods.goods_type") }}: {{ $t("message.constant.GOODS_TYPE_RECHARGE") }}
-              </el-tag>
-              <el-tag v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_GENERAL">
-                {{ $t("message.adminShop.Goods.goods_type") }}: {{ $t("message.constant.GOODS_TYPE_GENERAL") }}
-              </el-tag>
-
-              <el-tag v-if="shopStoreData.currentGoods.value.deliver_type === constantStore.DELIVER_TYPE_NONE">
-                {{ $t("message.adminShop.Goods.deliver_type") }}: {{ $t("message.constant.DELIVER_TYPE_NONE") }}
-              </el-tag>
-              <el-tag v-if="shopStoreData.currentGoods.value.deliver_type === constantStore.DELIVER_TYPE_AUTO">
-                {{ $t("message.adminShop.Goods.deliver_type") }}: {{ $t("message.constant.DELIVER_TYPE_AUTO") }}
-              </el-tag>
-              <el-tag v-if="shopStoreData.currentGoods.value.deliver_type === constantStore.DELIVER_TYPE_MANUAL">
-                {{ $t("message.adminShop.Goods.deliver_type") }}: {{ $t("message.constant.DELIVER_TYPE_MANUAL") }}
-              </el-tag>
-            </div>
-            <div style="margin-top: 10px;margin-bottom: 10px">
-              <el-tag type="warning">{{ $t("message.adminShop.Goods.quota") }}：{{ shopStoreData.currentGoods.value.quota
-                }} / {{ $t("message.adminShop.Goods.stock") }}：{{ shopStoreData.currentGoods.value.stock }}
-              </el-tag>
-            </div>
+          <el-card style="margin-top: 10px;border-radius:10px;">
+            <!--商品信息表格-->
             <el-descriptions
               :column="1"
               border
@@ -129,7 +102,33 @@
                 </el-descriptions-item>
               </div>
             </el-descriptions>
-            <div style="margin-top: 10px">
+             <!--商品信息tag标签-->
+            <div style="margin-top: 10px;margin-bottom: 10px ;text-align: end;">
+                <!--商品类型-->
+               <el-tag v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_SUBSCRIBE">
+                {{ $t("message.adminShop.Goods.goods_type") }}: {{ $t("message.constant.GOODS_TYPE_SUBSCRIBE") }}
+               </el-tag>
+               <el-tag v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_RECHARGE">
+                {{ $t("message.adminShop.Goods.goods_type") }}: {{ $t("message.constant.GOODS_TYPE_RECHARGE") }}
+                </el-tag>
+                <el-tag v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_GENERAL">
+                {{ $t("message.adminShop.Goods.goods_type") }}: {{ $t("message.constant.GOODS_TYPE_GENERAL") }}
+                </el-tag>   
+                 <!--限购数量与库存-->
+               <el-tag type="warning">{{ $t("message.adminShop.Goods.quota") }}: {{ shopStoreData.currentGoods.value.quota
+                }} / {{ $t("message.adminShop.Goods.stock") }}: {{ shopStoreData.currentGoods.value.stock }}
+               </el-tag>         
+                <div>                <!--发货类型 none（订阅）不做额外显示-->
+                 <el-tag v-if="shopStoreData.currentGoods.value.deliver_type === constantStore.DELIVER_TYPE_AUTO">
+                 {{ $t("message.adminShop.Goods.deliver_type") }}: {{ $t("message.constant.DELIVER_TYPE_AUTO") }}
+                  </el-tag>
+                 <el-tag v-if="shopStoreData.currentGoods.value.deliver_type === constantStore.DELIVER_TYPE_MANUAL">
+                 {{ $t("message.adminShop.Goods.deliver_type") }}: {{ $t("message.constant.DELIVER_TYPE_MANUAL") }}
+                 </el-tag>
+                </div>
+               </div>
+
+            <div style="margin-top: 10px;text-align: end;">
                 <span>
                   <span style="color: red;">￥</span>
                   <span style="color: red;font-size: 30px;">{{ shopStoreData.currentGoods.value.price }}</span>
@@ -141,8 +140,8 @@
         </el-col>
 
         <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-          <el-card style="margin-top: 10px;border-radius:10px;padding: 10px">
-            <div style="margin-top: 10px;padding: 10px" v-html="shopStoreData.currentGoods.value.des"></div>
+          <el-card style="margin-top: 10px;border-radius:10px">
+            <div v-html="shopStoreData.currentGoods.value.des"></div>
           </el-card>
         </el-col>
       </el-row>
@@ -162,6 +161,13 @@
     <Purchase ref="PurchaseRef"></Purchase>
   </div>
 </template>
+
+<style scoped>
+.el-tag{
+  margin: 0 0 0 1vh;
+}
+
+</style>
 
 <script setup lang="ts">
 import { reactive, onMounted, ref, defineAsyncComponent } from "vue";
