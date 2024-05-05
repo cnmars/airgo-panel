@@ -106,4 +106,5 @@ type PublicSystem struct {
 	WithdrawThreshold       float64 `json:"withdraw_threshold"`        // 提取到余额的阈值
 	EnableLottery           bool    `json:"enable_lottery"`            //是否开启每日打卡抽奖
 	Jackpot                 Jackpot `json:"jackpot"`                   //奖池
+	SubName                 string  `json:"sub_name"`                  //订阅名称
 }

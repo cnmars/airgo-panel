@@ -32,7 +32,7 @@ export const useApiStore = defineStore("apiStore", {
             // customerService
             getCustomerServiceList:{path: adminApiPre + "/customerService/getCustomerServiceList", method: "post"} as ApiItem,
             updateCustomerService:{path: adminApiPre + "/customerService/updateCustomerService", method: "post"} as ApiItem,
-            deleteCustomerService:{path: adminApiPre + "/customerService/deleteCustomerService", method: "post"} as ApiItem,
+            deleteCustomerService:{path: adminApiPre + "/customerService/deleteCustomerService", method: "delete"} as ApiItem,
 
             //menu
             newMenu:{path: adminApiPre + "/menu/newMenu", method: "post"} as ApiItem,

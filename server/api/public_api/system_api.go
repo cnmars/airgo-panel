@@ -48,6 +48,7 @@ func GetPublicSetting(ctx *gin.Context) {
 		WithdrawThreshold:       global.Server.Finance.WithdrawThreshold,
 		EnableLottery:           global.Server.Finance.EnableLottery,
 		Jackpot:                 global.Server.Finance.Jackpot,
+		SubName:                 global.Server.Subscribe.SubName,
 	}
 	response.OK("GetPublicSetting success", ps, ctx)
 }

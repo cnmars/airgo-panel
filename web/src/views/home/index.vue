@@ -5,7 +5,7 @@
     <el-card style="border-radius: 10px;margin-left: 0.2em;margin-right: 0.2em;word-break: break-all;">
         <div style="margin-top: 10px;">
         <el-row :gutter="0" align="top">
-          <el-col span="80" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+          <el-col :span="80" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
             <h3 style="font-size: large;margin-left: 0.2em;margin-right: 0.2em;margin-bottom: 2vh;"> {{ currentTime }} , {{ userInfos.nick_name }}：</h3>
             <div></div>
             <el-card style="margin-top: 0.5em; border-radius: 10px">
@@ -76,8 +76,7 @@
               </el-descriptions-item>
             </el-descriptions>
           <div style="margin-top: 15px;margin-bottom: 10px;display: flex">
-            <el-button size="small" type="primary" @click="openOneClickImport" round>{{$t('message.home.button_openOneClickImport')}}</el-button>
-            <el-button size="small" type="primary" @click="openSubDialog(v.sub_uuid)" round>{{$t('message.home.button_copySub')}}</el-button>
+            <el-button size="small" type="primary" @click="openSubDialog(v.sub_uuid)" round>{{$t('message.home.button_openOneClickImport')}}</el-button>
             <el-button size="small" type="success" @click="renew(v)" round>{{$t('message.home.button_renew')}}</el-button>
             <el-dropdown style="margin-left: auto">
               <span class="el-dropdown-link">
@@ -102,28 +101,8 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-dialog v-model="state.isShowOneClickImport" title="⚡One-click import">
-      <div>
-        <div>
-             <el-text size="large">{{$t('message.home.selectSubPre')}}</el-text>
-             <el-select v-model="state.currentSubUrlPre">
-             <el-option
-               v-for="item in state.subUrlPre"
-                :key="item"
-                :label="item"
-               :value="item"
-              />
-              </el-select>
-         </div>
-          <el-button size="large" color="blue" style="width: 100%;margin-top:2vh" @click="ImportClash">一键导入 Clash Meta</el-button>
-
-          <!--
-          <el-button size="large" color="blue" style="width: 100%" @click="ImportNekoBox">一键导入 NekoBox</el-button>-->
-
-      </div>
-    </el-dialog>
     <!--    复制订阅弹窗-->
-    <el-dialog v-model="state.isShowSubDialog" destroy-on-close>
+    <el-dialog v-model="state.isShowSubDialog" destroy-on-close width="600px" :show-close="false">
       <div>
         <el-text size="large">{{$t('message.home.selectSubPre')}}</el-text>
         <el-select v-model="state.currentSubUrlPre">
@@ -135,27 +114,30 @@
           />
         </el-select>
       </div>
-      <div class="qrcode-img-warp">
-        <div class="mb30 mt30 qrcode-img">
-          <!-- 二维码弹窗 -->
-          <div id="qrcode" class="qrcode" ref="qrcodeRef"></div>
-        </div>
+      <div class="mb20">
+        <el-button size="large" color="var(--el-color-primary)" style="width: 100%" @click="copyText(getSubUrl())">
+          <el-icon><Link /></el-icon>{{$t('message.home.subscription')}}
+        </el-button>
       </div>
-      <div v-for="(v,k) in state.subType" :key="k">
-        <el-row style="margin-top:10px;display: flex; justify-content: space-between; align-items: center;">
-          <el-col :span="16">
-            <el-button size="large" color="blue" style="width: 100%" @click="copyLink(v)">{{ v }} {{$t('message.home.subscription')}}</el-button>
-          </el-col>
-          <el-col :span="8">
-            <el-button size="large" @click="showQR(v)">
-              <el-icon>
-                <FullScreen />
-              </el-icon>
-              QR code
-            </el-button>
-          </el-col>
-        </el-row>
+      <div class="mb20">
+        <el-button size="large" color="var(--el-color-primary)" style="width: 100%" @click="showQR()">
+          <el-icon><FullScreen /></el-icon>
+          {{$t('message.home.scan_qr_subscription')}}
+        </el-button>
       </div>
+      <el-row class="image">
+        <el-col v-for="(v,k) in state.subClient" :key="k" class="block"
+                :xs="8" :sm="8" :md="4" :lg="4" :xl="4"
+                @click="insert(v.name)"
+        >
+          <el-image style="width: 50px; height: 50px" :src="v.logo" fit="fill" />
+          <span class="name">{{ v.name }}</span>
+        </el-col>
+      </el-row>
+    </el-dialog>
+    <!-- 二维码弹窗 -->
+    <el-dialog v-model="state.isShowQRDialog" destroy-on-close align-center width="400px" :show-close="false">
+        <div id="qrcode" class="qrcode" ref="qrcodeRef"></div>
     </el-dialog>
     <!--    push弹窗-->
     <el-dialog v-model="state.isShowPushDialog" destroy-on-close align-center>
@@ -199,14 +181,19 @@ import { useShopStore } from "/@/stores/user_logic/shopStore";
 import { useConstantStore } from "/@/stores/constantStore";
 import { useI18n } from "vue-i18n";
 import { useArticleStore } from "/@/stores/user_logic/articleStore";
-import { count } from "console";
 import { formatAxis } from "/@/utils/formatTime";
 import { useUserStore } from "/@/stores/user_logic/userStore";
 import { useFinanceStore } from "/@/stores/user_logic/financeStore";
 import { getCurrentAddress } from "/@/utils/request";
 import {useTicketStore} from "/@/stores/user_logic/ticketStore";
+import logo_shadowrocket from "/@/assets/img/logo-shadowrocket.jpeg"
+import logo_clash_meta from "/@/assets/img/logo-clash-meta.png"
+import logo_clash_verge from "/@/assets/img/logo-clash-verge.png"
+import logo_clashx from "/@/assets/img/logo-clashx.png"
+import logo_surge from "/@/assets/img/logo-surge.png"
+import logo_nekobox from "/@/assets/img/logo-nekobox.jpeg"
 
-
+const articleStore = useArticleStore()
 const constantStore = useConstantStore()
 const shopStore = useShopStore()
 const shopStoreData = storeToRefs(shopStore)
@@ -215,29 +202,69 @@ const publicStore = usePublicStore();
 const publicStoreData = storeToRefs(publicStore);
 const customerServiceStore = useCustomerServiceStore();
 const customerServiceStoreData = storeToRefs(customerServiceStore);
+const ticketStore = useTicketStore()
+const ticketStoreData = storeToRefs(ticketStore)
+const userStore = useUserStore();
+const { userInfos, } = storeToRefs(userStore);
+const financeStore = useFinanceStore()
+const financeStoreData = storeToRefs(financeStore)
 const { copyText } = commonFunction();
-const qrcodeRef = ref();
-const Purchase = defineAsyncComponent(() => import("/@/views/shop/purchase.vue"));
-const PurchaseRef = ref();
 const {t} = useI18n()
-const articleStore = useArticleStore()
-const DefaultDialog = defineAsyncComponent( () => import('/@/views/default/defaultDialog.vue'));
-const DefaultDialogRef = ref();
+const qrcodeRef = ref();
 
 //组件
 const DialogCustomerServiceDetails = defineAsyncComponent(() => import("/@/views/home/dialog_customer_service_details.vue"));
 const DialogCustomerServiceDetailsRef = ref();
-// const format = (percentage) => (percentage === 100 ? 'Full' : `${percentage}%`)
+const Purchase = defineAsyncComponent(() => import("/@/views/shop/purchase.vue"));
+const PurchaseRef = ref();
+const DefaultDialog = defineAsyncComponent( () => import('/@/views/default/defaultDialog.vue'));
+const DefaultDialogRef = ref();
+
 const state = reactive({
   isShowOneClickImport:false,
   isShowSubDialog: false,
   isShowPushDialog: false,
+  isShowQRDialog: false,
   subType: ["NekoBox", "v2rayNG", "v2rayN", "Shadowrocket", "Clash", "Surge", "Quantumult", "V2rayU"],
+  subClient: [
+    {name:"Shadowrocket",logo:logo_shadowrocket},
+    {name:"ClashX",logo:logo_clashx},
+    {name:"Clash Verge",logo:logo_clash_verge},
+    {name:"Clash Meta",logo:logo_clash_meta},
+    {name:"Surge",logo:logo_surge},
+    {name:"NekoBox",logo:logo_nekobox},
+  ],
   currentSubUUID: "",
   QRcode: null,
   subUrlPre:[''],
   currentSubUrlPre:'',
+  currentSubPath:'/api/public/sub/',
 });
+const state_invite = reactive({
+  text: getCurrentAddress()+"/#/login?aff="+userInfos.value.invitation_code,
+  tabName: "1",
+  queryParams: {
+    table_name: "balance_statement",
+    pagination: {
+      page_num: 1, page_size: 30, order_by: "id DESC"
+    } as Pagination//分页参数
+  } as QueryParams,
+});
+
+
+const state_ticket = reactive({
+  isShowTicketDialog:false,
+  queryParams:{
+    table_name: 'ticket',
+    field_params_list: [
+      { field: 'id', field_chinese_name: '', field_type: '', condition: '<>', condition_value: '', operator: '', }
+    ] as FieldParams[],
+    pagination: { page_num: 1, page_size: 30, order_by: 'id DESC',
+    } as Pagination,//分页参数
+  },
+
+})
+
 const customColors = [
   { color: "#9af56c", percentage: 20 },
   { color: "#5cb87a", percentage: 40 },
@@ -252,79 +279,17 @@ const getCustomerServiceList = () => {
 const getPublicSetting = () => {
   publicStore.getPublicSetting();
 };
-const openOneClickImport = (subUUID: string) =>{
-  state.isShowOneClickImport = true;
-  state.subUrlPre = publicStoreData.publicSetting.value.backend_url.split('\n')
-  state.currentSubUrlPre = state.subUrlPre[0] //设置默认的订阅前缀
-  state.currentSubUUID = subUUID.replace(/-/g, "");
-
-}
-const ImportClash = () =>{
-  window.location.href = "clash://install-config?url=" + state.currentSubUrlPre + "/api/public/sub/" + state.currentSubUUID + "?type=Clash" 
-}
-const ImportNekoBox = () =>{
-  window.location.href = "clash://install-config?url=" + state.currentSubUrlPre + "/api/public/sub/" + state.currentSubUUID + "?type=" 
-
-}
 const currentTime = computed(() => {
   return formatAxis(new Date());
 });
-const userStore = useUserStore();
 
-const { userInfos, } = storeToRefs(userStore);
-
-const financeStore = useFinanceStore()
-const financeStoreData = storeToRefs(financeStore)
 const getCommissionSummary=()=>{
   financeStore.getCommissionSummary()
 }
 
-
-onMounted(()=>{
-  getCommissionSummary()
-  getUserTicketList()
-
-});
-
-const state_invite = reactive({
-  text: getCurrentAddress()+"/#/login?aff="+userInfos.value.invitation_code,
-  tabName: "1",
-  queryParams: {
-    table_name: "balance_statement",
-    pagination: {
-      page_num: 1, page_size: 30, order_by: "id DESC"
-    } as Pagination//分页参数
-  } as QueryParams,
-});
-
-const ticketStore = useTicketStore()
-const ticketStoreData = storeToRefs(ticketStore)
-
-
-
-
-const state_ticket = reactive({
-  isShowTicketDialog:false,
-  queryParams:{
-    table_name: 'ticket',
-    field_params_list: [
-      { field: 'id', field_chinese_name: '', field_type: '', condition: '<>', condition_value: '', operator: '', }
-    ] as FieldParams[],
-    pagination: { page_num: 1, page_size: 30, order_by: 'id DESC',
-    } as Pagination,//分页参数
-  },
-  
-})
-
 const getUserTicketList = () => {
   ticketStore.getUserTicketList(state_ticket.queryParams)
 }
-
-
-
-
-
-
 
 const openSubDialog = (subUUID: string) => {
   state.isShowSubDialog = true;
@@ -371,22 +336,47 @@ const resetSubscribeUUID=(cs:CustomerService)=>{
     .catch(() => {
     });
 }
-const copyLink = (subType: string) => {
-  copyText(state.currentSubUrlPre + "/api/public/sub/" + state.currentSubUUID + "?type=" + subType);
+const showQR = (subType?: string) => {
+  state.isShowQRDialog = true
+  setTimeout(()=>{
+    //清除上一次二维码
+    qrcodeRef.value.innerHTML = "";
+    new QRCode(qrcodeRef.value, {
+      text: getSubUrl(subType),
+      width: 300,
+      height: 300,
+      colorDark: "#000000",
+      colorLight: "#ffffff"
+    });
+
+  },500)
+
 };
-const showQR = (subType: string) => {
-  // TODO 多url处理
-  let link = state.currentSubUrlPre + "/api/public/sub/" + state.currentSubUUID + "?type=" + subType;
-  //清除上一次二维码
-  qrcodeRef.value.innerHTML = "";
-  new QRCode(qrcodeRef.value, {
-    text: link,
-    width: 125,
-    height: 125,
-    colorDark: "#000000",
-    colorLight: "#ffffff"
-  });
-};
+const getSubUrl=(subType?: string)=>{
+  let url:string = state.currentSubUrlPre + state.currentSubPath + state.currentSubUUID+"/"
+  url = url+ encodeURI(publicStoreData.publicSetting.value.sub_name || 'AirGo')
+  if (subType){
+    url = url+("?type=" + subType)
+  }
+  return url
+}
+const insert=(subType?: string)=>{
+  switch (subType) {
+    case "Shadowrocket":
+      const subName = publicStoreData.publicSetting.value.sub_name || 'AirGo'
+      window.location.href = "shadowrocket://add/sub://"+ window.btoa(getSubUrl())+"?remark="+encodeURI(subName)
+      break
+    case "NekoBox":
+    case "ClashX":
+    case "Clash Verge":
+    case "Clash Meta":
+      window.location.href = "clash://install-config?url=" + getSubUrl()
+      break
+    case "Surge":
+      window.location.href = "surge://install-config?url=" + getSubUrl()
+      break
+  }
+}
 const openDialogCustomerServiceDetails = (customerServiceID:number) => {
   DialogCustomerServiceDetailsRef.value.openDialog(customerServiceID);
 };
@@ -398,33 +388,39 @@ const defaultArticle=()=>{
   })
 }
 
+
 onMounted(() => {
   getCustomerServiceList();
   getPublicSetting();
   defaultArticle()
-});
 
+  getCommissionSummary()
+  getUserTicketList()
+});
 
 </script>
 
-<style scoped>
-.home-card-item {
-  width: 100%;
-  height: 100%;
-  border-radius: 4px;
-  transition: all ease 0.3s;
-  overflow: hidden;
-  padding: 10px;
-  /*background: var(--el-color-white);*/
-  color: var(--el-text-color-primary);
-  /*border: 1px solid var(--next-border-color-light);*/
+<style scoped lang="scss">
+.image {
+  margin-top: 40px;
 }
-
-.card-header-left {
+.image .block {
+  margin-bottom: 20px;
+  text-align: center;
+  display: inline-block;
+  width: 20%;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+.image .name {
   display: block;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  font-weight: bolder;
+  color: var(--el-text-color-secondary);
+  font-size: 12px;
+}
+.dialog {
+:deep(.el-dialog) {
+  box-shadow: 0 0px 0px rgb(0 0 0 / 0%);
+  background: transparent;
+}
 }
 </style>

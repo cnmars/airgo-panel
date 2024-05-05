@@ -30,7 +30,8 @@ export default {
 
     target_username:"目标用户名",
     message_confirm_reset_sub:"是否确认重置订阅地址?",
-    subscription:"订阅",
+    subscription:"复制订阅链接",
     selectSubPre:"选择订阅前缀",
+    scan_qr_subscription:"扫描二维码订阅",
   },
 };

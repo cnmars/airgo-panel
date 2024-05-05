@@ -108,7 +108,7 @@ func (c *CustomerService) GetSubscribe(uuidStr string, clientType string) (strin
 subHandler:
 	//根据clientType生成不同客户端订阅
 	switch clientType {
-	case "v2rayNG", "V2rayU":
+	case "v2rayNG", "V2rayU", "V2Box":
 		return v2rayNG(&nodeArr), headerInfo
 
 	case "v2rayN", "NekoBox":
@@ -497,33 +497,45 @@ func Quantumult(nodes *[]model.Node) string {
 	var nodeArr []string
 	for _, v := range *nodes {
 		switch v.Protocol {
-		case constant.NODE_PROTOCOL_VMESS:
+		case constant.NODE_PROTOCOL_VMESS, constant.NODE_PROTOCOL_VLESS:
 			var nodeItem []string
 			nodeItem = append(nodeItem, fmt.Sprintf("vmess=%s:%d", v.Address, v.Port))
-			nodeItem = append(nodeItem, fmt.Sprintf("method=%s", "chacha20-ietf-poly1305")) //surge不能为auto
 			nodeItem = append(nodeItem, fmt.Sprintf("password=%s", v.UUID))
+			//qx method: none aes-128-gcm chacha20-ietf-poly1305
+			//nodeItem = append(nodeItem, fmt.Sprintf("method=%s", "chacha20-ietf-poly1305"))
+			if v.Protocol == constant.NODE_PROTOCOL_VMESS {
+				nodeItem = append(nodeItem, fmt.Sprintf("method=%s", v.Scy))
+			} else {
+				nodeItem = append(nodeItem, fmt.Sprintf("method=%s", "none"))
+			}
 
-			switch v.Security {
-			case "tls":
-				if v.Network == constant.NETWORK_WS {
-					nodeItem = append(nodeItem, fmt.Sprintf("obfs=over-tls"))
-					//nodeItem = append(nodeItem, fmt.Sprintf("obfs-uri=%s", v.Path))
-					nodeItem = append(nodeItem, fmt.Sprintf("obfs-host=%s", v.Host))
+			switch v.Network {
+			case constant.NETWORK_WS:
+				nodeItem = append(nodeItem, fmt.Sprintf("obfs-uri=%s", v.Path))
+				nodeItem = append(nodeItem, fmt.Sprintf("obfs-host=%s", v.Host))
+				if v.Security == "tls" {
+					nodeItem = append(nodeItem, fmt.Sprintf("obfs=wss"))
 					if v.AllowInsecure {
 						nodeItem = append(nodeItem, fmt.Sprintf("tls-verification=false"))
 					} else {
 						nodeItem = append(nodeItem, fmt.Sprintf("tls-verification=true"))
 					}
+				} else {
+					nodeItem = append(nodeItem, fmt.Sprintf("obfs=ws"))
 				}
 
-			default:
-				if v.Network == constant.NETWORK_WS {
-					nodeItem = append(nodeItem, fmt.Sprintf("obfs=ws"))
-					nodeItem = append(nodeItem, fmt.Sprintf("obfs-uri=%s", v.Path))
-					nodeItem = append(nodeItem, fmt.Sprintf("obfs-host=%s", v.Host))
+			case constant.NETWORK_TCP:
+				if v.Security == "tls" {
+					nodeItem = append(nodeItem, fmt.Sprintf("obfs=over-tls"))
+				}
+				if v.AllowInsecure {
+					nodeItem = append(nodeItem, fmt.Sprintf("tls-verification=false"))
+				} else {
+					nodeItem = append(nodeItem, fmt.Sprintf("tls-verification=true"))
 				}
 
 			}
+
 			nodeItem = append(nodeItem, fmt.Sprintf("fast-open=false"))
 			nodeItem = append(nodeItem, fmt.Sprintf("udp-relay=false"))
 			nodeItem = append(nodeItem, fmt.Sprintf("tag=%s", v.Remarks))

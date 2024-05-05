@@ -119,6 +119,7 @@ func GetSub(ctx *gin.Context) {
 	//V2rayU/4.0.0 CFNetwork/1128.0.1 Darwin/19.6.0 (x86_64)
 	//v2rayN/6.30
 	//clash-verge/v1.5.11
+	//V2Box 8.8;IOS 15.1
 
 	clientType := ctx.Query("type")
 	ua := ctx.Request.Header.Get("User-Agent")
@@ -156,6 +157,10 @@ func GetSub(ctx *gin.Context) {
 	}
 	if strings.HasPrefix(ua, "V2rayU") {
 		clientType = "V2rayU"
+		goto next
+	}
+	if strings.HasPrefix(ua, "V2Box") {
+		clientType = "V2Box"
 		goto next
 	}
 	if clientType == "" { //兜底客户端为v2rayNG
