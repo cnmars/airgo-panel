@@ -302,11 +302,17 @@ func (o *Order) FirstUserOrder(orderParams *model.Order) (*model.Order, error) {
 func (o *Order) GetUserOrders(params *model.QueryParams, uID int64) (*model.CommonDataResp, error) {
 	var data model.CommonDataResp
 	var orderList []model.Order
-	_, dataSql := CommonSqlFindSqlHandler(params) //TODO 检查 CommonSqlFindSqlHandler 相关的分页逻辑
+	totalSql, dataSql := CommonSqlFindSqlHandler(params) //TODO 检查 CommonSqlFindSqlHandler 相关的分页逻辑
 	dataSql = dataSql[strings.Index(dataSql, "WHERE ")+6:]
+	totalSql = totalSql[strings.Index(totalSql, "WHERE ")+6:]
 	//拼接查询参数
 	dataSql = fmt.Sprintf("user_id = %d AND %s", uID, dataSql)
-	err := global.DB.Model(&model.Order{}).Where(dataSql).Count(&data.Total).Find(&orderList).Error
+	totalSql = fmt.Sprintf("user_id = %d AND %s", uID, totalSql)
+	err := global.DB.Model(&model.Order{}).Where(dataSql).Find(&orderList).Error
+	if err != nil {
+		return nil, err
+	}
+	err = global.DB.Model(&model.Order{}).Where(totalSql).Count(&data.Total).Error
 	if err != nil {
 		return nil, err
 	}
@@ -357,8 +363,6 @@ func (o *Order) GoodsTypeSubscribeOrderHandler(order *model.Order) error {
 		if err != nil {
 			return err
 		}
-		// 更新客户服务
-		cs.ServiceStatus = true
 		//如果没到期，就追加有效期，否则从当天开始设置开始时间
 		if cs.ServiceStatus {
 			cs.ServiceEndAt = cs.ServiceEndAt.AddDate(0, int(cs.Duration), 0)
