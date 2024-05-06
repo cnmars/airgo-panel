@@ -3633,7 +3633,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/public/sub/{id}": {
+        "/api/public/sub/{id}/{name}": {
             "get": {
                 "produces": [
                     "application/json"
@@ -3652,10 +3652,16 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "description": "自定义订阅名称",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "客户端类型",
                         "name": "type",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -5023,7 +5029,16 @@ const docTemplate = `{
                 "backend_url": {
                     "type": "string"
                 },
+                "clash_rule": {
+                    "type": "string"
+                },
                 "sub_name": {
+                    "type": "string"
+                },
+                "subscribe_domain_bind_request": {
+                    "type": "boolean"
+                },
+                "surge_rule": {
                     "type": "string"
                 },
                 "tek": {
@@ -5431,6 +5446,9 @@ const docTemplate = `{
                 "acceptable_email_suffixes": {
                     "type": "string"
                 },
+                "enable_assets_api": {
+                    "type": "boolean"
+                },
                 "enable_base64_captcha": {
                     "type": "boolean"
                 },
@@ -5441,6 +5459,9 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "enable_register": {
+                    "type": "boolean"
+                },
+                "enable_swagger_api": {
                     "type": "boolean"
                 },
                 "frontend_url": {

@@ -94,6 +94,14 @@
                        :inactive-text="$t('message.common.disable')"
                        style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"></el-switch>
           </el-form-item>
+          <el-form-item :label="$t('message.adminServer.Server.clash_rule')" >
+            <el-input v-model="serverConfig.serverConfig.value.subscribe.clash_rule"
+                      type="textarea" :rows="10" />
+          </el-form-item>
+          <el-form-item :label="$t('message.adminServer.Server.surge_rule')" >
+            <el-input v-model="serverConfig.serverConfig.value.subscribe.surge_rule"
+                      type="textarea" :rows="10" />
+          </el-form-item>
           <el-divider></el-divider>
           <el-form-item>
             <el-button @click="onSubmit()" type="primary">{{ $t("message.common.button_confirm") }}</el-button>

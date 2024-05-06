@@ -106,9 +106,10 @@ func SendEmailCode(ctx *gin.Context, e *model.EmailRequest, keyPre string) {
 // @Summary 获取订阅
 // @Produce json
 // @Param id path string true "订阅id"
-// @Param type query string true "客户端类型"
+// @Param name path string true "自定义订阅名称"
+// @Param type query string false "客户端类型"
 // @Success 200 {object} string "请求成功"
-// @Router /api/public/sub/{id} [get]
+// @Router /api/public/sub/{id}/{name} [get]
 func GetSub(ctx *gin.Context) {
 	//Shadowrocket/2070 CFNetwork/1325.0.1 Darwin/21.1.0
 	//ClashMetaForAndroid/2.8.9.Meta

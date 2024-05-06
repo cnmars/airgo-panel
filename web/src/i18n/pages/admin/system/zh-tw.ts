@@ -36,6 +36,8 @@ export default {
       is_multipoint: "開啟多點登入",
       backend_url: "訂閱首碼",
       subscribe_domain_bind_request:"訂閱功能變數名稱綁定請求",
+      clash_rule:"clash 規則",
+      surge_rule:"surge 規則",
       frontend_url: "前端地址",
       api_prefix: "管理員api首碼",
       sub_name: "訂閱名稱",

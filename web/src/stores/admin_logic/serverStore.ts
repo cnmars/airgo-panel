@@ -47,6 +47,8 @@ export const useAdminServerStore = defineStore("serverAdminStore", {
                 sub_name: '',
                 tek: '',
                 subscribe_domain_bind_request:false,
+                surge_rule:'',
+                clash_rule:'',
             } as Subscribe,
             email: {
                 email_from: '',

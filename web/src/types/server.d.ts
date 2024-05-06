@@ -15,6 +15,8 @@ declare interface Subscribe{
     sub_name: string;
     tek: string;
     subscribe_domain_bind_request:boolean
+    surge_rule:string
+    clash_rule:string
 }
 declare interface Notice {
     enable_tg_bot:boolean
