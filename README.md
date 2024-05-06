@@ -20,7 +20,6 @@ Supported protocols：Vless，Vmess，shadowsocks，Hysteria2
 
 <hr/>
 
-<h3>中文 | <a href='./README_EN.md'>English</a></h3>
 
 <hr/>
 
@@ -204,15 +203,15 @@ services:
 ## 2-2 前端
 
 ### 2-2-1 部署到 Vercel 等云平台
-- fork本项目，修改`./web/index.html`的`window.httpurl`字段为自己的后端地址。由于vercel的限制，请填https接口地址
+- fork本项目，修改`./web/index.html`的`window.httpurl`字段为自己的后端地址，，可以设置多个，以英文符号 `|` 分割。由于vercel的限制，请填https接口地址
 - 登录[Vercel](https://vercel.com)，Add New Project，参考下图配置，注意红圈内的设置！
   ![image](https://telegraph-image.pages.dev/file/afe97f45857b988ebd005.png)
 - 部署成功后，自定义域名即可（域名解析到76.76.21.21)
 
 ### 2-2-2 部署到 Nginx、Caddy、OpenResty 等 Web 应用服务器
-推荐使用 `github codespaces`编译，这不会在您电脑上安装额外的依赖
 
-- fork本项目，修改`./web/index.html`的`window.httpurl`字段为自己的后端地址
+- 下载 release 中编译好的静态资源的 `AirGo-web.zip`
+- 修改`./web/index.html`的`window.httpurl`字段为自己的后端地址，可以设置多个，以英文符号 `|` 分割
 - 在 项目/web/ 下，执行  `npm i && npm run build`
 - 打包后的静态资源文件夹为 web，将web文件夹上传到服务器合适位置。新建网站（纯静态），网站位置选择该web文件夹
 
@@ -371,9 +370,9 @@ services:
 ./AirGo version                 查看AirGo的当前版本
 ```
 
-# 8 开发
+# 8 更多说明
 
-[点击查看更多](https://github.com/ppoonk/AirGo/wiki)
+[点击查看更多](https://github.com/ppoonk/AirGo/wiki/Wiki)
 
 
 
