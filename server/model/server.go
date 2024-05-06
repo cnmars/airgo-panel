@@ -84,6 +84,8 @@ type Subscribe struct {
 	SubscribeDomainBindRequest bool   `json:"subscribe_domain_bind_request" gorm:"comment:订阅域名只接受更新订阅的请求"`
 	SubName                    string `json:"sub_name"          gorm:"default:AirGo;comment:订阅名称"`
 	TEK                        string `json:"tek"               gorm:"default:airgo;comment:前后端通信密钥"`
+	SurgeRule                  string `json:"surge_rule"        gorm:"comment:Surge 规则"`
+	ClashRule                  string `json:"clash_rule"        gorm:"comment:Clash 规则"`
 }
 type Finance struct {
 	EnableInvitationCommission bool    `json:"enable_invitation_commission"` //是否开启邀请佣金

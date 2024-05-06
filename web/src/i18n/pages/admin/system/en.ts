@@ -36,6 +36,8 @@ export default {
      is_multipoint: "is multipoint",
      backend_url: "subscription prefix",
      subscribe_domain_bind_request:"subscription domain binding request",
+     clash_rule:"clash rule",
+     surge_rule:"surge rule",
      frontend_url: "frontend url",
      api_prefix: "api prefix",
      sub_name: "subscribe name",

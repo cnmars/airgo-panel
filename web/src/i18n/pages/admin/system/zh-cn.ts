@@ -36,6 +36,8 @@ export default {
       is_multipoint: "开启多点登陆",
       backend_url: "订阅前缀",
       subscribe_domain_bind_request:"订阅域名绑定请求",
+      clash_rule:"clash 规则",
+      surge_rule:"surge 规则",
       frontend_url: "前端地址",
       api_prefix: "管理员api前缀",
       sub_name: "订阅名称",

@@ -223,31 +223,46 @@ func (s *AdminServer) ChangeDataForUpdate() error {
 		return nil
 	})
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
+
 	// update for v0.2.8
-	err = global.DB.Transaction(func(tx *gorm.DB) error {
-		var server model.Server
-		err := tx.First(&server).Error
-		if err == nil {
-			fmt.Println(len(server.Finance.Jackpot))
-			if len(server.Finance.Jackpot) == 0 {
-				server.Finance.Jackpot = model.Jackpot{
-					{0.01, 6},
-					{0.02, 5},
-					{0.03, 4},
-					{0.04, 3},
-					{0.05, 2},
-					{0.06, 1},
-				}
-				return tx.Save(server).Error
-			}
-			return nil
-		}
-		return nil
-	})
+	var server model.Server
+	err = global.DB.First(&server).Error
 	if err != nil {
-		fmt.Println(err)
+		return err
+	}
+	if len(server.Finance.Jackpot) == 0 {
+		server.Finance.Jackpot = model.Jackpot{
+			{0.01, 6},
+			{0.02, 5},
+			{0.03, 4},
+			{0.04, 3},
+			{0.05, 2},
+			{0.06, 1},
+		}
+		err = global.DB.Transaction(func(tx *gorm.DB) error {
+			return tx.Save(server).Error
+		})
+		if err != nil {
+			return err
+		}
+	}
+
+	// update for v0.2.9
+	if server.Subscribe.SurgeRule == "" || server.Subscribe.ClashRule == "" {
+		server.Subscribe.SurgeRule = constant.DEFAULT_SURGE_RULE
+		server.Subscribe.ClashRule = constant.DEFAULT_CLASH_RULE
+		err = global.DB.Transaction(func(tx *gorm.DB) error {
+			return tx.Save(server).Error
+		})
+		if err != nil {
+			return err
+		}
+	}
+
+	if err != nil {
+		return err
 	}
 	return nil
 }
