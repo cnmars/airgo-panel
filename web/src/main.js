@@ -1,1 +1,1 @@
-import 'remixicon/fonts/remixicon.css'
+import 'remixicon/fonts/remixicon.css';
