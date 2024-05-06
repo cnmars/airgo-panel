@@ -3,6 +3,8 @@ package app
 import (
 	"errors"
 	"fmt"
+	"strings"
+
 	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"github.com/gin-gonic/gin"
 	"github.com/glebarez/sqlite"
@@ -13,7 +15,6 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"strings"
 )
 
 type DataBase struct {
@@ -162,25 +163,25 @@ func (d *DataBase) InsertIntoUser() error {
 }
 func (d *DataBase) InsertIntoMenu() error {
 	DynamicRouteData := []model.Menu{
-		{ID: 1, ParentID: 0, Remarks: "管理员", Path: "/admin", Name: "admin", Component: "/layout/routerView/parent.vue", Meta: model.Meta{Title: "message.router.admin", Icon: "iconfont icon-shouye_dongtaihui"}},
-		{ID: 2, ParentID: 1, Remarks: "菜单", Path: "/admin/menu", Name: "adminMenu", Component: "/admin/menu/index.vue", Meta: model.Meta{Title: "message.router.adminMenu", Icon: "iconfont icon-caidan"}},
-		{ID: 3, ParentID: 1, Remarks: "角色", Path: "/admin/role", Name: "adminRole", Component: "/admin/role/index.vue", Meta: model.Meta{Title: "message.router.adminRole", Icon: "iconfont icon-icon-"}},
-		{ID: 4, ParentID: 1, Remarks: "用户", Path: "/admin/user", Name: "adminUser", Component: "/admin/user/index.vue", Meta: model.Meta{Title: "message.router.adminUser", Icon: "iconfont icon-gerenzhongxin"}},
-		{ID: 5, ParentID: 1, Remarks: "订单", Path: "/admin/order", Name: "adminOrder", Component: "/admin/order/index.vue", Meta: model.Meta{Title: "message.router.adminOrder", Icon: "iconfont icon--chaifenhang"}},
-		{ID: 6, ParentID: 1, Remarks: "节点", Path: "/admin/node", Name: "adminNode", Component: "/admin/node/index.vue", Meta: model.Meta{Title: "message.router.adminNode", Icon: "iconfont icon-shuxingtu"}},
-		{ID: 7, ParentID: 1, Remarks: "商店", Path: "/admin/shop", Name: "adminShop", Component: "/admin/shop/index.vue", Meta: model.Meta{Title: "message.router.adminShop", Icon: "iconfont icon-zhongduancanshuchaxun"}},
-		{ID: 8, ParentID: 1, Remarks: "系统", Path: "/admin/system", Name: "adminSystem", Component: "/admin/system/index.vue", Meta: model.Meta{Title: "message.router.adminSystem", Icon: "iconfont icon-xitongshezhi"}},
-		{ID: 9, ParentID: 1, Remarks: "文章", Path: "/admin/article", Name: "adminArticle", Component: "/admin/article/index.vue", Meta: model.Meta{Title: "message.router.adminArticle", Icon: "iconfont icon-huanjingxingqiu"}},
-		{ID: 10, ParentID: 1, Remarks: "工单管理", Path: "/admin/ticket", Name: "adminTicket", Component: "/admin/ticket/index.vue", Meta: model.Meta{Title: "message.router.adminTicket", Icon: "ele-DocumentRemove"}},
-		{ID: 11, ParentID: 1, Remarks: "营收概览", Path: "/admin/income", Name: "adminIncome", Component: "/admin/income/index.vue", Meta: model.Meta{Title: "message.router.adminIncome", Icon: "iconfont icon-xingqiu"}},
+		{ID: 1, ParentID: 0, Remarks: "管理员", Path: "/admin", Name: "admin", Component: "/layout/routerView/parent.vue", Meta: model.Meta{Title: "message.router.admin", Icon: "ri-admin-line"}},
+		{ID: 2, ParentID: 1, Remarks: "菜单", Path: "/admin/menu", Name: "adminMenu", Component: "/admin/menu/index.vue", Meta: model.Meta{Title: "message.router.adminMenu", Icon: "ri-menu-add-line"}},
+		{ID: 3, ParentID: 1, Remarks: "角色", Path: "/admin/role", Name: "adminRole", Component: "/admin/role/index.vue", Meta: model.Meta{Title: "message.router.adminRole", Icon: "ri-file-shield-2-line"}},
+		{ID: 4, ParentID: 1, Remarks: "用户", Path: "/admin/user", Name: "adminUser", Component: "/admin/user/index.vue", Meta: model.Meta{Title: "message.router.adminUser", Icon: "ri-user-search-line"}},
+		{ID: 5, ParentID: 1, Remarks: "订单", Path: "/admin/order", Name: "adminOrder", Component: "/admin/order/index.vue", Meta: model.Meta{Title: "message.router.adminOrder", Icon: "ri-receipt-line"}},
+		{ID: 6, ParentID: 1, Remarks: "节点", Path: "/admin/node", Name: "adminNode", Component: "/admin/node/index.vue", Meta: model.Meta{Title: "message.router.adminNode", Icon: "ri-cloud-line"}},
+		{ID: 7, ParentID: 1, Remarks: "商店", Path: "/admin/shop", Name: "adminShop", Component: "/admin/shop/index.vue", Meta: model.Meta{Title: "message.router.adminShop", Icon: "ri-store-3-line"}},
+		{ID: 8, ParentID: 1, Remarks: "系统", Path: "/admin/system", Name: "adminSystem", Component: "/admin/system/index.vue", Meta: model.Meta{Title: "message.router.adminSystem", Icon: "ri-settings-4-line"}},
+		{ID: 9, ParentID: 1, Remarks: "文章", Path: "/admin/article", Name: "adminArticle", Component: "/admin/article/index.vue", Meta: model.Meta{Title: "message.router.adminArticle", Icon: "ri-file-settings-line"}},
+		{ID: 10, ParentID: 1, Remarks: "工单管理", Path: "/admin/ticket", Name: "adminTicket", Component: "/admin/ticket/index.vue", Meta: model.Meta{Title: "message.router.adminTicket", Icon: "ri-customer-service-2-line"}},
+		{ID: 11, ParentID: 1, Remarks: "营收概览", Path: "/admin/income", Name: "adminIncome", Component: "/admin/income/index.vue", Meta: model.Meta{Title: "message.router.adminIncome", Icon: "ri-bar-chart-box-line"}},
 
-		{ID: 12, ParentID: 0, Remarks: "首页", Path: "/home", Name: "home", Component: "/home/index.vue", Meta: model.Meta{Title: "message.router.home", Icon: "iconfont icon-shouye"}},
-		{ID: 13, ParentID: 0, Remarks: "商店", Path: "/shop", Name: "shop", Component: "/shop/index.vue", Meta: model.Meta{Title: "message.router.shop", Icon: "iconfont icon-zidingyibuju"}},
-		{ID: 14, ParentID: 0, Remarks: "我的订单", Path: "/myOrder", Name: "myOrder", Component: "/myOrder/index.vue", Meta: model.Meta{Title: "message.router.myOrder", Icon: "iconfont icon--chaifenhang"}},
-		{ID: 15, ParentID: 0, Remarks: "个人信息", Path: "/personal", Name: "personal", Component: "/personal/index.vue", Meta: model.Meta{Title: "message.router.personal", Icon: "iconfont icon-gerenzhongxin"}},
-		{ID: 16, ParentID: 0, Remarks: "文档", Path: "/documents", Name: "documents", Component: "/documents/index.vue", Meta: model.Meta{Title: "message.router.documents", Icon: "ele-ChatLineSquare"}},
-		{ID: 17, ParentID: 0, Remarks: "工单", Path: "/ticket", Name: "ticket", Component: "/ticket/index.vue", Meta: model.Meta{Title: "message.router.ticket", Icon: "ele-DocumentRemove"}},
-		{ID: 18, ParentID: 0, Remarks: "财务中心", Path: "/finance", Name: "finance", Component: "/finance/index.vue", Meta: model.Meta{Title: "message.router.finance", Icon: "ele-Box"}},
+		{ID: 12, ParentID: 0, Remarks: "首页", Path: "/home", Name: "home", Component: "/home/index.vue", Meta: model.Meta{Title: "message.router.home", Icon: "ri-home-3-line"}},
+		{ID: 13, ParentID: 0, Remarks: "商店", Path: "/shop", Name: "shop", Component: "/shop/index.vue", Meta: model.Meta{Title: "message.router.shop", Icon: "ri-store-3-line"}},
+		{ID: 14, ParentID: 0, Remarks: "我的订单", Path: "/myOrder", Name: "myOrder", Component: "/myOrder/index.vue", Meta: model.Meta{Title: "message.router.myOrder", Icon: "ri-bill-line"}},
+		{ID: 15, ParentID: 0, Remarks: "个人信息", Path: "/personal", Name: "personal", Component: "/personal/index.vue", Meta: model.Meta{Title: "message.router.personal", Icon: "ri-user-line"}},
+		{ID: 16, ParentID: 0, Remarks: "文档", Path: "/documents", Name: "documents", Component: "/documents/index.vue", Meta: model.Meta{Title: "message.router.documents", Icon: "ri-article-line"}},
+		{ID: 17, ParentID: 0, Remarks: "工单", Path: "/ticket", Name: "ticket", Component: "/ticket/index.vue", Meta: model.Meta{Title: "message.router.ticket", Icon: "ri-customer-service-2-line"}},
+		{ID: 18, ParentID: 0, Remarks: "财务中心", Path: "/finance", Name: "finance", Component: "/finance/index.vue", Meta: model.Meta{Title: "message.router.finance", Icon: "ri-wallet-line"}},
 	}
 	if err := global.DB.Create(&DynamicRouteData).Error; err != nil {
 		return errors.New("sys_dynamic-router_data表数据初始化失败!")

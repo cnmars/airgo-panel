@@ -1,12 +1,15 @@
 <template>
+<div>
   <div class="layout-logo" v-if="setShowLogo" @click="onThemeConfigChange">
     <img :src="themeConfig.logo_link" class="layout-logo-medium-img"/>
-    <span>{{ themeConfig.globalTitle }}</span>
+    <el-text class="menu-text" >{{ themeConfig.globalTitle }}</el-text>
   </div>
   
   <div class="layout-logo-size" v-else @click="onThemeConfigChange">
     <el-image style="width: 65%;" :src="themeConfig.logo_link" fit="cover" />
   </div>
+
+</div>
 </template>
 
 <script setup lang="ts" name="layoutLogo">
