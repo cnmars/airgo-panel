@@ -365,7 +365,7 @@ services:
 ```
 ./AirGo help                    获取帮助
 ./AirGo reset --resetAdmin      重置admin password
-./AirGo start                   启动AirGo
+./AirGo start                   启动AirGo, 指定配置文件路径：./AirGo start --config path2/config.yaml
 ./AirGo update                  更新数据库相关AirGo数据
 ./AirGo version                 查看AirGo的当前版本
 ```

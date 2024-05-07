@@ -1,17 +1,16 @@
-package app
+package constant
 
 const (
-	userApiPre  = "/api"
-	adminApiPre = "/api/admin"
+
 	// 默认邮件验证码样式
-	text1 = `<div >
+	Text1 = `<div >
   <p >欢迎使用，请及时输入验证码</p>
   <span style="font-size:30px">emailcode</span>
 </div>`
 	// 商品默认描述
-	text2 = `<h3 style="color:#00BFFF">究竟什么样的终点，才配得上这一路的颠沛流离---管泽元</h3>
+	Text2 = `<h3 style="color:#00BFFF">究竟什么样的终点，才配得上这一路的颠沛流离---管泽元</h3>
 <h3 style="color:#DDA0DD">世界聚焦于你---管泽元</h3>`
-	rule1 = `api.vv1234.cn
+	Rule1 = `api.vv1234.cn
 shua.leyz.top
 llss.atewm.cn
 siriling.github.io
@@ -21,7 +20,7 @@ db.laomoe.com
 loss.98cat.cn
 net.ljxnet.cn
 `
-	rule2 = `(.*\.||)(speedtest)\.(com|cn|net)
+	Rule2 = `(.*\.||)(speedtest)\.(com|cn|net)
 (.*\.||)(LibreSpeed)\.(com|cn|net)
 (.*\.||)(fast)\.(com|cn|net)
 (.*.||)(gov|12377|12315|talk.news.pts.org|cread­ers|zhuich­aguoji|efcc.org|cy­ber­po­lice|abolu­owang|tu­idang|epochtimes|dafa­hao|falundafa|minghui|falu­naz|zhengjian|110.qq|mingjingnews|in­medi­ahk|xin­sheng|banned­book|nt­dtv|falun­gong|12321|se­cretchina|epochweekly|cn.rfi).(cn|com|org|net|club|net|fr|tw|hk)
@@ -31,7 +30,7 @@ net.ljxnet.cn
 (.*\.)(gov|12377|12315|talk.news.pts|zhuichaguoji|efcc|cyberpolice|tuidang|falundafa|falunaz|110.qq|mingjingnews|inmediahk|xinsheng|12321|epochweekly|cn.rfi|mingjing|chinaaid|botanwang|xinsheng|rfi|breakgfw|chengmingmag|jinpianwang|xizang-zhiye|breakgfw|qi-gong|voachinese|mhradio|rfa|edoors|edoors|renminbao|soundofhope|zhengjian|dafahao|minghui|dongtaiwang|epochtimes|ntdtv|falundafa|wujieliulan|aboluowang|bannedbook|secretchina|dajiyuan|boxun|chinadigitaltimes|huaglad|dwnews|creaders|oneplusnews|rfa|nextdigital|pincong|gtv|kwok7)\.(cn|com|org|net|club|net|fr|tw|hk|eu|info|me|rocks)
 (.*.||)(tuidang.ddns|xinsheng|pincong|pages|newhighlandvision).(cn|com|org|net|club|net|fr|tw|hk|rocks|dev)
 `
-	defaultHtml = `<!DOCTYPE html>
+	DefaultHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -252,7 +251,7 @@ net.ljxnet.cn
 </style>
 </html>
 `
-	defaultDialog = `# 欢迎使用！最新活动如下：
+	DefaultDialog = `# 欢迎使用！最新活动如下：
 1. 免费注册体验！注册送流量
 2. 邀请返利
 
