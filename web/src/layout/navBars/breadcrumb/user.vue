@@ -65,7 +65,7 @@
 			<span class="layout-navbars-breadcrumb-user-link">
         
 				<img :src="userInfos.avatar" class="layout-navbars-breadcrumb-user-link-photo mr5" />
-				<div class="layout-navbars-breadcrumb-hide">{{ userInfos.user_name }}</div>
+				<div class="layout-navbars-username-hide">{{ userInfos.user_name }}</div>
 				<el-icon class="el-icon--right">
 					<ele-ArrowDown />
 				</el-icon>
@@ -111,7 +111,7 @@ const { locale, t } = useI18n();
 const state = reactive({
   isScreenfull: false,
   disabledI18n: "zh-cn",
-  disabledSize: "large"
+  disabledSize: "default"
 });
 
 // 获取布局配置信息
@@ -198,10 +198,7 @@ const onHandleCommandClick = (path: string) => {
     router.push(path);
   }
 };
-// 菜单搜索点击
-const onSearchClick = () => {
-  searchRef.value.openSearch();
-};
+
 // 组件大小改变
 const onComponentSizeChange = (size: string) => {
   Session.remove("themeConfig");

@@ -45,7 +45,7 @@
 <script setup lang="ts" name="systemMenu">
 import {defineAsyncComponent, onMounted, reactive, ref} from 'vue';
 import {RouteRecordRaw} from 'vue-router';
-import {ElMessage, ElMessageBox} from 'element-plus';
+import {ElMessageBox} from 'element-plus';
 import {storeToRefs} from 'pinia';
 import { useAdminMenuStore } from "/@/stores/admin_logic/menuStore";
 import { useI18n } from "vue-i18n";

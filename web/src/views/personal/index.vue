@@ -1,6 +1,6 @@
 <template>
   <div class="personal layout-pd">
-    <el-row>
+    <el-row gutter="20">
       <!-- 个人信息 -->
       <el-col :xs="24" :sm="24">
         <el-card shadow="hover">
@@ -29,7 +29,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="24">
+      <el-col :xs="24" :sm="12">
         <el-card shadow="hover" class="mt15 personal-edit">
           <div class="personal-edit-title">{{$t('message.personal.message_setting')}}</div>
           <el-divider content-position="left"><span>{{ $t("message.personal.push_setting") }}</span>
@@ -74,7 +74,7 @@
           </el-form>
         </el-card>
       </el-col>
-      <el-col :span="24">
+      <el-col :xs="24" :sm="12">
         <el-card shadow="hover" class="mt15 personal-edit">
           <div class="personal-edit-title">{{$t('message.personal.account_setting')}}</div>
           <div class="personal-edit-safe-box">

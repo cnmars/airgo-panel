@@ -8,7 +8,7 @@
         <el-image :src="shopStoreData.currentGoods.value.cover_image" style="height: 100px">
           <template #error>
             <div class="image-slot">
-              <el-icon><icon-picture /></el-icon>
+               <i class="ri-signal-wifi-error-line"></i>
             </div>
           </template>
         </el-image>
