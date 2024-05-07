@@ -245,7 +245,7 @@ func (d *DataBase) InsertIntoRoleAndMenu() error {
 }
 func (d *DataBase) InsertIntoGoods() error {
 	goodsData := []model.Goods{
-		{ID: 1, Subject: "10G|30天", TotalBandwidth: 10, Price: "0.00", Des: text2},
+		{ID: 1, Subject: "10G|30天", TotalBandwidth: 10, Price: "0.00", Des: constant.Text2},
 	}
 	if err := global.DB.Create(&goodsData).Error; err != nil {
 		return errors.New("goods表数据初始化失败!")
@@ -316,11 +316,14 @@ func (d *DataBase) InsertIntoServer() error {
 	settingData := model.Server{
 		ID: 1,
 		Email: model.Email{
-			EmailContent: text1,
+			EmailContent: constant.Text1,
 			EmailSubject: "Hello AirGo!",
 		},
 		Website: model.Website{
+			EnableRegister:          true,
 			AcceptableEmailSuffixes: "@qq.com\n@foxmail.com\n@gmail.com\n@163.com\n@126.com\n@yeah.net",
+			EnableBase64Captcha:     true,
+			EnableAssetsApi:         true,
 		},
 		Finance: model.Finance{
 			EnableInvitationCommission: false,
@@ -336,6 +339,31 @@ func (d *DataBase) InsertIntoServer() error {
 				{0.06, 1},
 			},
 		},
+		Security: model.Security{
+			Captcha: model.Captcha{
+				KeyLong:            6,
+				ImgWidth:           240,
+				ImgHeight:          80,
+				OpenCaptcha:        2,
+				OpenCaptchaTimeOut: 300,
+			},
+			JWT: model.JWT{
+				SigningKey:  "AirGo",
+				ExpiresTime: "30d",
+				BufferTime:  "1d",
+				Issuer:      "AirGo",
+			},
+			RateLimitParams: model.RateLimitParams{
+				IPRoleParam: 600,
+				VisitParam:  600,
+			},
+		},
+		Subscribe: model.Subscribe{
+			SubName:   "AirGo",
+			TEK:       "airgo",
+			SurgeRule: constant.DEFAULT_SURGE_RULE,
+			ClashRule: constant.DEFAULT_CLASH_RULE,
+		},
 	}
 	if err := global.DB.Create(&settingData).Error; err != nil {
 		return errors.New("server表数据初始化失败!")
@@ -344,8 +372,8 @@ func (d *DataBase) InsertIntoServer() error {
 }
 func (d *DataBase) InsertIntoArticle() error {
 	articleData := []model.Article{
-		{ID: 1, Type: "home", Title: "首页自定义显示内容", Introduction: "首页自定义显示内容，可编辑，不可删除！", Content: defaultHtml, Status: true},
-		{ID: 2, Type: "dialog", Title: "首页弹窗内容", Introduction: "首页弹窗，可编辑，可显示与隐藏，不可删除！", Content: defaultDialog, Status: true},
+		{ID: 1, Type: "home", Title: "首页自定义显示内容", Introduction: "首页自定义显示内容，可编辑，不可删除！", Content: constant.DefaultHtml, Status: true},
+		{ID: 2, Type: "dialog", Title: "首页弹窗内容", Introduction: "首页弹窗，可编辑，可显示与隐藏，不可删除！", Content: constant.DefaultDialog, Status: true},
 	}
 	if err := global.DB.Create(&articleData).Error; err != nil {
 		return errors.New("article表数据初始化失败!")
@@ -356,11 +384,11 @@ func (d *DataBase) InsertIntoAccess() error {
 	accessData := []model.Access{
 		{
 			Name:  "禁用流量消耗器",
-			Route: rule1,
+			Route: constant.Rule1,
 		},
 		{
 			Name:  "禁用一些敏感网站和测速网站",
-			Route: rule2,
+			Route: constant.Rule2,
 		}}
 	if err := global.DB.Create(&accessData).Error; err != nil {
 		return errors.New("access表数据初始化失败!")
