@@ -100,7 +100,6 @@ export default {
 		fourTitle: '介面顯示',
 		fourIsShowLogo: '側邊欄 Logo',
 		fourIsBreadcrumb: '開啟 Breadcrumb',
-		fourIsBreadcrumbIcon: '開啟 Breadcrumb 圖標',
 		fourIsTagsview: '開啟 Tagsview',
 		fourIsTagsviewIcon: '開啟 Tagsview 圖標',
 		fourIsCacheTagsView: '開啟 TagsView 緩存',

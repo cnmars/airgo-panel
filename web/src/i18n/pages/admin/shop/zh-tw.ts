@@ -9,7 +9,7 @@ export default {
     resultText2:"請儘快完成支付",
     resultText3:"支付遇到問題",
     resultText4:"前往支付寶",
-    resultText5:"前往易支付",
+    resultText5:"前往支付",
     resultText6:"請求超時，請稍後檢查我的訂單，有無訂單記錄",
     Goods:{
       index:"序號",

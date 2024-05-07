@@ -1,14 +1,16 @@
 <template>
+<div class="logo_all" >
 <div>
   <div class="layout-logo" v-if="setShowLogo" @click="onThemeConfigChange">
-    <img :src="themeConfig.logo_link" class="layout-logo-medium-img"/>
-    <el-text class="menu-text" >{{ themeConfig.globalTitle }}</el-text>
+    <img class="memu-logo" :src="themeConfig.logo_link"/>
+    <el-text class="menu-title" >{{ themeConfig.globalTitle }}</el-text>
   </div>
   
   <div class="layout-logo-size" v-else @click="onThemeConfigChange">
     <el-image style="width: 65%;" :src="themeConfig.logo_link" fit="cover" />
   </div>
 
+</div>
 </div>
 </template>
 
@@ -21,8 +23,7 @@ import {useThemeConfig} from '/@/stores/themeConfig';
 const storesThemeConfig = useThemeConfig();
 const {themeConfig} = storeToRefs(storesThemeConfig);
 //import logoMini from '/@/assets/logo-mini.svg';
-//logo 图片
-import logo from '/@/assets/icon/logo.png';
+
 
 // 设置 logo 的显示。classic 经典布局默认显示 logo
 const setShowLogo = computed(() => {
@@ -38,17 +39,15 @@ const onThemeConfigChange = () => {
 
 <style scoped lang="scss">
 .layout-logo {
-  width: 180px;
+  width: auto;
   height: 50px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: rgb(0 21 41 / 2%) 0px 1px 4px;
+  justify-content: left;
   color: var(--el-color-primary);
   font-size: 16px;
   cursor: pointer;
   animation: logoAnimation 0.3s ease-in-out;
-
   span {
     white-space: nowrap;
     display: inline-block;
@@ -71,6 +70,14 @@ const onThemeConfigChange = () => {
   display: table-cell;
   text-align: center;
   margin-top:6px;
+}
+
+.logo{
+  margin-right: 0.8em;
+}
+
+.logo_all{
+  margin: 0.5em 0 0.4em 2.1em;
 }
 
 </style>

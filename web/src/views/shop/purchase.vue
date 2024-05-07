@@ -3,24 +3,24 @@
     <el-dialog
       v-model="state.isShowDialog"
       :title="$t('message.common.details')"
-      width="80%"
+      
       @close="closeDialog"
       destroy-on-close>
       <!--      1、现实进度条-->
       <el-steps :active="state.active" process-status="wait" finish-status="success">
         <el-step :title="$t('message.adminShop.selectGoods')">
           <template #icon>
-            <SvgIcon name="iconfont icon-1_round_solid" :size="40" />
+            <i style="font-size: 2.4em;" class="ri-number-1"></i>
           </template>
         </el-step>
         <el-step :title="$t('message.adminOrder.orderDetails')">
           <template #icon>
-            <SvgIcon name="iconfont icon-2_round_solid" :size="40" />
+            <i style="font-size: 2.4em;" class="ri-number-2"></i>
           </template>
         </el-step>
         <el-step :title="$t('message.adminShop.purchase')">
           <template #icon>
-            <SvgIcon name="iconfont icon-3_round_solid" :size="40" />
+            <i style="font-size: 2.4em;" class="ri-number-3"></i>
           </template>
         </el-step>
       </el-steps>
@@ -30,7 +30,7 @@
           <!--          2-1、续费商品-->
           <el-row v-if="shopStoreData.currentOrder.value.order_type === constantStore.ORDER_TYPE_RENEW">
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-              <div style="margin-top: 10px;border-radius:10px;background: rgba(224,224,224,0.29);padding: 10px;">
+              <el-card style="margin-top: 10px;border-radius:10px;">
                 <el-descriptions
                   :column="1"
                   border
@@ -54,136 +54,163 @@
                   </el-descriptions-item>
 
                 </el-descriptions>
-              </div>
+              </el-card>
             </el-col>
           </el-row>
           <!--          2-2、新购-->
           <el-row :gutter="50" v-else>
-            <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6">
-              <el-card style="margin-top: 10px;border-radius: 1vh;text-align: center;" >
-                <el-image :src="shopStoreData.currentGoods.value.cover_image" fit="cover" style="height: 150px">
-                  <template #error>
-                    <div class="image-slot">
-                      <el-icon>
-                        <icon-picture />
-                      </el-icon>
-                    </div>
-                  </template>
-                </el-image>
-            </el-card>
-            </el-col>
-            <el-col :xs="24" :sm="24" :md="18" :lg="18" :xl="18">
-              <el-card style="border-radius:10px;padding: 10px;margin-top: 10px">
-                <div style="margin-top: 10px;">
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+              <div style="margin-top: 10px;border-radius: 1vh;text-align: center;" >
+                <div style="text-align: center">
+              <el-image :src="shopStoreData.currentGoods.value.cover_image"
+                        lazy
+                        style="height: 20vh; border-radius: 1vh;"
+                        fit="cover"
+                        :preview-src-list="[shopStoreData.currentGoods.value.cover_image]">
+                <template #error>
+                  <div class="image-slot">
+                    <i class="ri-signal-wifi-error-line"></i>
+                  </div>
+                </template>
+              </el-image>
+              <div class="item-title">
                   {{ shopStoreData.currentGoods.value.subject }}
                 </div>
-                <div style="margin-top: 10px;display: flex;">
-                  <el-tag
-                    v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_SUBSCRIBE">
-                    {{ $t("message.adminShop.Goods.goods_type") }}: {{ $t("message.constant.GOODS_TYPE_SUBSCRIBE") }}
-                  </el-tag>
-                  <el-tag
-                    v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_RECHARGE">
-                    {{ $t("message.adminShop.Goods.goods_type") }}: {{ $t("message.constant.GOODS_TYPE_RECHARGE") }}
-                  </el-tag>
-                  <el-tag
-                    v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_GENERAL">
-                    {{ $t("message.adminShop.Goods.goods_type") }}: {{ $t("message.constant.GOODS_TYPE_GENERAL") }}
-                  </el-tag>
+            </div>    
 
-                  <el-tag
-                    v-if="shopStoreData.currentGoods.value.deliver_type === constantStore.DELIVER_TYPE_NONE"
-                  >{{ $t("message.adminShop.Goods.deliver_type") }}:
-                    {{ $t("message.constant.DELIVER_TYPE_NONE") }}
-                  </el-tag>
-                  <el-tag
-                    v-if="shopStoreData.currentGoods.value.deliver_type === constantStore.DELIVER_TYPE_AUTO"
-                  >{{ $t("message.adminShop.Goods.deliver_type") }}:
-                    {{ $t("message.constant.DELIVER_TYPE_AUTO") }}
-                  </el-tag>
-                  <el-tag
-                    v-if="shopStoreData.currentGoods.value.deliver_type === constantStore.DELIVER_TYPE_MANUAL">
-                    {{ $t("message.adminShop.Goods.deliver_type") }}:
-                    {{ $t("message.constant.DELIVER_TYPE_MANUAL") }}
-                  </el-tag>
-                </div>
-                <div style="margin-top: 10px;display: flex;">
-                  <el-tag type="warning">
-                    {{ $t("message.adminShop.Goods.quota") }}：{{ shopStoreData.currentGoods.value.quota }} /
-                    {{ $t("message.adminShop.Goods.stock") }}：{{ shopStoreData.currentGoods.value.stock }}
-                  </el-tag>
-                </div>
-                <div style="margin-top: 10px">
-                <span>
-                  <span style="color: red;">￥</span>
-                  <span style="color: red;font-size: 30px;">{{ shopStoreData.currentGoods.value.price }}</span>
-                  <span
-                    v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_SUBSCRIBE"> / {{ $t("message.common.month")
-                    }}</span>
-                </span>
-                </div>
-              </el-card>
-
+              </div>
             </el-col>
+
           </el-row>
         </div>
-        <div v-if="state.active === 1"
-             style="border-radius:10px;background: rgba(224,224,224,0.29);padding: 10px;margin-top: 10px">
+        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+        <el-card v-if="state.active === 1"
+             style="border-radius:10px;padding: 10px;margin-top: 0.8em;">
           <div v-if="shopStoreData.currentOrder.value.order_type === constantStore.ORDER_TYPE_NEW">
             <div class="card-text" v-if="shopStoreData.currentOrder.value.goods_type !== constantStore.GOODS_TYPE_RECHARGE" >
               <el-input v-model="shopStoreData.currentOrder.value.coupon_name"
-                        :placeholder="$t('message.adminShop.Coupon.name')" size="default">
+                        :placeholder="$t('message.adminShop.Coupon.name')" size="default"
+                        >
                 <template #prepend>
                   <el-icon>
                     <Ticket />
                   </el-icon>
                 </template>
                 <template #append>
-                  <el-button class="card-text-right" color="blue" size="small" @click="getOrderInfo">
+                  <el-button size="small" @click="getOrderInfo">
                     {{ $t("message.common.button_confirm") }}
                   </el-button>
                 </template>
               </el-input>
             </div>
             <div class="card-text" v-if="shopStoreData.currentOrder.value.goods_type === constantStore.GOODS_TYPE_SUBSCRIBE">
-              <el-button class="card-text-left" type="info">{{ $t("message.adminOrder.Order.duration") }}</el-button>
+              <el-tag class="card-text-left" type="primary">{{ $t("message.adminOrder.Order.duration") }}</el-tag>
               <el-input-number class="card-text-right"
                                @click="getOrderInfo"
                                v-model.number="shopStoreData.currentOrder.value.duration" :min="1" :step="1"
-                               :max="36"></el-input-number>
+                               :max="36"
+                               size="small"
+
+                               ></el-input-number>
             </div>
             <div class="card-text">
-              <el-button class="card-text-left" type="info">{{ $t("message.adminOrder.Order.price") }}</el-button>
+              <el-tag class="card-text-left" type="primary">{{ $t("message.adminOrder.Order.price") }}</el-tag>
               <el-text class="card-text-right">{{ shopStoreData.currentOrder.value.price }}</el-text>
-            </div>
+              </div>
             <div class="card-text">
-              <el-button class="card-text-left" type="info">{{ $t("message.adminOrder.Order.coupon_amount") }}
-              </el-button>
+              <el-tag class="card-text-left" type="primary">{{ $t("message.adminOrder.Order.coupon_amount") }}
+              </el-tag>
               <el-text class="card-text-right">-{{ shopStoreData.currentOrder.value.coupon_amount }}</el-text>
             </div>
             <div class="card-text">
-              <el-button class="card-text-left" type="info">{{ $t("message.adminOrder.Order.total_amount") }}
-              </el-button>
+              <el-tag class="card-text-left" type="primary">{{ $t("message.adminOrder.Order.total_amount") }}
+              </el-tag>
               <el-text class="card-text-right" style="font-size: 25px;">{{ shopStoreData.currentOrder.value.total_amount
                 }}
               </el-text>
             </div>
           </div>
-          <div style="text-align: right;margin-top: 20px">
-            <el-button type="primary" @click="nextSubmitOrder">{{ $t("message.adminOrder.submitOrder") }}</el-button>
-          </div>
-        </div>
+        </el-card>
+        </el-col>
       </div>
 
+        <template #footer>
+           <div v-if="state.active === 1">
+            <el-button type="primary" @click="nextSubmitOrder">{{ $t("message.adminOrder.submitOrder") }}</el-button>
+          </div>
+          <div v-if="state.active === 2">
+            <el-button color="blue" @click="closeDialog">{{ $t("message.common.button_cancel") }}</el-button>
+            <el-button color="blue" @click="nextPurchase" :disabled="!shopStoreData.currentOrder.value.pay_id">
+              {{ $t("message.adminShop.purchase") }}
+            </el-button>
+          </div>
+          <div v-if="state.active === 3">
+          <el-button type="primary" @click="back">{{ $t("message.common.back") }}</el-button>
+          <el-button type="primary" @click="closeDialog">{{ $t("message.common.close") }}</el-button>
+        </div>
+        </template>
+
       <!--      3、点击购买后-->
-      <div v-if="state.active === 2 || state.active === 3"
+      <div v-if="state.active === 2"
            v-loading="state.isShowLoading"
            element-loading-text="Loading..."
            element-loading-background="rgba(122, 122, 122, 0.8)"
-           style="border-radius:10px;background: rgba(224,224,224,0.29);padding: 10px;margin-top: 10px">
+           style="border-radius:10px;padding: 10px;margin-top: 10px">
         <div style="margin-bottom: 20px"
              v-if="state.active === 2 || state.active === 3">
-          <el-button type="primary">{{ $t("message.adminOrder.orderDetails") }}</el-button>
+        </div>
+        <div v-if="state.active === 2">
+          <div v-if="state.isShowPayment">
+            <el-tag type="primary">{{ $t("message.adminOrder.Order.pay_type") }}</el-tag>
+            <div>
+              <el-radio-group v-model="shopStoreData.currentOrder.value.pay_id"
+                              v-for="(v,k) in shopStoreData.payList.value" :key="k">
+                <el-radio :label="v.id" style="width: 800px;margin-top: 10px">
+                  <div style="display: flex;align-items: center">
+                        <span style="margin-right: 5px">
+                          <el-image :src="v.pay_logo_url" style="height: 15px;"></el-image>
+                        </span>
+                    <span>{{ v.name }}</span>
+                    <span style="margin-left: 30px;color: #6cacf5" v-if="v.pay_type === constantStore.PAY_TYPE_BALANCE">[ {{ $t("message.adminUser.SysUser.balance") }}: {{ userInfos.balance }} ]</span>
+                  </div>
+                </el-radio>
+              </el-radio-group>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!--      4、点击支付后-->
+      <div v-if="state.active === 3"
+           v-loading="state.isShowLoading"
+           element-loading-text="Loading..."
+           element-loading-background="rgba(122, 122, 122, 0.8)"
+           style="border-radius:10px;padding: 10px;margin-top: 10px">
+        <div>
+          <el-result icon="success" :title="$t('message.adminShop.resultText1')" v-if="state.result === 1"></el-result>
+          <el-result icon="warning" :title="$t('message.adminShop.resultText2')" v-else-if="state.result === 2">
+            <template #extra>
+              <div v-if="state.showPayInfo === 1">
+                <div class="qrcode-img-warp">
+                  <div class="mb30 mt30 qrcode-img">
+                    <div class="qrcode" ref="qrcodeRef"></div>
+                  </div>
+                </div>
+                <el-button type="warning" :href="state.alipayUrl">{{ $t("message.adminShop.resultText4") }}
+                </el-button>
+                <el-link type="primary" :href="state.alipayUrl" target="_blank">{{ state.alipayUrl }}</el-link>
+              </div>
+              <div v-else-if="state.showPayInfo === 2">
+                <el-button type="primary" round size="large"  @Click="reject_epay" >{{ $t("message.adminShop.resultText5") }}
+                </el-button>
+              </div>
+            </template>
+          </el-result>
+          <el-result icon="error" :title="$t('message.adminShop.resultText3')"
+                     v-else-if="state.result === 3"></el-result>
+        </div>
+
+        <el-tag type="primary" style="margin-bottom: 1em;">{{ $t("message.adminOrder.orderDetails") }}</el-tag>
           <el-descriptions
             :column="1"
             border
@@ -221,66 +248,6 @@
               <span style="color: red;font-size: 30px">{{ shopStoreData.currentOrder.value.total_amount }}</span>
             </el-descriptions-item>
           </el-descriptions>
-        </div>
-        <div v-if="state.active === 2">
-          <div v-if="state.isShowPayment">
-            <el-button type="primary">{{ $t("message.adminOrder.Order.pay_type") }}</el-button>
-            <div>
-              <el-radio-group v-model="shopStoreData.currentOrder.value.pay_id"
-                              v-for="(v,k) in shopStoreData.payList.value" :key="k">
-                <el-radio :label="v.id" style="width: 800px;margin-top: 10px">
-                  <div style="display: flex;align-items: center">
-                        <span style="margin-right: 5px">
-                          <el-image :src="v.pay_logo_url" style="height: 15px;"></el-image>
-                        </span>
-                    <span>{{ v.name }}</span>
-                    <span style="margin-left: 30px;color: #6cacf5" v-if="v.pay_type === constantStore.PAY_TYPE_BALANCE">[ {{ $t("message.adminUser.SysUser.balance") }}: {{ userInfos.balance }} ]</span>
-                  </div>
-                </el-radio>
-              </el-radio-group>
-            </div>
-          </div>
-          <div style="text-align: right;margin-top: 20px">
-            <el-button color="blue" @click="closeDialog">{{ $t("message.common.button_cancel") }}</el-button>
-            <el-button color="blue" @click="nextPurchase" :disabled="!shopStoreData.currentOrder.value.pay_id">
-              {{ $t("message.adminShop.purchase") }}
-            </el-button>
-          </div>
-        </div>
-      </div>
-      <!--      4、点击支付后-->
-      <div v-if="state.active === 3"
-           v-loading="state.isShowLoading"
-           element-loading-text="Loading..."
-           element-loading-background="rgba(122, 122, 122, 0.8)"
-           style="border-radius:10px;background: rgba(224,224,224,0.29);padding: 10px;margin-top: 10px">
-        <div>
-          <el-result icon="success" :title="$t('message.adminShop.resultText1')" v-if="state.result === 1"></el-result>
-          <el-result icon="warning" :title="$t('message.adminShop.resultText2')" v-else-if="state.result === 2">
-            <template #extra>
-              <div v-if="state.showPayInfo === 1">
-                <div class="qrcode-img-warp">
-                  <div class="mb30 mt30 qrcode-img">
-                    <div class="qrcode" ref="qrcodeRef"></div>
-                  </div>
-                </div>
-                <el-button type="warning" :href="state.alipayUrl">{{ $t("message.adminShop.resultText4") }}
-                </el-button>
-                <el-link type="primary" :href="state.alipayUrl" target="_blank">{{ state.alipayUrl }}</el-link>
-              </div>
-              <div v-else-if="state.showPayInfo === 2">
-                <el-button type="primary" round size="large"  @Click="reject_epay" >{{ $t("message.adminShop.resultText5") }}
-                </el-button>
-              </div>
-            </template>
-          </el-result>
-          <el-result icon="error" :title="$t('message.adminShop.resultText3')"
-                     v-else-if="state.result === 3"></el-result>
-        </div>
-        <div style="text-align: right;margin-top: 20px">
-          <el-button type="primary" @click="back">{{ $t("message.common.back") }}</el-button>
-          <el-button type="primary" @click="closeDialog">{{ $t("message.common.close") }}</el-button>
-        </div>
       </div>
 
     </el-dialog>
@@ -528,8 +495,7 @@ const reject_epay = () =>{
 
 .card-text-left {
   width: 100px;
-  margin-top: auto;
-  margin-bottom: auto;
+
 }
 
 .card-text-right {

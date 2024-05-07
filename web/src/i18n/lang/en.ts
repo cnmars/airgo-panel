@@ -108,7 +108,6 @@ export default {
     fourTitle: "Interface display",
     fourIsShowLogo: "Sidebar logo",
     fourIsBreadcrumb: "Open breadcrumb",
-    fourIsBreadcrumbIcon: "Open breadcrumb icon",
     fourIsTagsview: "Open tagsview",
     fourIsTagsviewIcon: "Open tagsview Icon",
     fourIsCacheTagsView: "Enable tagsview cache",

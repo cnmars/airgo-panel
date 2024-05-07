@@ -9,7 +9,7 @@ export default {
     resultText2:"请尽快完成支付",
     resultText3:"支付遇到问题",
     resultText4:"前往支付宝",
-    resultText5:"前往易支付",
+    resultText5:"前往支付",
     resultText6:"请求超时，请稍后检查我的订单，有无订单记录",
     Goods:{
       index:"序号",
