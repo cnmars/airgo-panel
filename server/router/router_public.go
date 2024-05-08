@@ -26,6 +26,7 @@ func (g *GinRouter) InitPublicRouter(r *gin.RouterGroup) {
 	// 订阅
 	subRouter := publicRouter.Group("/sub").Use(middleware.RateLimitIP())
 	{
+		subRouter.GET("/:id", public_api.GetSub)
 		subRouter.GET("/:id/:name", public_api.GetSub)
 	}
 	// user
