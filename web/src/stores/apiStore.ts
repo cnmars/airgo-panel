@@ -42,7 +42,7 @@ export const useApiStore = defineStore("apiStore", {
 
             // role
             newRole:{path: adminApiPre + "/role/newRole", method: "post"} as ApiItem,
-            getRoleList:{path: adminApiPre + "/role/getRoleList", method: "post"} as ApiItem,
+            getRoleList:{path: adminApiPre + "/role/getRoleList", method: "get"} as ApiItem,
             updateRole:{path: adminApiPre + "/role/updateRole", method: "post"} as ApiItem,
             delRole:{path: adminApiPre + "/role/delRole", method: "delete"} as ApiItem,
             getAllPolicy:{path: adminApiPre + "/role/getAllPolicy", method: "get"} as ApiItem,
