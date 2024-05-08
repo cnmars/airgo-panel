@@ -1,6 +1,6 @@
 {
 	"name": "airgo",
-	"version": "2.4.32",
+	"version": "0.2.9",
 	"description": "AirGo",
 	"author": "AirGo",
 	"license": "MIT",
@@ -69,16 +69,6 @@
 		"node": ">=16.0.0",
 		"npm": ">= 7.0.0"
 	},
-	"keywords": [
-		"vue",
-		"vue3",
-		"vuejs/vue-next",
-		"vuejs/vue-next-template",
-		"element-ui",
-		"element-plus",
-		"vue-next-admin",
-		"next-admin"
-	],
 	"repository": {
 		"type": "git",
 		"url": "https://gitee.com/lyt-top/vue-next-admin.git"

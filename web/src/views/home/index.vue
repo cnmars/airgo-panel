@@ -6,29 +6,27 @@
         <div style="margin-top: 10px;">
         <el-row :gutter="0" align="top">
           <el-col :span="80" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-            <h3 style="font-size: large;margin-left: 0.2em;margin-right: 0.2em;margin-bottom: 2vh;"> {{ currentTime }} , {{ userInfos.nick_name }}：</h3>
+            <h3 style="font-size: large;margin-left: 0.2em;margin-right: 0.2em;margin-bottom: 2vh;"> {{ currentTime }} , {{ userInfos.nick_name }}</h3>
             <div></div>
-            <el-card style="margin-top: 0.5em; border-radius: 10px">
               <i class="ri-group-3-line" style="font-size: 20px;"></i>
               <el-text size="large" style="margin-left: 10px;">{{$t('message.home.my_invited')}} : {{ financeStoreData.commissionSummary.value.total_invitation }}          
                  <el-button style="margin: 0.5em;font-size: 1em;width: auto;height: auto;"icon="CopyDocument"  round @click="copyText(state_invite.text);">{{$t('message.home.invite_url')}}</el-button>
                </el-text>
-            </el-card>
-            <el-card style="margin-top: 1em;margin-bottom: 1em; border-radius: 10px">
-              <i class="ri-list-unordered" style="font-size: 20px;"></i>
-              <el-text size="large" style="margin-left: 10px;">{{ $t("message.ticket.total_ticket") }} : {{ ticketStoreData.userTicketList.value.total }}</el-text>
-            </el-card>
+<!--            <el-card style="margin-top: 1em;margin-bottom: 1em; border-radius: 10px">-->
+<!--              <i class="ri-list-unordered" style="font-size: 20px;"></i>-->
+<!--              <el-text size="large" style="margin-left: 10px;">{{ $t("message.ticket.total_ticket") }} : {{ ticketStoreData.userTicketList.value.total }}</el-text>-->
+<!--            </el-card>-->
           </el-col>
         </el-row>
         </div>
     </el-card>
 
-    <el-divider />
+<!--    <el-divider />-->
 
-    <h2 style="margin-left: 0.2em;margin-bottom: 0.7em;color: var(--el-text-color-primary);">{{$t('message.home.my_subscribe')}}</h2>
+    <h2 style="margin-top: 0.7em;margin-left: 0.2em;margin-bottom: 0.7em;color: var(--el-text-color-primary);">{{$t('message.home.my_subscribe')}}</h2>
     <el-card style="border-radius: 10px;margin: 0.2em" v-if="customerServiceStoreData.customerServiceList.value.length === 0">
         <el-skeleton :rows="2" animated />
-        <h2>{{$t('message.home.no_data')}}        <el-button style="margin: 0.5em;font-size: 0.8em;width: auto;height: auto;"icon="Link"  round @click="copyText(state_invite.text);">{{$t('message.home.button_gotostore')}}</el-button>
+        <h2>{{$t('message.home.no_data')}}        <el-button style="margin: 0.5em;font-size: 0.8em;width: auto;height: auto;"icon="Link"  round @click="gotostore">{{$t('message.home.button_gotostore')}}</el-button>
 </h2>
 
     </el-card>
@@ -189,6 +187,7 @@ import logo_clash_verge from "/@/assets/img/logo-clash-verge.png"
 import logo_clashx from "/@/assets/img/logo-clashx.png"
 import logo_surge from "/@/assets/img/logo-surge.png"
 import logo_nekobox from "/@/assets/img/logo-nekobox.jpeg"
+import {useRouter} from "vue-router";
 
 const articleStore = useArticleStore()
 const constantStore = useConstantStore()
@@ -208,6 +207,7 @@ const financeStoreData = storeToRefs(financeStore)
 const { copyText } = commonFunction();
 const {t} = useI18n()
 const qrcodeRef = ref();
+const router = useRouter();
 
 //组件
 const DialogCustomerServiceDetails = defineAsyncComponent(() => import("/@/views/home/dialog_customer_service_details.vue"));
@@ -384,6 +384,9 @@ const defaultArticle=()=>{
     },1000)
   })
 }
+const gotostore=()=>{
+  router.push('/shop');
+}
 
 
 onMounted(() => {
@@ -392,7 +395,7 @@ onMounted(() => {
   defaultArticle()
 
   getCommissionSummary()
-  getUserTicketList()
+  // getUserTicketList()
 });
 
 </script>

@@ -37,7 +37,6 @@ Supported protocols：Vless，Vmess，shadowsocks，Hysteria2
   * [2-2 前端](#2-2-前端)
     * [2-2-1 部署到 Vercel 等云平台](#2-2-1-部署到-vercel-等云平台)
     * [2-2-2 部署到 Nginx、Caddy、OpenResty 等 Web 应用服务器](#2-2-2-部署到-nginxcaddyopenresty-等-web-应用服务器)
-    * [2-2-3 设置部分个性化数据](#2-2-3-设置部分个性化数据)
 * [3 配置ssl（可选）](#3-配置ssl可选)
   * [3-1 给前端设置ssl证书](#3-1-给前端设置ssl证书)
   * [3-2 给后端设置ssl证书](#3-2-给后端设置ssl证书)
@@ -53,7 +52,7 @@ Supported protocols：Vless，Vmess，shadowsocks，Hysteria2
   * [6-1 更新后端](#6-1-更新后端)
   * [6-2 更新前端](#6-2-更新前端)
 * [7 命令行](#7-命令行)
-* [8 开发](#8-开发)
+* [8 更多说明](#8-更多说明)
 <!-- TOC -->
 
 <br>
@@ -214,13 +213,6 @@ services:
 - 修改`./web/index.html`的`window.httpurl`字段为自己的后端地址，可以设置多个，以英文符号 `|` 分割
 - 在 项目/web/ 下，执行  `npm i && npm run build`
 - 打包后的静态资源文件夹为 web，将web文件夹上传到服务器合适位置。新建网站（纯静态），网站位置选择该web文件夹
-
-### 2-2-3 设置部分个性化数据
-根据需要，可以自行修改`./web/index.html`中的 `keywords`（网站关键词），`description`（网站描述），`title`，（网站标题）`favicon.ico` （网站ico图标）等
-
-
-
-
 
 # 3 配置ssl（可选）
 
