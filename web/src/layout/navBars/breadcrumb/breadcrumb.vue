@@ -1,22 +1,19 @@
 <template>
   <div v-if="isShowBreadcrumb" class="layout-navbars-breadcrumb">
-    <div style="margin: 1.8vh; font-size: 1.3rem;color: var(--next-bg-topBarColor);font-weight: 600;">
+    <div class="layout-memu-bottom-display" style="margin:1.8vh 0 1.8vh 1.8vh; font-size: 1.3rem;color: var(--next-bg-topBarColor);font-weight: 600;display: none;">
     <i class="ri-menu-line" @click="onThemeConfigChange"></i></div>
 
-    <el-breadcrumb class="">
+    <el-breadcrumb>
       <transition-group name="breadcrumb">
-        <el-breadcrumb-item style="font-size: 1.2rem;" v-for="(v, k) in state.breadcrumbList"
+        <el-breadcrumb-item class="layout-breadcrumb-mobile" style="font-size: 1.4rem;margin-left: 1.6em;" v-for="(v, k) in state.breadcrumbList"
                             :key="!v.meta.tagsViewName ? v.meta.title : v.meta.tagsViewName">
 					<span v-if="k === state.breadcrumbList.length - 1" class="layout-navbars-breadcrumb-span">
-						<SvgIcon :name="v.meta.icon" class="layout-navbars-breadcrumb-iconfont"
-                     v-if="themeConfig.isBreadcrumbIcon"/>
+
 <!--						<div v-if="!v.meta.tagsViewName">{{ $t(v.meta.title) }}</div>-->
 <!--						<div v-else>{{ v.meta.tagsViewName }}</div>-->
 						<div style="font-weight: 600;color: var(--el-text-color-primary) !important;">{{ $t(v.meta.title) }}</div>
 					</span>
-          <a v-else @click.prevent="onBreadcrumbClick(v)">
-            <SvgIcon :name="v.meta.icon" class="layout-navbars-breadcrumb-iconfont"
-                     v-if="themeConfig.isBreadcrumbIcon"/>
+          <a v-else>
             {{ $t(v.meta.title) }}
           </a>
         </el-breadcrumb-item>
@@ -55,12 +52,7 @@ const isShowBreadcrumb = computed(() => {
   if (layout === 'classic' || layout === 'transverse') return false;
   else return isBreadcrumb ? true : false;
 });
-// 面包屑点击时
-const onBreadcrumbClick = (v: RouteItem) => {
-  const {redirect, path} = v;
-  if (redirect) router.push(redirect);
-  else router.push(path);
-};
+
 // 展开/收起左侧菜单点击
 const onThemeConfigChange = () => {
   themeConfig.value.isCollapse = !themeConfig.value.isCollapse;

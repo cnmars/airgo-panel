@@ -9,7 +9,7 @@ export default {
     resultText2:"Please complete payment as soon as possible",
     resultText3:"Please complete the payment as soon as possible",
     resultText4:"Go to Alipay",
-    resultText5:"Go to EPay",
+    resultText5:"Go to Pay",
     resultText6:"Request timeout, please check my order later for any order records",
     Goods:{
       index:"index",

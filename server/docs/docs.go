@@ -5091,9 +5091,6 @@ const docTemplate = `{
                 "isBreadcrumb": {
                     "type": "boolean"
                 },
-                "isBreadcrumbIcon": {
-                    "type": "boolean"
-                },
                 "isCacheTagsView": {
                     "type": "boolean"
                 },

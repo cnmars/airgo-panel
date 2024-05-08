@@ -17,10 +17,7 @@
             <el-card style="margin-top: 1em;margin-bottom: 1em; border-radius: 10px">
               <i class="ri-list-unordered" style="font-size: 20px;"></i>
               <el-text size="large" style="margin-left: 10px;">{{ $t("message.ticket.total_ticket") }} : {{ ticketStoreData.userTicketList.value.total }}</el-text>
-              
             </el-card>
-            <!--
-            <el-text size="large" style="margin-left:0.2em ;">自定义内容自定义内容自定义内容自定义内容自定义内容自定义内容自定义内容</el-text>-->
           </el-col>
         </el-row>
         </div>
@@ -68,7 +65,7 @@
               <el-descriptions-item :label="$t('message.home.des_usageRate')">
                 <el-progress
                   :color="customColors"
-                  striped
+                   striped
                    striped-flow
                   :text-inside="true" :stroke-width="16"
                   :percentage="Number((((v.used_up + v.used_down)/v.total_bandwidth)*100).toFixed(2)) ">
@@ -84,14 +81,14 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item command="e" divided>
-                  <el-button size="small" type="danger" @click="resetSubscribeUUID(v)">{{$t('message.home.button_resetSub')}}</el-button>
-                </el-dropdown-item>
-                  <el-dropdown-item command="e" divided>
-                    <el-button size="small" style="margin-bottom: 10px" type="primary" @click="openDialogCustomerServiceDetails(v.id)">{{$t('message.home.button_details')}}</el-button>
+                  <el-dropdown-item @click="resetSubscribeUUID(v)" command="e" divided>
+                    {{$t('message.home.button_resetSub')}}
                   </el-dropdown-item>
-                  <el-dropdown-item command="e" divided>
-                    <el-button size="small" style="margin-bottom: 10px" type="primary" @click="openPushDialog(v)">{{$t('message.home.button_push')}}</el-button>
+                  <el-dropdown-item @click="openDialogCustomerServiceDetails(v.id)" command="e" divided >
+                    {{$t('message.home.button_details')}}
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="openPushDialog(v)" command="e" divided>
+                  {{$t('message.home.button_push')}}
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -102,7 +99,7 @@
       </el-col>
     </el-row>
     <!--    复制订阅弹窗-->
-    <el-dialog v-model="state.isShowSubDialog" destroy-on-close width="600px" :show-close="false">
+    <el-dialog v-model="state.isShowSubDialog" destroy-on-close width="600px" >
       <div>
         <el-text size="large">{{$t('message.home.selectSubPre')}}</el-text>
         <el-select v-model="state.currentSubUrlPre">
@@ -114,7 +111,7 @@
           />
         </el-select>
       </div>
-      <div class="mb20">
+      <div class="mb20" style="margin-top: 1em;">
         <el-button size="large" color="var(--el-color-primary)" style="width: 100%" @click="copyText(getSubUrl())">
           <el-icon><Link /></el-icon>{{$t('message.home.subscription')}}
         </el-button>
@@ -136,7 +133,7 @@
       </el-row>
     </el-dialog>
     <!-- 二维码弹窗 -->
-    <el-dialog v-model="state.isShowQRDialog" destroy-on-close align-center width="400px" :show-close="false">
+    <el-dialog v-model="state.isShowQRDialog" destroy-on-close align-center :show-close="false">
         <div id="qrcode" class="qrcode" ref="qrcodeRef"></div>
     </el-dialog>
     <!--    push弹窗-->
@@ -346,7 +343,7 @@ const showQR = (subType?: string) => {
       width: 300,
       height: 300,
       colorDark: "#000000",
-      colorLight: "#ffffff"
+      colorLight: "#ffffff",
     });
 
   },500)
@@ -384,7 +381,7 @@ const defaultArticle=()=>{
   articleStore.getDefaultArticles().then(()=>{
     setTimeout(()=>{
       DefaultDialogRef.value.openDialog()
-    },10000)
+    },1000)
   })
 }
 

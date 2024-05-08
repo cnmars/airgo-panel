@@ -40,7 +40,7 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Get version
         id: get_version
@@ -67,7 +67,7 @@ jobs:
           mv web ../server/web/
 
       - name: Build server
-        uses: wangyoucao577/go-release-action@master
+        uses: wangyoucao577/go-release-action@v1
         with:
           github_token: ${{ secrets.ACTION_TOKEN }}
           goos: ${{ matrix.goos }}

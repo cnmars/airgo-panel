@@ -245,7 +245,12 @@
 
   // dialog
   .el-dialog {
-    border: 1px solid var(--el-border-color-lighter);
+    margin: 0 auto !important;
+    position: absolute;
+    border-radius: 1vh;
+    background-color: rgba(0, 0, 0, 0.9);
+  
+    box-shadow: 0;
 
     .el-dialog__header {
       color: var(--el-text-color-primary) !important;
