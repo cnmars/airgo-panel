@@ -24,6 +24,7 @@ func (g *GinRouter) InitUserRouter(r *gin.RouterGroup) {
 		customerServiceRouter.GET("/getCustomerServiceList", user_api.GetCustomerServiceList)
 		customerServiceRouter.POST("/resetSubscribeUUID", user_api.ResetSubscribeUUID)
 		customerServiceRouter.POST("/pushCustomerService", user_api.PushCustomerService)
+		customerServiceRouter.DELETE("/deleteCustomerService", user_api.DeleteCustomerService)
 	}
 	// menu
 	menuRouter := customerRouter.Group("/menu")

@@ -42,6 +42,11 @@ func (c *CustomerService) GetCustomerServiceList(csParams *model.CustomerService
 	err := global.DB.Model(&model.CustomerService{}).Where(&csParams).Find(&csArr).Error
 	return &csArr, err
 }
+func (c *CustomerService) DeleteCustomerService(csParams *model.CustomerService) error {
+	return global.DB.Transaction(func(tx *gorm.DB) error {
+		return tx.Delete(&csParams).Error
+	})
+}
 
 func (c *CustomerService) FirstCustomerService(csParams *model.CustomerService) (*model.CustomerService, error) {
 	var cs model.CustomerService

@@ -38,6 +38,7 @@ func GetBase64Captcha(ctx *gin.Context) {
 // @Tags [public api] code
 // @Summary 获取邮箱验证码
 // @Produce json
+// @Param data body model.EmailRequest true "email_type可选值：EMAIL_TYPE_USER_REGISTER EMAIL_TYPE_USER_RESETPWD EMAIL_TYPE_TEST"
 // @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
 // @Router /api/public/code/getEmailCode [post]
 func GetEmailCode(ctx *gin.Context) {

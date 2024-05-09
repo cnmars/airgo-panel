@@ -21,5 +21,8 @@ export const useCustomerServiceStore = defineStore('customerService', {
     async resetSubscribeUUID(params:CustomerService){
       return request(apiStore.userApi.resetSubscribeUUID,params)
     },
+    async deleteCustomerService(params:CustomerService){
+      return request(apiStore.userApi.deleteCustomerService,params)
+    }
   }
 })
