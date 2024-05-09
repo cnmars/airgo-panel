@@ -111,7 +111,7 @@
                     {{ $t('message.home.button_push') }}
                   </el-dropdown-item>
                   <el-dropdown-item @click="deleteCustomerService(v)" command="e" divided>
-                    {{ $t('message.common.message_confirm_delete') }}
+                    {{ $t('message.common.delete') }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
