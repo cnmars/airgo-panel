@@ -38,7 +38,7 @@ func InitCrontab() {
 		{customerServiceAlmostExpired, "0 0 */10 * * *", "customerServiceAlmostExpired", "已启动任务：用户服务到期提醒"}, //运行间隔：每10小时
 	}
 	CrontabSvc.AddTask(ts...)
-
+	CrontabSvc.Start()
 }
 func newCrontab() *Crontab {
 	return &Crontab{
