@@ -131,6 +131,7 @@ func (a *App) InitTasks() {
 	service.InitTgBotSvc()       //tg bot
 	service.InitOrderSvc()       //订单
 	service.InitPushMessageSvc() //推送消息
+	service.InitNodeBackendSvc() //处理节点后端并发请求
 }
 
 func (a *App) Start() {

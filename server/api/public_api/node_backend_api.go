@@ -237,21 +237,37 @@ func AGReportUserTraffic(ctx *gin.Context) {
 		trafficLog.U = trafficLog.D + v.Download
 
 	}
-	// 处理探针
-	global.GoroutinePool.Submit(func() {
-		service.AdminNodeSvc.UpdateNodeStatus(customerServerIDs, &trafficLog)
+	// 处理节点状态
+	_ = global.Queue.Publish(constant.NODE_BACKEND_TASK, &service.NodeBackendServiceMessage{
+		Title: constant.NODE_BACKEND_TASK_TITLE_NODE_STATUS,
+		Data: &service.NodeStatusMessage{
+			CustomerServerIDs: customerServerIDs,
+			NodeTrafficLog:    &trafficLog,
+		},
 	})
 	//插入节点流量统计
-	global.GoroutinePool.Submit(func() {
-		service.AdminNodeSvc.UpdateNodeTraffic(&trafficLog, &AGUserTraffic)
+	_ = global.Queue.Publish(constant.NODE_BACKEND_TASK, &service.NodeBackendServiceMessage{
+		Title: constant.NODE_BACKEND_TASK_TITLE_NODE_TRAFFIC,
+		Data: &service.NodeTrafficMessage{
+			NodeTrafficLog: &trafficLog,
+			AGUserTraffic:  &AGUserTraffic,
+		},
 	})
 	//插入用户流量统计
-	global.GoroutinePool.Submit(func() {
-		service.AdminCustomerServiceSvc.UpdateCustomerServiceTrafficLog(userTrafficLogMap, customerServerIDs)
+	_ = global.Queue.Publish(constant.NODE_BACKEND_TASK, &service.NodeBackendServiceMessage{
+		Title: constant.NODE_BACKEND_TASK_TITLE_UPDATE_CUSTOMER_TRAFFICLOG,
+		Data: &service.UpdateCustomerTrafficLogMessage{
+			CustomerServerIDs: customerServerIDs,
+			UserTrafficLogMap: userTrafficLogMap,
+		},
 	})
 	//更新用户已用流量信息
-	global.GoroutinePool.Submit(func() {
-		service.AdminCustomerServiceSvc.UpdateCustomerServiceTrafficUsed(&customerServiceArr, customerServerIDs)
+	_ = global.Queue.Publish(constant.NODE_BACKEND_TASK, &service.NodeBackendServiceMessage{
+		Title: constant.NODE_BACKEND_TASK_TITLE_UPDATE_CUSTOMER_TRAFFICUSED,
+		Data: &service.UpdateCustomerTrafficUsedMessage{
+			CustomerServerIDs:   customerServerIDs,
+			CustomerServiceList: &customerServiceArr,
+		},
 	})
 	ctx.String(200, "success")
 
