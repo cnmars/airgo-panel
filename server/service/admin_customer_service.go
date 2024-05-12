@@ -110,14 +110,13 @@ func (c *AdminCustomerService) UpdateCustomerServiceTrafficLog(userTrafficLogMap
 	if len(query) == 0 {
 		return nil
 	}
-	return nil
 	return global.DB.Clauses(clause.OnConflict{
 		Columns:   []clause.Column{{Name: "id"}},
 		DoUpdates: clause.AssignmentColumns([]string{"u", "d"}),
 	}).Create(&query).Error
 }
 
-// 清理流量记录
+// 清理用户流量记录
 func (c *AdminCustomerService) ClearCustomerServiceTrafficLog() error {
 	y, m, _ := time.Now().Date()
 	startTime := time.Date(y, m-2, 1, 0, 0, 0, 0, time.Local) //清除2个月之前的数据

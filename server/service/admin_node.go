@@ -172,7 +172,7 @@ func (n *AdminNode) ClearNodeTraffic() error {
 	y, m, _ := time.Now().Date()
 	startTime := time.Date(y, m-2, 1, 0, 0, 0, 0, time.Local) //清除2个月之前的数据
 	return global.DB.Transaction(func(tx *gorm.DB) error {
-		return tx.Where("created_at < ?", startTime).Delete(&model.UserTrafficLog{}).Error
+		return tx.Where("created_at < ?", startTime).Delete(&model.NodeTrafficLog{}).Error
 	})
 }
 
