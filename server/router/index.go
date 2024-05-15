@@ -1,8 +1,6 @@
 package router
 
 import (
-	"crypto/tls"
-	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
 	"github.com/ppoonk/AirGo/docs"
 	"github.com/ppoonk/AirGo/global"
@@ -13,7 +11,6 @@ import (
 	"io"
 	"os"
 	"strconv"
-	"sync"
 )
 
 type GinRouter struct {
@@ -59,26 +56,28 @@ func (g *GinRouter) InitRouter() {
 }
 
 func (g *GinRouter) Start() {
-	w := sync.WaitGroup{}
-	w.Add(2)
-	go func() {
-		err := endless.ListenAndServe(":"+strconv.Itoa(global.Config.SystemParams.HTTPPort), g.Router)
-		if err != nil {
-			global.Logrus.Error("listen: %s", err)
-		}
-		w.Done()
-	}()
-	go func() {
-		_, err := tls.LoadX509KeyPair("./air.cer", "./air.key") //先验证证书，否则endless fork进程时会空指针panic
-		if err == nil {
-			err = endless.ListenAndServeTLS(":"+strconv.Itoa(global.Config.SystemParams.HTTPSPort), "./air.cer", "./air.key", g.Router)
-			if err != nil {
-				global.Logrus.Error("listen: %s", err)
-			}
-		}
-		w.Done()
-	}()
-	w.Wait()
+	err := g.Router.Run(":" + strconv.Itoa(global.Config.SystemParams.HTTPPort))
+	if err != nil {
+		panic(err)
+	}
+
+	//w := sync.WaitGroup{}
+	//w.Add(2)
+	//go func() {
+	//	defer w.Done()
+	//
+	//}()
+	//go func() {
+	//	_, err := tls.LoadX509KeyPair("./air.cer", "./air.key") //先验证证书，否则endless fork进程时会空指针panic
+	//	if err == nil {
+	//		err = endless.ListenAndServeTLS(":"+strconv.Itoa(global.Config.SystemParams.HTTPSPort), "./air.cer", "./air.key", g.Router)
+	//		if err != nil {
+	//			global.Logrus.Error("listen: %s", err)
+	//		}
+	//	}
+	//	w.Done()
+	//}()
+	//w.Wait()
 
 	//syscall.SIGHUP 将触发重启; syscall.SIGINT, syscall.SIGTERM 并将触发服务器关闭（它将完成运行请求)。https://github.com/fvbock/endless
 	// windows下使用endless报错：undefined: syscall.SIGUSR1

@@ -1,34 +1,31 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-	<head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta				
-			name="keywords"
-			content="AirGo"
-		/>
-		<meta
-			name="description"
-			content="AirGO"
-		/>
 
-		<!--     设置网页不被缓存     
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="keywords" content="AirGo" />
+	<meta name="description" content="AirGO" />
+
+	<!--     设置网页不被缓存     
 		<meta http-equiv="expires" content="0">  
 		<meta http-equiv="pragma" content="no-cache">  
 		<meta http-equiv="cache-control" content="no-cache">    -->
 
-<!--        使用META标签强制将http请求转成https(SSL协议)请求-->
-<!--        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
-		<link rel="icon" href="/favicon.ico" />
-		<title>AirGo</title>
-	</head>
-	<body>
-    <script>
-      window.httpurl = ""
-    </script>
-		<div id="app"></div>
-		<script type="module" src="/src/main.ts"></script>
-		<script type="module" src="/src/main.js"></script>
-	</body>
+	<!--        使用META标签强制将http请求转成https(SSL协议)请求-->
+	<!--        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
+	<link rel="icon" href="/favicon.ico" />
+	<title>AirGo</title>
+</head>
+
+<body>
+	<script>
+		window.httpurl = "http://127.0.0.1:8899"
+	</script>
+	<div id="app"></div>
+	<script type="module" src="/src/main.ts"></script>
+	<script type="module" src="/src/main.js"></script>
+</body>
+
 </html>
