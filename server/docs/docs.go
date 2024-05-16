@@ -2722,7 +2722,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "请求成功；正常：业务代码 code=0；错误：业务代码code=1",
+                        "description": "请求成功；正常:code=0；错误:code=1 异常:code=10",
                         "schema": {
                             "$ref": "#/definitions/response.ResponseStruct"
                         }
@@ -2804,6 +2804,7 @@ const docTemplate = `{
         },
         "/api/customer/order/preCreateOrder": {
             "post": {
+                "description": "duratip默认为订购时长，当 -1 时代表不限时",
                 "produces": [
                     "application/json"
                 ],
@@ -4397,6 +4398,9 @@ const docTemplate = `{
                 "des": {
                     "type": "string"
                 },
+                "enable_traffic_reset": {
+                    "type": "boolean"
+                },
                 "goods_order": {
                     "description": "基础参数",
                     "type": "integer"
@@ -4433,6 +4437,19 @@ const docTemplate = `{
                     "description": "todo 前端修改",
                     "type": "string"
                 },
+                "price_12_month": {
+                    "type": "string"
+                },
+                "price_3_month": {
+                    "description": "订阅参数",
+                    "type": "string"
+                },
+                "price_6_month": {
+                    "type": "string"
+                },
+                "price_unlimited_duration": {
+                    "type": "string"
+                },
                 "quota": {
                     "type": "integer"
                 },
@@ -4447,7 +4464,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "total_bandwidth": {
-                    "description": "订阅参数",
                     "type": "integer"
                 },
                 "updated_at": {

@@ -56,8 +56,10 @@
           >
             <el-descriptions-item :label="$t('message.home.des_start')"><span
                 style="font-size: 10px">{{ DateStrToTime(v.service_start_at) }}</span></el-descriptions-item>
-            <el-descriptions-item :label="$t('message.home.des_end')"><span
-                style="font-size: 10px">{{ DateStrToTime(v.service_end_at) }}</span></el-descriptions-item>
+            <el-descriptions-item :label="$t('message.home.des_end')">
+              <span style="font-size: 10px">{{ v.service_end_at? DateStrToTime(v.service_end_at):$t('message.home.des_unlimited_time') }}
+            </span>
+            </el-descriptions-item>
             <el-descriptions-item :label="$t('message.home.des_SubStatus')">
               <el-icon v-if="v.sub_status" color="green" size="large">
                 <SuccessFilled/>

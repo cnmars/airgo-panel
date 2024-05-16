@@ -19,6 +19,12 @@ export const useAdminShopStore = defineStore("adminShopStore", {
       is_renew:true,
       des: `<h3 style="color:#00BFFF">新套餐</h3>
 <h3 style="color:#DDA0DD">新套餐</h3>`,
+      //
+      price_3_month:'0.00',
+      price_6_month:'0.00',
+      price_12_month:'0.00',
+      price_unlimited_duration:'0.00',
+      enable_traffic_reset:false,
       goods_type: 'subscribe',
       deliver_type: 'none',
       deliver_text: '',

@@ -47,7 +47,7 @@ func GetOrderList(ctx *gin.Context) {
 // @Produce json
 // @Param Authorization header string false "Bearer 用户token"
 // @Param data body model.Order true "参数"
-// @Success 200 {object} response.ResponseStruct "请求成功；正常：业务代码 code=0；错误：业务代码code=1"
+// @Success 200 {object} response.ResponseStruct "请求成功；正常:code=0；错误:code=1 异常:code=10"
 // @Router /api/customer/order/getOrderInfo [post]
 func GetOrderInfo(ctx *gin.Context) {
 	orderReq, err := OrderRequestHandler(ctx)
@@ -69,6 +69,7 @@ func GetOrderInfo(ctx *gin.Context) {
 }
 
 // PreCreateOrder
+// @Description duratip默认为订购时长，当 -1 时代表不限时
 // @Tags [customer api] order
 // @Summary 订单预创建，生成系统订单（提交订单）
 // @Produce json

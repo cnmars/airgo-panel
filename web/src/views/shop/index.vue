@@ -97,6 +97,10 @@
              <!--商品信息tag标签-->
             <div style="margin-top: 10px;margin-bottom: 10px ;text-align: end;">
                 <!--商品类型-->
+              <el-tag size="small" v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_SUBSCRIBE
+              && shopStoreData.currentGoods.value.enable_traffic_reset">
+                 {{$t("message.adminShop.Goods.enable_traffic_reset")}}
+              </el-tag>
                <el-tag size="small" v-if="shopStoreData.currentGoods.value.goods_type === constantStore.GOODS_TYPE_SUBSCRIBE">
                 {{ $t("message.adminShop.Goods.goods_type") }}: {{ $t("message.constant.GOODS_TYPE_SUBSCRIBE") }}
                </el-tag>

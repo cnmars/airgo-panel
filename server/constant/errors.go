@@ -17,9 +17,10 @@ const (
 	ERROR_GOODS_EXCEEDED_QUOTA = "The product you purchased has exceeded the purchase limit."
 
 	// 订单
-	ERROR_DUPLICATE_ORDER    = "Please do not place duplicate orders."
-	ERROR_ORDER_TIMED_OUT    = "Order has timed out."
-	ERROR_INVALID_ORDER_TYPE = "Invalid order type."
+	ERROR_DUPLICATE_ORDER      = "Please do not place duplicate orders."
+	ERROR_ORDER_TIMED_OUT      = "Order has timed out."
+	ERROR_INVALID_ORDER_TYPE   = "Invalid order type."
+	ERROR_INVALID_ORDER_PARAMS = "Invalid order params."
 	// 支付
 	ERROR_INVALID_PAY_TYPE      = "Invalid pay type."      // 无效支付类型
 	ERROR_BALANCE_IS_NOT_ENOUGH = "Balance is not enough." // 余额不足
