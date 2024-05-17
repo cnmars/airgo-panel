@@ -18,6 +18,7 @@ export default {
 
     des_start:"开始",
     des_end:"结束",
+    des_unlimited_time:"不限时",
     des_SubStatus:"状态",
     des_renewAmount:"续费价格",
     des_trafficResetDay:"流量重置日",

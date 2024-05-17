@@ -140,7 +140,11 @@ export async function getApiPrefixAddress() {
     }
     return apiPre
   } else {
-    return window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
+    let str = window.location.protocol + "//" + window.location.hostname;
+    if (window.location.port){
+      str+=":"+window.location.port;
+    }
+    return str
   }
 }
 
@@ -148,9 +152,12 @@ export async function getApiPrefixAddress() {
  * 需要保持session时用此方法
  */
 export function getCurrentAddress(){
-    return  window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
+  let str = window.location.protocol + "//" + window.location.hostname;
+  if (window.location.port){
+    str+=":"+window.location.port;
+  }
+  return str
 }
-
 
 
 

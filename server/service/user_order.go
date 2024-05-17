@@ -53,7 +53,7 @@ func (o *Order) StartTask() {
 				preOrder.CreatedAt = time.Now()
 				preOrder.TradeStatus = constant.ORDER_STATUS_WAIT_BUYER_PAY
 				// 6、存入数据库、cache
-				err = o.CreateOrder(preOrder) //preOrder为指针类型, 插入表并返回id
+				err = o.CreateOrder(preOrder) //preOrder为指针类型, 插入表并返回id，所以存入cache中的数据和数据库是一致的
 				if err != nil {
 					continue
 				}
@@ -104,6 +104,7 @@ func (o *Order) StartTask() {
 
 }
 
+// 订单拦截逻辑，处理一些校验
 func (o *Order) PreCheckOrder(orderReq *model.Order) error {
 	switch orderReq.OrderType {
 	case constant.ORDER_TYPE_NEW:
@@ -184,15 +185,51 @@ func (o *Order) PreHandleOrder(orderReq *model.Order) (*model.Order, string, err
 		if err != nil {
 			return nil, "", err
 		}
+		//计算价格
+		//0元应填 0 或者 0.0 或者 0.00  否则说明，未设置该价位
+		fmt.Println("订购时长:", orderReq.Duration)
+		var originalAmount string
+		switch orderReq.Duration {
+		case 1:
+			if goods.Price == "" {
+				return nil, "", errors.New(constant.ERROR_INVALID_ORDER_PARAMS)
+			} else {
+				originalAmount = goods.Price
+			}
+		case 3:
+			if goods.Price3Month == "" {
+				return nil, "", errors.New(constant.ERROR_INVALID_ORDER_PARAMS)
+			} else {
+				originalAmount = goods.Price3Month
+			}
+
+		case 6:
+			if goods.Price6Month == "" {
+				return nil, "", errors.New(constant.ERROR_INVALID_ORDER_PARAMS)
+			} else {
+				originalAmount = goods.Price6Month
+			}
+
+		case 12:
+			if goods.Price12Month == "" {
+				return nil, "", errors.New(constant.ERROR_INVALID_ORDER_PARAMS)
+			} else {
+				originalAmount = goods.Price12Month
+			}
+
+		case -1:
+			if goods.PriceUnlimitedDuration == "" {
+				return nil, "", errors.New(constant.ERROR_INVALID_ORDER_PARAMS)
+			} else {
+				originalAmount = goods.PriceUnlimitedDuration
+			}
+
+		default:
+			return nil, "", errors.New(constant.ERROR_INVALID_ORDER_PARAMS)
+
+		}
+
 		//构造系统订单参数
-		price, err := strconv.ParseFloat(goods.Price, 64)
-		if err != nil {
-			return nil, "", err
-		}
-		if orderReq.Duration <= 0 {
-			orderReq.Duration = 1
-		}
-		originalAmount := fmt.Sprintf("%.2f", price*float64(orderReq.Duration))
 		preOrder = model.Order{
 			OrderType:      constant.ORDER_TYPE_NEW,
 			TradeStatus:    constant.ORDER_STATUS_CREATED,
@@ -359,15 +396,24 @@ func (o *Order) GoodsTypeSubscribeOrderHandler(order *model.Order) error {
 
 	case constant.ORDER_TYPE_RENEW:
 		// 查找用户服务
-		cs, err := CustomerServiceSvc.FirstCustomerService(&model.CustomerService{UserID: order.UserID, ID: order.CustomerServiceID})
+		cs, err := CustomerServiceSvc.
+			FirstCustomerService(&model.CustomerService{
+				UserID: order.UserID,
+				ID:     order.CustomerServiceID,
+			})
 		if err != nil {
 			return err
 		}
+		if cs.Duration == -1 { //不限时套餐不做处理
+			return nil
+		}
 		//如果没到期，就追加有效期，否则从当天开始设置开始时间
 		if cs.ServiceStatus {
-			cs.ServiceEndAt = cs.ServiceEndAt.AddDate(0, int(cs.Duration), 0)
+			end := cs.ServiceEndAt.AddDate(0, int(cs.Duration), 0)
+			cs.ServiceEndAt = &end
 		} else {
-			cs.ServiceEndAt = time.Now().AddDate(0, int(cs.Duration), 0)
+			end := time.Now().AddDate(0, int(cs.Duration), 0)
+			cs.ServiceEndAt = &end
 		}
 		err = CustomerServiceSvc.SaveCustomerService(cs)
 		if err != nil {

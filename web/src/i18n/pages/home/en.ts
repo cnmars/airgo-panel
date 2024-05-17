@@ -21,9 +21,10 @@ export default {
 
     des_start:"Start",
     des_end:"End",
-    des_SubStatus:"Subscription Status",
-    des_renewAmount:"Renewal amount",
-    des_trafficResetDay:"Traffic reset day",
+    des_unlimited_time:"Unlimited time",
+    des_SubStatus:"Status",
+    des_renewAmount:"Renewal",
+    des_trafficResetDay:"Reset day",
     des_used:"Used / Total",
     des_usageRate:"Usage rate",
 

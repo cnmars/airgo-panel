@@ -400,6 +400,8 @@ definitions:
         type: string
       des:
         type: string
+      enable_traffic_reset:
+        type: boolean
       goods_order:
         description: 基础参数
         type: integer
@@ -425,6 +427,15 @@ definitions:
       price:
         description: todo 前端修改
         type: string
+      price_3_month:
+        description: 订阅参数
+        type: string
+      price_6_month:
+        type: string
+      price_12_month:
+        type: string
+      price_unlimited_duration:
+        type: string
       quota:
         type: integer
       recharge_amount:
@@ -435,7 +446,6 @@ definitions:
       subject:
         type: string
       total_bandwidth:
-        description: 订阅参数
         type: integer
       updated_at:
         type: string
@@ -2916,7 +2926,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 请求成功；正常：业务代码 code=0；错误：业务代码code=1
+          description: 请求成功；正常:code=0；错误:code=1 异常:code=10
           schema:
             $ref: '#/definitions/response.ResponseStruct'
       summary: 获取订单详情
@@ -2970,6 +2980,7 @@ paths:
       - '[customer api] order'
   /api/customer/order/preCreateOrder:
     post:
+      description: duratip默认为订购时长，当 -1 时代表不限时
       parameters:
       - description: Bearer 用户token
         in: header
